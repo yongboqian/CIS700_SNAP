@@ -1,0 +1,1831 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<title>Report 64 tests from latentsvm_posix_xu3-no-ocl_c12243c_20150909-154237.xml, latentsvm_posix_xu3-no-ocl_c12243c_20150909-114352.xml</title>
+<style type="text/css">
+html, body {font-family: Lucida Console, Courier New, Courier;font-size: 16px;color:#3e4758;}
+.tbl{background:none repeat scroll 0 0 #FFFFFF;border-collapse:collapse;font-family:"Lucida Sans Unicode","Lucida Grande",Sans-Serif;font-size:14px;margin:20px;text-align:left;width:480px;margin-left: auto;margin-right: auto;white-space:nowrap;}
+.tbl span{display:block;white-space:nowrap;}
+.tbl thead tr:last-child th {padding-bottom:5px;}
+.tbl tbody tr:first-child td {border-top:3px solid #6678B1;}
+.tbl th{border:none;color:#003399;font-size:16px;font-weight:normal;white-space:nowrap;padding:3px 10px;}
+.tbl td{border:none;border-bottom:1px solid #CCCCCC;color:#666699;padding:6px 8px;white-space:nowrap;}
+.tbl tbody tr:hover td{color:#000099;}
+.tbl caption{font:italic 16px "Trebuchet MS",Verdana,Arial,Helvetica,sans-serif;padding:0 0 5px;text-align:right;white-space:normal;}
+.firstingroup {border-top:2px solid #6678B1;}
+</style>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+<script type="text/javascript">
+function abs(val) { return val < 0 ? -val : val }
+$(function(){
+  //generate filter rows
+  $("div.tableFormatter table.tbl").each(function(tblIdx, tbl) {
+    var head = $("thead", tbl)
+    var filters = $("<tr></tr>")
+    var hasAny = false
+    $("tr:first th", head).each(function(colIdx, col) {
+      col = $(col)
+      var cell
+      var id = "t" + tblIdx + "r" + colIdx
+      if (col.hasClass("col_name")){
+        cell = $("<th><input id='" + id + "' name='" + id + "' type='text' style='width:100%' class='filter_col_name' title='Regular expression for name filtering (&quot;resize.*640x480&quot; - resize tests on VGA resolution)'></input></th>")
+        hasAny = true
+      }
+      else if (col.hasClass("col_rel")){
+        cell = $("<th><input id='" + id + "' name='" + id + "' type='text' style='width:100%' class='filter_col_rel' title='Filter out lines with a x-factor of acceleration less than Nx'></input></th>")
+        hasAny = true
+      }
+      else if (col.hasClass("col_cr")){
+        cell = $("<th><input id='" + id + "' name='" + id + "' type='text' style='width:100%' class='filter_col_cr' title='Filter out lines with a percentage of acceleration less than N%'></input></th>")
+        hasAny = true
+      }
+      else
+        cell = $("<th></th>")
+      cell.appendTo(filters)
+    })
+
+   if (hasAny){
+     $(tbl).wrap("<form id='form_t" + tblIdx + "' method='get' action=''></form>")
+     $("<input it='test' type='submit' value='Apply Filters' style='margin-left:10px;'></input>")
+       .appendTo($("th:last", filters.appendTo(head)))
+   }
+  })
+
+  //get filter values
+  var vars = []
+  var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&')
+  for(var i = 0; i < hashes.length; ++i)
+  {
+     hash = hashes[i].split('=')
+     vars.push(decodeURIComponent(hash[0]))
+     vars[decodeURIComponent(hash[0])] = decodeURIComponent(hash[1]);
+  }
+
+  //set filter values
+  for(var i = 0; i < vars.length; ++i)
+     $("#" + vars[i]).val(vars[vars[i]])
+
+  //apply filters
+  $("div.tableFormatter table.tbl").each(function(tblIdx, tbl) {
+      filters = $("input:text", tbl)
+      var predicate = function(row) {return true;}
+      var empty = true
+      $.each($("input:text", tbl), function(i, flt) {
+         flt = $(flt)
+         var val = flt.val()
+         var pred = predicate;
+         if(val) {
+           empty = false
+           var colIdx = parseInt(flt.attr("id").slice(flt.attr("id").indexOf('r') + 1))
+           if(flt.hasClass("filter_col_name")) {
+              var re = new RegExp(val);
+              predicate = function(row) {
+                if (re.exec($(row.get(colIdx)).text()) == null)
+                  return false
+                return pred(row)
+          }
+           } else if(flt.hasClass("filter_col_rel")) {
+              var percent = parseFloat(val)
+              if (percent < 0) {
+                predicate = function(row) {
+                  var val = parseFloat($(row.get(colIdx)).text())
+                  if (!val || val >= 1 || val > 1+percent)
+                    return false
+                  return pred(row)
+            }
+              } else {
+                predicate = function(row) {
+                  var val = parseFloat($(row.get(colIdx)).text())
+                  if (!val || val < percent)
+                    return false
+                  return pred(row)
+            }
+              }
+           } else if(flt.hasClass("filter_col_cr")) {
+              var percent = parseFloat(val)
+              predicate = function(row) {
+                var val = parseFloat($(row.get(colIdx)).text())
+                if (!val || val < percent)
+                  return false
+                return pred(row)
+          }
+           }
+         }
+      });
+      if (!empty){
+         $("tbody tr", tbl).each(function (i, tbl_row) {
+            if(!predicate($("td", tbl_row)))
+               $(tbl_row).remove()
+         })
+         if($("tbody tr", tbl).length == 0) {
+           $("<tr><td colspan='"+$("thead tr:first th", tbl).length+"'>No results mathing your search criteria</td></tr>")
+             .appendTo($("tbody", tbl))
+         }
+      }
+  })
+})
+</script>
+</head>
+<body>
+<div class="tableFormatter">
+<table class="tbl">
+ <caption>latentsvm_posix_xu3-no-ocl_c12243c_20150909-154237.xml, latentsvm_posix_xu3-no-ocl_c12243c_20150909-114352.xml</caption>
+ <thead>
+  <tr>
+   <th align="center" valign="top">
+    Name of Test
+   </th>
+   <th align="center" valign="top">
+    Number of<br/>collected samples
+   </th>
+   <th align="center" valign="top">
+    Number of<br/>outliers
+   </th>
+   <th align="center" valign="top">
+    Min
+   </th>
+   <th align="center" valign="top">
+    Median
+   </th>
+   <th align="center" valign="top">
+    Geometric mean
+   </th>
+   <th align="center" valign="top">
+    Mean
+   </th>
+   <th align="center" valign="top">
+    Standard deviation
+   </th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/1_itseez-0000289.png", 24)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    326.23 ms
+   </td>
+   <td align="center">
+    331.46 ms
+   </td>
+   <td align="center">
+    330.77 ms
+   </td>
+   <td align="center">
+    330.78 ms
+   </td>
+   <td align="center">
+    2.95 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/1_itseez-0000289.png", 24)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    67.31 ms
+   </td>
+   <td align="center">
+    75.87 ms
+   </td>
+   <td align="center">
+    76.58 ms
+   </td>
+   <td align="center">
+    76.78 ms
+   </td>
+   <td align="center">
+    5.57 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/1_itseez-0000289.png", 30)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    201.65 ms
+   </td>
+   <td align="center">
+    218.35 ms
+   </td>
+   <td align="center">
+    216.78 ms
+   </td>
+   <td align="center">
+    216.85 ms
+   </td>
+   <td align="center">
+    5.73 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/1_itseez-0000289.png", 30)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    48.16 ms
+   </td>
+   <td align="center">
+    63.80 ms
+   </td>
+   <td align="center">
+    63.12 ms
+   </td>
+   <td align="center">
+    63.43 ms
+   </td>
+   <td align="center">
+    6.22 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/1_itseez-0000289.png", 40)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    144.01 ms
+   </td>
+   <td align="center">
+    144.48 ms
+   </td>
+   <td align="center">
+    144.66 ms
+   </td>
+   <td align="center">
+    144.66 ms
+   </td>
+   <td align="center">
+    0.83 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/1_itseez-0000289.png", 40)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    30.67 ms
+   </td>
+   <td align="center">
+    37.76 ms
+   </td>
+   <td align="center">
+    37.50 ms
+   </td>
+   <td align="center">
+    37.69 ms
+   </td>
+   <td align="center">
+    3.78 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/1_itseez-0000289.png", 50)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    108.51 ms
+   </td>
+   <td align="center">
+    113.61 ms
+   </td>
+   <td align="center">
+    113.37 ms
+   </td>
+   <td align="center">
+    113.38 ms
+   </td>
+   <td align="center">
+    1.92 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/1_itseez-0000289.png", 50)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    24.35 ms
+   </td>
+   <td align="center">
+    32.90 ms
+   </td>
+   <td align="center">
+    32.05 ms
+   </td>
+   <td align="center">
+    32.29 ms
+   </td>
+   <td align="center">
+    3.90 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/1_itseez-0000289.png", 60)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    69.49 ms
+   </td>
+   <td align="center">
+    71.34 ms
+   </td>
+   <td align="center">
+    71.33 ms
+   </td>
+   <td align="center">
+    71.33 ms
+   </td>
+   <td align="center">
+    0.94 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/1_itseez-0000289.png", 60)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    16.32 ms
+   </td>
+   <td align="center">
+    24.72 ms
+   </td>
+   <td align="center">
+    24.50 ms
+   </td>
+   <td align="center">
+    24.66 ms
+   </td>
+   <td align="center">
+    2.82 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/1_itseez-0000289.png", 70)
+   </td>
+   <td align="center">
+    43
+   </td>
+   <td align="center">
+    3
+   </td>
+   <td align="center">
+    38.27 ms
+   </td>
+   <td align="center">
+    46.18 ms
+   </td>
+   <td align="center">
+    46.14 ms
+   </td>
+   <td align="center">
+    46.16 ms
+   </td>
+   <td align="center">
+    1.38 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/1_itseez-0000289.png", 70)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    13.09 ms
+   </td>
+   <td align="center">
+    16.95 ms
+   </td>
+   <td align="center">
+    17.02 ms
+   </td>
+   <td align="center">
+    17.04 ms
+   </td>
+   <td align="center">
+    0.83 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/1_itseez-0000289.png", 80)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    29.43 ms
+   </td>
+   <td align="center">
+    36.38 ms
+   </td>
+   <td align="center">
+    36.16 ms
+   </td>
+   <td align="center">
+    36.18 ms
+   </td>
+   <td align="center">
+    1.12 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/1_itseez-0000289.png", 80)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    9.20 ms
+   </td>
+   <td align="center">
+    13.39 ms
+   </td>
+   <td align="center">
+    13.31 ms
+   </td>
+   <td align="center">
+    13.34 ms
+   </td>
+   <td align="center">
+    0.93 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/1_itseez-0000289.png", 90)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    23.55 ms
+   </td>
+   <td align="center">
+    29.35 ms
+   </td>
+   <td align="center">
+    29.13 ms
+   </td>
+   <td align="center">
+    29.14 ms
+   </td>
+   <td align="center">
+    0.91 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/1_itseez-0000289.png", 90)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    11.57 ms
+   </td>
+   <td align="center">
+    11.88 ms
+   </td>
+   <td align="center">
+    11.86 ms
+   </td>
+   <td align="center">
+    11.86 ms
+   </td>
+   <td align="center">
+    0.13 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/1_itseez-0000492.png", 24)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    325.61 ms
+   </td>
+   <td align="center">
+    346.79 ms
+   </td>
+   <td align="center">
+    345.05 ms
+   </td>
+   <td align="center">
+    345.12 ms
+   </td>
+   <td align="center">
+    7.41 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/1_itseez-0000492.png", 24)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    68.48 ms
+   </td>
+   <td align="center">
+    77.46 ms
+   </td>
+   <td align="center">
+    78.24 ms
+   </td>
+   <td align="center">
+    78.44 ms
+   </td>
+   <td align="center">
+    5.70 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/1_itseez-0000492.png", 30)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    208.60 ms
+   </td>
+   <td align="center">
+    227.62 ms
+   </td>
+   <td align="center">
+    225.83 ms
+   </td>
+   <td align="center">
+    225.91 ms
+   </td>
+   <td align="center">
+    6.23 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/1_itseez-0000492.png", 30)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    62.91 ms
+   </td>
+   <td align="center">
+    66.44 ms
+   </td>
+   <td align="center">
+    66.03 ms
+   </td>
+   <td align="center">
+    66.05 ms
+   </td>
+   <td align="center">
+    1.96 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/1_itseez-0000492.png", 40)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    147.15 ms
+   </td>
+   <td align="center">
+    153.78 ms
+   </td>
+   <td align="center">
+    153.37 ms
+   </td>
+   <td align="center">
+    153.38 ms
+   </td>
+   <td align="center">
+    2.30 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/1_itseez-0000492.png", 40)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    30.65 ms
+   </td>
+   <td align="center">
+    40.85 ms
+   </td>
+   <td align="center">
+    40.34 ms
+   </td>
+   <td align="center">
+    40.63 ms
+   </td>
+   <td align="center">
+    4.79 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/1_itseez-0000492.png", 50)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    115.54 ms
+   </td>
+   <td align="center">
+    123.10 ms
+   </td>
+   <td align="center">
+    122.46 ms
+   </td>
+   <td align="center">
+    122.49 ms
+   </td>
+   <td align="center">
+    2.50 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/1_itseez-0000492.png", 50)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    26.89 ms
+   </td>
+   <td align="center">
+    37.04 ms
+   </td>
+   <td align="center">
+    36.92 ms
+   </td>
+   <td align="center">
+    37.17 ms
+   </td>
+   <td align="center">
+    4.31 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/1_itseez-0000492.png", 60)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    73.05 ms
+   </td>
+   <td align="center">
+    75.83 ms
+   </td>
+   <td align="center">
+    75.75 ms
+   </td>
+   <td align="center">
+    75.75 ms
+   </td>
+   <td align="center">
+    1.08 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/1_itseez-0000492.png", 60)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    17.81 ms
+   </td>
+   <td align="center">
+    28.09 ms
+   </td>
+   <td align="center">
+    26.93 ms
+   </td>
+   <td align="center">
+    27.18 ms
+   </td>
+   <td align="center">
+    3.52 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/1_itseez-0000492.png", 70)
+   </td>
+   <td align="center">
+    30
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    41.00 ms
+   </td>
+   <td align="center">
+    48.45 ms
+   </td>
+   <td align="center">
+    48.10 ms
+   </td>
+   <td align="center">
+    48.12 ms
+   </td>
+   <td align="center">
+    1.43 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/1_itseez-0000492.png", 70)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    13.98 ms
+   </td>
+   <td align="center">
+    20.17 ms
+   </td>
+   <td align="center">
+    19.51 ms
+   </td>
+   <td align="center">
+    19.60 ms
+   </td>
+   <td align="center">
+    1.73 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/1_itseez-0000492.png", 80)
+   </td>
+   <td align="center">
+    45
+   </td>
+   <td align="center">
+    3
+   </td>
+   <td align="center">
+    30.98 ms
+   </td>
+   <td align="center">
+    37.53 ms
+   </td>
+   <td align="center">
+    37.45 ms
+   </td>
+   <td align="center">
+    37.47 ms
+   </td>
+   <td align="center">
+    1.11 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/1_itseez-0000492.png", 80)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    10.52 ms
+   </td>
+   <td align="center">
+    15.56 ms
+   </td>
+   <td align="center">
+    15.28 ms
+   </td>
+   <td align="center">
+    15.32 ms
+   </td>
+   <td align="center">
+    0.99 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/1_itseez-0000492.png", 90)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    24.98 ms
+   </td>
+   <td align="center">
+    30.94 ms
+   </td>
+   <td align="center">
+    30.79 ms
+   </td>
+   <td align="center">
+    30.80 ms
+   </td>
+   <td align="center">
+    0.93 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/1_itseez-0000492.png", 90)
+   </td>
+   <td align="center">
+    56
+   </td>
+   <td align="center">
+    4
+   </td>
+   <td align="center">
+    12.08 ms
+   </td>
+   <td align="center">
+    13.32 ms
+   </td>
+   <td align="center">
+    13.48 ms
+   </td>
+   <td align="center">
+    13.48 ms
+   </td>
+   <td align="center">
+    0.40 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/1_itseez-0000573.png", 24)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    303.70 ms
+   </td>
+   <td align="center">
+    323.46 ms
+   </td>
+   <td align="center">
+    321.87 ms
+   </td>
+   <td align="center">
+    321.93 ms
+   </td>
+   <td align="center">
+    6.65 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/1_itseez-0000573.png", 24)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    60.66 ms
+   </td>
+   <td align="center">
+    75.54 ms
+   </td>
+   <td align="center">
+    75.77 ms
+   </td>
+   <td align="center">
+    75.96 ms
+   </td>
+   <td align="center">
+    5.41 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/1_itseez-0000573.png", 30)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    196.11 ms
+   </td>
+   <td align="center">
+    215.01 ms
+   </td>
+   <td align="center">
+    213.16 ms
+   </td>
+   <td align="center">
+    213.25 ms
+   </td>
+   <td align="center">
+    6.27 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/1_itseez-0000573.png", 30)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    46.97 ms
+   </td>
+   <td align="center">
+    63.27 ms
+   </td>
+   <td align="center">
+    62.70 ms
+   </td>
+   <td align="center">
+    62.93 ms
+   </td>
+   <td align="center">
+    5.30 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/1_itseez-0000573.png", 40)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    131.83 ms
+   </td>
+   <td align="center">
+    143.38 ms
+   </td>
+   <td align="center">
+    142.25 ms
+   </td>
+   <td align="center">
+    142.30 ms
+   </td>
+   <td align="center">
+    3.73 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/1_itseez-0000573.png", 40)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    29.37 ms
+   </td>
+   <td align="center">
+    37.96 ms
+   </td>
+   <td align="center">
+    38.62 ms
+   </td>
+   <td align="center">
+    38.86 ms
+   </td>
+   <td align="center">
+    4.26 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/1_itseez-0000573.png", 50)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    107.33 ms
+   </td>
+   <td align="center">
+    114.89 ms
+   </td>
+   <td align="center">
+    114.09 ms
+   </td>
+   <td align="center">
+    114.11 ms
+   </td>
+   <td align="center">
+    2.42 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/1_itseez-0000573.png", 50)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    25.62 ms
+   </td>
+   <td align="center">
+    34.34 ms
+   </td>
+   <td align="center">
+    34.49 ms
+   </td>
+   <td align="center">
+    34.67 ms
+   </td>
+   <td align="center">
+    3.54 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/1_itseez-0000573.png", 60)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    68.31 ms
+   </td>
+   <td align="center">
+    71.71 ms
+   </td>
+   <td align="center">
+    71.33 ms
+   </td>
+   <td align="center">
+    71.34 ms
+   </td>
+   <td align="center">
+    1.10 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/1_itseez-0000573.png", 60)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    16.47 ms
+   </td>
+   <td align="center">
+    24.43 ms
+   </td>
+   <td align="center">
+    23.41 ms
+   </td>
+   <td align="center">
+    23.60 ms
+   </td>
+   <td align="center">
+    2.90 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/1_itseez-0000573.png", 70)
+   </td>
+   <td align="center">
+    32
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    39.60 ms
+   </td>
+   <td align="center">
+    46.53 ms
+   </td>
+   <td align="center">
+    46.15 ms
+   </td>
+   <td align="center">
+    46.18 ms
+   </td>
+   <td align="center">
+    1.38 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/1_itseez-0000573.png", 70)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    13.54 ms
+   </td>
+   <td align="center">
+    16.22 ms
+   </td>
+   <td align="center">
+    16.80 ms
+   </td>
+   <td align="center">
+    16.86 ms
+   </td>
+   <td align="center">
+    1.45 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/1_itseez-0000573.png", 80)
+   </td>
+   <td align="center">
+    89
+   </td>
+   <td align="center">
+    7
+   </td>
+   <td align="center">
+    30.19 ms
+   </td>
+   <td align="center">
+    36.63 ms
+   </td>
+   <td align="center">
+    36.47 ms
+   </td>
+   <td align="center">
+    36.48 ms
+   </td>
+   <td align="center">
+    1.09 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/1_itseez-0000573.png", 80)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    9.43 ms
+   </td>
+   <td align="center">
+    12.53 ms
+   </td>
+   <td align="center">
+    12.52 ms
+   </td>
+   <td align="center">
+    12.56 ms
+   </td>
+   <td align="center">
+    1.01 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/1_itseez-0000573.png", 90)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    23.96 ms
+   </td>
+   <td align="center">
+    29.83 ms
+   </td>
+   <td align="center">
+    29.67 ms
+   </td>
+   <td align="center">
+    29.69 ms
+   </td>
+   <td align="center">
+    0.93 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/1_itseez-0000573.png", 90)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    7.55 ms
+   </td>
+   <td align="center">
+    10.66 ms
+   </td>
+   <td align="center">
+    11.08 ms
+   </td>
+   <td align="center">
+    11.12 ms
+   </td>
+   <td align="center">
+    0.91 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/lena.png", 24)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    310.29 ms
+   </td>
+   <td align="center">
+    316.29 ms
+   </td>
+   <td align="center">
+    316.73 ms
+   </td>
+   <td align="center">
+    316.75 ms
+   </td>
+   <td align="center">
+    4.07 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/lena.png", 24)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    57.57 ms
+   </td>
+   <td align="center">
+    73.44 ms
+   </td>
+   <td align="center">
+    73.14 ms
+   </td>
+   <td align="center">
+    73.38 ms
+   </td>
+   <td align="center">
+    5.88 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/lena.png", 30)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    187.71 ms
+   </td>
+   <td align="center">
+    202.96 ms
+   </td>
+   <td align="center">
+    201.65 ms
+   </td>
+   <td align="center">
+    201.71 ms
+   </td>
+   <td align="center">
+    5.29 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/lena.png", 30)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    42.67 ms
+   </td>
+   <td align="center">
+    53.99 ms
+   </td>
+   <td align="center">
+    53.93 ms
+   </td>
+   <td align="center">
+    54.17 ms
+   </td>
+   <td align="center">
+    5.08 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/lena.png", 40)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    137.05 ms
+   </td>
+   <td align="center">
+    137.99 ms
+   </td>
+   <td align="center">
+    137.86 ms
+   </td>
+   <td align="center">
+    137.86 ms
+   </td>
+   <td align="center">
+    0.51 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/lena.png", 40)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    29.76 ms
+   </td>
+   <td align="center">
+    40.85 ms
+   </td>
+   <td align="center">
+    40.15 ms
+   </td>
+   <td align="center">
+    40.42 ms
+   </td>
+   <td align="center">
+    4.65 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/lena.png", 50)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    110.67 ms
+   </td>
+   <td align="center">
+    111.77 ms
+   </td>
+   <td align="center">
+    111.80 ms
+   </td>
+   <td align="center">
+    111.80 ms
+   </td>
+   <td align="center">
+    0.68 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/lena.png", 50)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    24.84 ms
+   </td>
+   <td align="center">
+    38.37 ms
+   </td>
+   <td align="center">
+    37.05 ms
+   </td>
+   <td align="center">
+    37.40 ms
+   </td>
+   <td align="center">
+    4.92 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/lena.png", 60)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    71.46 ms
+   </td>
+   <td align="center">
+    71.97 ms
+   </td>
+   <td align="center">
+    72.03 ms
+   </td>
+   <td align="center">
+    72.03 ms
+   </td>
+   <td align="center">
+    0.53 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/lena.png", 60)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    20.02 ms
+   </td>
+   <td align="center">
+    27.60 ms
+   </td>
+   <td align="center">
+    27.22 ms
+   </td>
+   <td align="center">
+    27.34 ms
+   </td>
+   <td align="center">
+    2.49 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/lena.png", 70)
+   </td>
+   <td align="center">
+    32
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    38.16 ms
+   </td>
+   <td align="center">
+    44.80 ms
+   </td>
+   <td align="center">
+    44.63 ms
+   </td>
+   <td align="center">
+    44.65 ms
+   </td>
+   <td align="center">
+    1.32 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/lena.png", 70)
+   </td>
+   <td align="center">
+    63
+   </td>
+   <td align="center">
+    5
+   </td>
+   <td align="center">
+    17.97 ms
+   </td>
+   <td align="center">
+    18.34 ms
+   </td>
+   <td align="center">
+    18.59 ms
+   </td>
+   <td align="center">
+    18.60 ms
+   </td>
+   <td align="center">
+    0.56 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/lena.png", 80)
+   </td>
+   <td align="center">
+    56
+   </td>
+   <td align="center">
+    4
+   </td>
+   <td align="center">
+    30.12 ms
+   </td>
+   <td align="center">
+    35.84 ms
+   </td>
+   <td align="center">
+    35.64 ms
+   </td>
+   <td align="center">
+    35.66 ms
+   </td>
+   <td align="center">
+    1.06 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/lena.png", 80)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    8.82 ms
+   </td>
+   <td align="center">
+    8.90 ms
+   </td>
+   <td align="center">
+    8.92 ms
+   </td>
+   <td align="center">
+    8.92 ms
+   </td>
+   <td align="center">
+    0.07 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/lena.png", 90)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    29.25 ms
+   </td>
+   <td align="center">
+    29.46 ms
+   </td>
+   <td align="center">
+    29.53 ms
+   </td>
+   <td align="center">
+    29.53 ms
+   </td>
+   <td align="center">
+    0.29 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    CascadeClassifierLBPFrontalFace::ImageName_MinSize::("cv/shared/lena.png", 90)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    7.03 ms
+   </td>
+   <td align="center">
+    12.49 ms
+   </td>
+   <td align="center">
+    10.32 ms
+   </td>
+   <td align="center">
+    10.95 ms
+   </td>
+   <td align="center">
+    3.64 ms
+   </td>
+  </tr>
+ </tbody>
+</table>
+</div>
+</body>
+</html>

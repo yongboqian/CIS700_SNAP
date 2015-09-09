@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites tests="10" failures="2" disabled="0" errors="0" timestamp="2015-09-09T18:01:21" time="83.241" cv_version="3.0.0" cv_vcs_version="3.0.0" cv_build_type="release" cv_parallel_framework="openmp" cv_cpu_features="" cv_module_name="xfeatures2d" cv_implementation="plain" cv_num_threads="-1" cv_ocl_platform_0_device_0="(Platform=ARM Platform)(Type=dGPU)(Name=Mali-T628)(Version=OpenCL 1.1 )" cv_ocl_platform_0_device_1="(Platform=ARM Platform)(Type=dGPU)(Name=Mali-T628)(Version=OpenCL 1.1 )" cv_ocl_current_deviceType="dGPU" cv_ocl_current_deviceName="Mali-T628" cv_ocl_current_deviceVersion="OpenCL 1.1 " cv_ocl_current_maxComputeUnits="4" cv_ocl_current_maxWorkGroupSize="256" cv_ocl_current_localMemSize="32768" cv_ocl_current_maxMemAllocSize="522931200" cv_ocl_current_haveDoubleSupport="1" cv_ocl_current_hostUnifiedMemory="0" cv_ocl_current_AmdBlas="0" cv_ocl_current_AmdFft="0" cv_ocl_current_preferredVectorWidthChar="16" cv_ocl_current_preferredVectorWidthShort="8" cv_ocl_current_preferredVectorWidthInt="4" cv_ocl_current_preferredVectorWidthLong="2" cv_ocl_current_preferredVectorWidthFloat="4" cv_ocl_current_preferredVectorWidthDouble="2" name="AllTests">
+  <testsuite name="daisy_extract" tests="2" failures="2" disabled="0" errors="0" time="1.756">
+    <testcase name="extract/0" value_param="&quot;cv/detectors_descriptors_evaluation/images_datasets/leuven/img1.png&quot;" status="run" time="0.943" classname="daisy_extract">
+      <failure message="/home/odroid/codes/opencv/modules/ts/src/ts_perf.cpp:1702&#x0A;Failed&#x0A;Expected: PerfTestBody() doesn&apos;t throw an exception.&#x0A;  Actual: it throws cv::Exception:&#x0A;  /home/odroid/codes/opencv/modules/core/src/matrix.cpp:2294: error: (-215) d == 2 &amp;&amp; (sizes[0] == 1 || sizes[1] == 1 || sizes[0]*sizes[1] == 0) in function create&#x0A;" type=""><![CDATA[/home/odroid/codes/opencv/modules/ts/src/ts_perf.cpp:1702
+Failed
+Expected: PerfTestBody() doesn't throw an exception.
+  Actual: it throws cv::Exception:
+  /home/odroid/codes/opencv/modules/core/src/matrix.cpp:2294: error: (-215) d == 2 && (sizes[0] == 1 || sizes[1] == 1 || sizes[0]*sizes[1] == 0) in function create
+]]></failure>
+    </testcase>
+    <testcase name="extract/1" value_param="&quot;stitching/a3.png&quot;" status="run" time="0.813" classname="daisy_extract">
+      <failure message="/home/odroid/codes/opencv/modules/ts/src/ts_perf.cpp:1702&#x0A;Failed&#x0A;Expected: PerfTestBody() doesn&apos;t throw an exception.&#x0A;  Actual: it throws cv::Exception:&#x0A;  /home/odroid/codes/opencv/modules/core/src/matrix.cpp:2294: error: (-215) d == 2 &amp;&amp; (sizes[0] == 1 || sizes[1] == 1 || sizes[0]*sizes[1] == 0) in function create&#x0A;" type=""><![CDATA[/home/odroid/codes/opencv/modules/ts/src/ts_perf.cpp:1702
+Failed
+Expected: PerfTestBody() doesn't throw an exception.
+  Actual: it throws cv::Exception:
+  /home/odroid/codes/opencv/modules/core/src/matrix.cpp:2294: error: (-215) d == 2 && (sizes[0] == 1 || sizes[1] == 1 || sizes[0]*sizes[1] == 0) in function create
+]]></failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="latch_extract" tests="2" failures="0" disabled="0" errors="0" time="13.148">
+    <testcase name="extract/0" value_param="&quot;cv/detectors_descriptors_evaluation/images_datasets/leuven/img1.png&quot;" status="run" time="8.651" classname="latch_extract" bytesIn="540000" bytesOut="0" term="-1" samples="10" outliers="0" frequency="1000000000" min="838290119" median="840088958" gmean="840991804" gstddev="0.004190" mean="840998464" stddev="3536644" />
+    <testcase name="extract/1" value_param="&quot;stitching/a3.png&quot;" status="run" time="4.497" classname="latch_extract" bytesIn="460800" bytesOut="0" term="-1" samples="10" outliers="0" frequency="1000000000" min="430129778" median="431575178" gmean="432179032" gstddev="0.004490" mean="432182955" stddev="1942499" />
+  </testsuite>
+  <testsuite name="surf_detect" tests="2" failures="0" disabled="0" errors="0" time="33.349">
+    <testcase name="detect/0" value_param="&quot;cv/detectors_descriptors_evaluation/images_datasets/leuven/img1.png&quot;" status="run" time="19.063" classname="surf_detect" bytesIn="540000" bytesOut="0" term="0" samples="100" outliers="8" frequency="1000000000" min="163237637" median="188504146" gmean="187559656" gstddev="0.062016" mean="187913960" stddev="11523539" />
+    <testcase name="detect/1" value_param="&quot;stitching/a3.png&quot;" status="run" time="14.286" classname="surf_detect" bytesIn="460800" bytesOut="0" term="0" samples="100" outliers="8" frequency="1000000000" min="122487103" median="139529839" gmean="140645093" gstddev="0.054632" mean="140853468" stddev="7733570" />
+  </testsuite>
+  <testsuite name="surf_extract" tests="2" failures="0" disabled="0" errors="0" time="22.481">
+    <testcase name="extract/0" value_param="&quot;cv/detectors_descriptors_evaluation/images_datasets/leuven/img1.png&quot;" status="run" time="11.397" classname="surf_extract" bytesIn="540000" bytesOut="0" term="-1" samples="25" outliers="2" frequency="1000000000" min="419510290" median="441763105" gmean="442359074" gstddev="0.029792" mean="442547199" stddev="13217835" />
+    <testcase name="extract/1" value_param="&quot;stitching/a3.png&quot;" status="run" time="11.084" classname="surf_extract" bytesIn="460800" bytesOut="0" term="-1" samples="38" outliers="3" frequency="1000000000" min="268804065" median="282727272" gmean="283401029" gstddev="0.028893" mean="283516085" stddev="8205049" />
+  </testsuite>
+  <testsuite name="surf_full" tests="2" failures="0" disabled="0" errors="0" time="12.503">
+    <testcase name="full/0" value_param="&quot;cv/detectors_descriptors_evaluation/images_datasets/leuven/img1.png&quot;" status="run" time="7.433" classname="surf_full" bytesIn="540000" bytesOut="0" term="-1" samples="13" outliers="1" frequency="1000000000" min="545773988" median="561450450" gmean="563346280" gstddev="0.023984" mean="563496070" stddev="13686395" />
+    <testcase name="full/1" value_param="&quot;stitching/a3.png&quot;" status="run" time="5.069" classname="surf_full" bytesIn="460800" bytesOut="0" term="-1" samples="13" outliers="1" frequency="1000000000" min="368414311" median="381791974" gmean="382322577" gstddev="0.023291" mean="382417730" stddev="8918926" />
+  </testsuite>
+</testsuites>
