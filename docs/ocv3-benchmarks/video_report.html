@@ -1,0 +1,9839 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<title>Report 372 tests from video_posix_xu3-no-ocl_c12243c_20150909-174120.xml, video_posix_xu3-no-ocl_c12243c_20150909-135048.xml</title>
+<style type="text/css">
+html, body {font-family: Lucida Console, Courier New, Courier;font-size: 16px;color:#3e4758;}
+.tbl{background:none repeat scroll 0 0 #FFFFFF;border-collapse:collapse;font-family:"Lucida Sans Unicode","Lucida Grande",Sans-Serif;font-size:14px;margin:20px;text-align:left;width:480px;margin-left: auto;margin-right: auto;white-space:nowrap;}
+.tbl span{display:block;white-space:nowrap;}
+.tbl thead tr:last-child th {padding-bottom:5px;}
+.tbl tbody tr:first-child td {border-top:3px solid #6678B1;}
+.tbl th{border:none;color:#003399;font-size:16px;font-weight:normal;white-space:nowrap;padding:3px 10px;}
+.tbl td{border:none;border-bottom:1px solid #CCCCCC;color:#666699;padding:6px 8px;white-space:nowrap;}
+.tbl tbody tr:hover td{color:#000099;}
+.tbl caption{font:italic 16px "Trebuchet MS",Verdana,Arial,Helvetica,sans-serif;padding:0 0 5px;text-align:right;white-space:normal;}
+.firstingroup {border-top:2px solid #6678B1;}
+</style>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+<script type="text/javascript">
+function abs(val) { return val < 0 ? -val : val }
+$(function(){
+  //generate filter rows
+  $("div.tableFormatter table.tbl").each(function(tblIdx, tbl) {
+    var head = $("thead", tbl)
+    var filters = $("<tr></tr>")
+    var hasAny = false
+    $("tr:first th", head).each(function(colIdx, col) {
+      col = $(col)
+      var cell
+      var id = "t" + tblIdx + "r" + colIdx
+      if (col.hasClass("col_name")){
+        cell = $("<th><input id='" + id + "' name='" + id + "' type='text' style='width:100%' class='filter_col_name' title='Regular expression for name filtering (&quot;resize.*640x480&quot; - resize tests on VGA resolution)'></input></th>")
+        hasAny = true
+      }
+      else if (col.hasClass("col_rel")){
+        cell = $("<th><input id='" + id + "' name='" + id + "' type='text' style='width:100%' class='filter_col_rel' title='Filter out lines with a x-factor of acceleration less than Nx'></input></th>")
+        hasAny = true
+      }
+      else if (col.hasClass("col_cr")){
+        cell = $("<th><input id='" + id + "' name='" + id + "' type='text' style='width:100%' class='filter_col_cr' title='Filter out lines with a percentage of acceleration less than N%'></input></th>")
+        hasAny = true
+      }
+      else
+        cell = $("<th></th>")
+      cell.appendTo(filters)
+    })
+
+   if (hasAny){
+     $(tbl).wrap("<form id='form_t" + tblIdx + "' method='get' action=''></form>")
+     $("<input it='test' type='submit' value='Apply Filters' style='margin-left:10px;'></input>")
+       .appendTo($("th:last", filters.appendTo(head)))
+   }
+  })
+
+  //get filter values
+  var vars = []
+  var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&')
+  for(var i = 0; i < hashes.length; ++i)
+  {
+     hash = hashes[i].split('=')
+     vars.push(decodeURIComponent(hash[0]))
+     vars[decodeURIComponent(hash[0])] = decodeURIComponent(hash[1]);
+  }
+
+  //set filter values
+  for(var i = 0; i < vars.length; ++i)
+     $("#" + vars[i]).val(vars[vars[i]])
+
+  //apply filters
+  $("div.tableFormatter table.tbl").each(function(tblIdx, tbl) {
+      filters = $("input:text", tbl)
+      var predicate = function(row) {return true;}
+      var empty = true
+      $.each($("input:text", tbl), function(i, flt) {
+         flt = $(flt)
+         var val = flt.val()
+         var pred = predicate;
+         if(val) {
+           empty = false
+           var colIdx = parseInt(flt.attr("id").slice(flt.attr("id").indexOf('r') + 1))
+           if(flt.hasClass("filter_col_name")) {
+              var re = new RegExp(val);
+              predicate = function(row) {
+                if (re.exec($(row.get(colIdx)).text()) == null)
+                  return false
+                return pred(row)
+          }
+           } else if(flt.hasClass("filter_col_rel")) {
+              var percent = parseFloat(val)
+              if (percent < 0) {
+                predicate = function(row) {
+                  var val = parseFloat($(row.get(colIdx)).text())
+                  if (!val || val >= 1 || val > 1+percent)
+                    return false
+                  return pred(row)
+            }
+              } else {
+                predicate = function(row) {
+                  var val = parseFloat($(row.get(colIdx)).text())
+                  if (!val || val < percent)
+                    return false
+                  return pred(row)
+            }
+              }
+           } else if(flt.hasClass("filter_col_cr")) {
+              var percent = parseFloat(val)
+              predicate = function(row) {
+                var val = parseFloat($(row.get(colIdx)).text())
+                if (!val || val < percent)
+                  return false
+                return pred(row)
+          }
+           }
+         }
+      });
+      if (!empty){
+         $("tbody tr", tbl).each(function (i, tbl_row) {
+            if(!predicate($("td", tbl_row)))
+               $(tbl_row).remove()
+         })
+         if($("tbody tr", tbl).length == 0) {
+           $("<tr><td colspan='"+$("thead tr:first th", tbl).length+"'>No results mathing your search criteria</td></tr>")
+             .appendTo($("tbody", tbl))
+         }
+      }
+  })
+})
+</script>
+</head>
+<body>
+<div class="tableFormatter">
+<table class="tbl">
+ <caption>video_posix_xu3-no-ocl_c12243c_20150909-174120.xml, video_posix_xu3-no-ocl_c12243c_20150909-135048.xml</caption>
+ <thead>
+  <tr>
+   <th align="center" valign="top">
+    Name of Test
+   </th>
+   <th align="center" valign="top">
+    Number of<br/>collected samples
+   </th>
+   <th align="center" valign="top">
+    Number of<br/>outliers
+   </th>
+   <th align="center" valign="top">
+    Min
+   </th>
+   <th align="center" valign="top">
+    Median
+   </th>
+   <th align="center" valign="top">
+    Geometric mean
+   </th>
+   <th align="center" valign="top">
+    Mean
+   </th>
+   <th align="center" valign="top">
+    Standard deviation
+   </th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>
+    OpticalFlowDual_TVL1::ImagePair::("cv/optflow/RubberWhale1.png", "cv/optflow/RubberWhale2.png")
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    15847.03 ms
+   </td>
+   <td align="center">
+    16438.57 ms
+   </td>
+   <td align="center">
+    16373.88 ms
+   </td>
+   <td align="center">
+    16378.70 ms
+   </td>
+   <td align="center">
+    418.66 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowDual_TVL1::ImagePair::("cv/optflow/RubberWhale1.png", "cv/optflow/RubberWhale2.png")
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    15758.39 ms
+   </td>
+   <td align="center">
+    16317.14 ms
+   </td>
+   <td align="center">
+    16350.69 ms
+   </td>
+   <td align="center">
+    16355.52 ms
+   </td>
+   <td align="center">
+    419.48 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    FarnebackOpticalFlow::OCL_FarnebackOpticalFlowFixture::((5, 1.1), 0, false)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    698.33 ms
+   </td>
+   <td align="center">
+    716.93 ms
+   </td>
+   <td align="center">
+    716.48 ms
+   </td>
+   <td align="center">
+    716.59 ms
+   </td>
+   <td align="center">
+    12.93 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    FarnebackOpticalFlow::OCL_FarnebackOpticalFlowFixture::((5, 1.1), 0, false)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    672.59 ms
+   </td>
+   <td align="center">
+    678.06 ms
+   </td>
+   <td align="center">
+    679.83 ms
+   </td>
+   <td align="center">
+    679.86 ms
+   </td>
+   <td align="center">
+    7.46 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    FarnebackOpticalFlow::OCL_FarnebackOpticalFlowFixture::((5, 1.1), 0, true)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    702.30 ms
+   </td>
+   <td align="center">
+    718.98 ms
+   </td>
+   <td align="center">
+    719.33 ms
+   </td>
+   <td align="center">
+    719.41 ms
+   </td>
+   <td align="center">
+    11.84 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    FarnebackOpticalFlow::OCL_FarnebackOpticalFlowFixture::((5, 1.1), 0, true)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    666.72 ms
+   </td>
+   <td align="center">
+    680.66 ms
+   </td>
+   <td align="center">
+    680.94 ms
+   </td>
+   <td align="center">
+    680.99 ms
+   </td>
+   <td align="center">
+    8.80 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    FarnebackOpticalFlow::OCL_FarnebackOpticalFlowFixture::((5, 1.1), OPTFLOW_FARNEBACK_GAUSSIAN, false)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    1257.67 ms
+   </td>
+   <td align="center">
+    1264.22 ms
+   </td>
+   <td align="center">
+    1267.87 ms
+   </td>
+   <td align="center">
+    1267.90 ms
+   </td>
+   <td align="center">
+    9.21 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    FarnebackOpticalFlow::OCL_FarnebackOpticalFlowFixture::((5, 1.1), OPTFLOW_FARNEBACK_GAUSSIAN, false)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    1224.92 ms
+   </td>
+   <td align="center">
+    1235.64 ms
+   </td>
+   <td align="center">
+    1239.77 ms
+   </td>
+   <td align="center">
+    1239.88 ms
+   </td>
+   <td align="center">
+    17.99 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    FarnebackOpticalFlow::OCL_FarnebackOpticalFlowFixture::((5, 1.1), OPTFLOW_FARNEBACK_GAUSSIAN, true)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    1265.59 ms
+   </td>
+   <td align="center">
+    1273.35 ms
+   </td>
+   <td align="center">
+    1275.29 ms
+   </td>
+   <td align="center">
+    1275.32 ms
+   </td>
+   <td align="center">
+    9.05 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    FarnebackOpticalFlow::OCL_FarnebackOpticalFlowFixture::((5, 1.1), OPTFLOW_FARNEBACK_GAUSSIAN, true)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    1230.08 ms
+   </td>
+   <td align="center">
+    1235.68 ms
+   </td>
+   <td align="center">
+    1240.23 ms
+   </td>
+   <td align="center">
+    1240.30 ms
+   </td>
+   <td align="center">
+    13.58 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    FarnebackOpticalFlow::OCL_FarnebackOpticalFlowFixture::((7, 1.5), 0, false)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    724.57 ms
+   </td>
+   <td align="center">
+    740.51 ms
+   </td>
+   <td align="center">
+    742.24 ms
+   </td>
+   <td align="center">
+    742.34 ms
+   </td>
+   <td align="center">
+    13.23 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    FarnebackOpticalFlow::OCL_FarnebackOpticalFlowFixture::((7, 1.5), 0, false)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    697.56 ms
+   </td>
+   <td align="center">
+    706.03 ms
+   </td>
+   <td align="center">
+    708.09 ms
+   </td>
+   <td align="center">
+    708.14 ms
+   </td>
+   <td align="center">
+    8.57 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    FarnebackOpticalFlow::OCL_FarnebackOpticalFlowFixture::((7, 1.5), 0, true)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    736.13 ms
+   </td>
+   <td align="center">
+    744.08 ms
+   </td>
+   <td align="center">
+    744.72 ms
+   </td>
+   <td align="center">
+    744.75 ms
+   </td>
+   <td align="center">
+    7.79 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    FarnebackOpticalFlow::OCL_FarnebackOpticalFlowFixture::((7, 1.5), 0, true)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    697.15 ms
+   </td>
+   <td align="center">
+    704.87 ms
+   </td>
+   <td align="center">
+    707.16 ms
+   </td>
+   <td align="center">
+    707.20 ms
+   </td>
+   <td align="center">
+    8.07 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    FarnebackOpticalFlow::OCL_FarnebackOpticalFlowFixture::((7, 1.5), OPTFLOW_FARNEBACK_GAUSSIAN, false)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    1282.23 ms
+   </td>
+   <td align="center">
+    1295.64 ms
+   </td>
+   <td align="center">
+    1298.67 ms
+   </td>
+   <td align="center">
+    1298.77 ms
+   </td>
+   <td align="center">
+    17.25 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    FarnebackOpticalFlow::OCL_FarnebackOpticalFlowFixture::((7, 1.5), OPTFLOW_FARNEBACK_GAUSSIAN, false)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    1251.45 ms
+   </td>
+   <td align="center">
+    1262.06 ms
+   </td>
+   <td align="center">
+    1262.23 ms
+   </td>
+   <td align="center">
+    1262.25 ms
+   </td>
+   <td align="center">
+    7.44 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    FarnebackOpticalFlow::OCL_FarnebackOpticalFlowFixture::((7, 1.5), OPTFLOW_FARNEBACK_GAUSSIAN, true)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    1286.70 ms
+   </td>
+   <td align="center">
+    1292.59 ms
+   </td>
+   <td align="center">
+    1298.49 ms
+   </td>
+   <td align="center">
+    1298.56 ms
+   </td>
+   <td align="center">
+    13.57 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    FarnebackOpticalFlow::OCL_FarnebackOpticalFlowFixture::((7, 1.5), OPTFLOW_FARNEBACK_GAUSSIAN, true)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    1257.48 ms
+   </td>
+   <td align="center">
+    1263.35 ms
+   </td>
+   <td align="center">
+    1268.44 ms
+   </td>
+   <td align="center">
+    1268.51 ms
+   </td>
+   <td align="center">
+    13.80 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Mog2::OCL_MOG2_Apply::("gpu/video/1920x1080.avi", 1)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    159.30 ms
+   </td>
+   <td align="center">
+    159.60 ms
+   </td>
+   <td align="center">
+    159.63 ms
+   </td>
+   <td align="center">
+    159.63 ms
+   </td>
+   <td align="center">
+    0.24 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Mog2::OCL_MOG2_Apply::("gpu/video/1920x1080.avi", 1)
+   </td>
+   <td align="center">
+    88
+   </td>
+   <td align="center">
+    7
+   </td>
+   <td align="center">
+    401.60 ms
+   </td>
+   <td align="center">
+    424.72 ms
+   </td>
+   <td align="center">
+    425.43 ms
+   </td>
+   <td align="center">
+    425.62 ms
+   </td>
+   <td align="center">
+    12.56 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Mog2::OCL_MOG2_Apply::("gpu/video/1920x1080.avi", 3)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    258.02 ms
+   </td>
+   <td align="center">
+    258.69 ms
+   </td>
+   <td align="center">
+    259.01 ms
+   </td>
+   <td align="center">
+    259.01 ms
+   </td>
+   <td align="center">
+    0.89 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Mog2::OCL_MOG2_Apply::("gpu/video/1920x1080.avi", 3)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    668.60 ms
+   </td>
+   <td align="center">
+    681.33 ms
+   </td>
+   <td align="center">
+    685.51 ms
+   </td>
+   <td align="center">
+    685.73 ms
+   </td>
+   <td align="center">
+    18.61 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Mog2::OCL_MOG2_Apply::("gpu/video/768x576.avi", 1)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    36.22 ms
+   </td>
+   <td align="center">
+    37.84 ms
+   </td>
+   <td align="center">
+    38.04 ms
+   </td>
+   <td align="center">
+    38.04 ms
+   </td>
+   <td align="center">
+    0.88 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Mog2::OCL_MOG2_Apply::("gpu/video/768x576.avi", 1)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    90.41 ms
+   </td>
+   <td align="center">
+    102.19 ms
+   </td>
+   <td align="center">
+    103.08 ms
+   </td>
+   <td align="center">
+    103.40 ms
+   </td>
+   <td align="center">
+    8.17 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Mog2::OCL_MOG2_Apply::("gpu/video/768x576.avi", 3)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    60.34 ms
+   </td>
+   <td align="center">
+    61.58 ms
+   </td>
+   <td align="center">
+    61.73 ms
+   </td>
+   <td align="center">
+    61.74 ms
+   </td>
+   <td align="center">
+    0.76 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Mog2::OCL_MOG2_Apply::("gpu/video/768x576.avi", 3)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    143.82 ms
+   </td>
+   <td align="center">
+    155.10 ms
+   </td>
+   <td align="center">
+    157.11 ms
+   </td>
+   <td align="center">
+    157.38 ms
+   </td>
+   <td align="center">
+    9.42 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Mog2::OCL_MOG2_GetBackgroundImage::("gpu/video/1920x1080.avi", 3)
+   </td>
+   <td align="center" style="color:red;">
+    failed
+   </td>
+   <td align="center" style="color:red;">
+    failed
+   </td>
+   <td align="center" style="color:red;">
+    failed
+   </td>
+   <td align="center" style="color:red;">
+    failed
+   </td>
+   <td align="center" style="color:red;">
+    failed
+   </td>
+   <td align="center" style="color:red;">
+    failed
+   </td>
+   <td align="center" style="color:red;">
+    failed
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Mog2::OCL_MOG2_GetBackgroundImage::("gpu/video/1920x1080.avi", 3)
+   </td>
+   <td align="center" style="color:red;">
+    failed
+   </td>
+   <td align="center" style="color:red;">
+    failed
+   </td>
+   <td align="center" style="color:red;">
+    failed
+   </td>
+   <td align="center" style="color:red;">
+    failed
+   </td>
+   <td align="center" style="color:red;">
+    failed
+   </td>
+   <td align="center" style="color:red;">
+    failed
+   </td>
+   <td align="center" style="color:red;">
+    failed
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Mog2::OCL_MOG2_GetBackgroundImage::("gpu/video/768x576.avi", 3)
+   </td>
+   <td align="center" style="color:red;">
+    failed
+   </td>
+   <td align="center" style="color:red;">
+    failed
+   </td>
+   <td align="center" style="color:red;">
+    failed
+   </td>
+   <td align="center" style="color:red;">
+    failed
+   </td>
+   <td align="center" style="color:red;">
+    failed
+   </td>
+   <td align="center" style="color:red;">
+    failed
+   </td>
+   <td align="center" style="color:red;">
+    failed
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Mog2::OCL_MOG2_GetBackgroundImage::("gpu/video/768x576.avi", 3)
+   </td>
+   <td align="center" style="color:red;">
+    failed
+   </td>
+   <td align="center" style="color:red;">
+    failed
+   </td>
+   <td align="center" style="color:red;">
+    failed
+   </td>
+   <td align="center" style="color:red;">
+    failed
+   </td>
+   <td align="center" style="color:red;">
+    failed
+   </td>
+   <td align="center" style="color:red;">
+    failed
+   </td>
+   <td align="center" style="color:red;">
+    failed
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowDualTVL1::OCL_OpticalFlowDualTVL1Fixture::((-1, 0.3), false)
+   </td>
+   <td align="center">
+    20
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    10678.23 ms
+   </td>
+   <td align="center">
+    11649.23 ms
+   </td>
+   <td align="center">
+    11549.58 ms
+   </td>
+   <td align="center">
+    11554.54 ms
+   </td>
+   <td align="center">
+    343.48 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowDualTVL1::OCL_OpticalFlowDualTVL1Fixture::((-1, 0.3), false)
+   </td>
+   <td align="center">
+    51
+   </td>
+   <td align="center">
+    4
+   </td>
+   <td align="center">
+    10126.22 ms
+   </td>
+   <td align="center">
+    11803.32 ms
+   </td>
+   <td align="center">
+    11769.48 ms
+   </td>
+   <td align="center">
+    11774.90 ms
+   </td>
+   <td align="center">
+    351.79 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowDualTVL1::OCL_OpticalFlowDualTVL1Fixture::((-1, 0.3), true)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    11730.86 ms
+   </td>
+   <td align="center">
+    11944.73 ms
+   </td>
+   <td align="center">
+    11946.14 ms
+   </td>
+   <td align="center">
+    11946.91 ms
+   </td>
+   <td align="center">
+    142.54 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowDualTVL1::OCL_OpticalFlowDualTVL1Fixture::((-1, 0.3), true)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    11735.73 ms
+   </td>
+   <td align="center">
+    12052.43 ms
+   </td>
+   <td align="center">
+    12132.23 ms
+   </td>
+   <td align="center">
+    12136.01 ms
+   </td>
+   <td align="center">
+    322.38 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowDualTVL1::OCL_OpticalFlowDualTVL1Fixture::((3, 0.5), false)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    11489.37 ms
+   </td>
+   <td align="center">
+    11804.22 ms
+   </td>
+   <td align="center">
+    11806.52 ms
+   </td>
+   <td align="center">
+    11808.66 ms
+   </td>
+   <td align="center">
+    237.08 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowDualTVL1::OCL_OpticalFlowDualTVL1Fixture::((3, 0.5), false)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    11593.80 ms
+   </td>
+   <td align="center">
+    11909.91 ms
+   </td>
+   <td align="center">
+    11915.79 ms
+   </td>
+   <td align="center">
+    11917.64 ms
+   </td>
+   <td align="center">
+    222.36 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowDualTVL1::OCL_OpticalFlowDualTVL1Fixture::((3, 0.5), true)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    11542.49 ms
+   </td>
+   <td align="center">
+    11721.44 ms
+   </td>
+   <td align="center">
+    11730.72 ms
+   </td>
+   <td align="center">
+    11731.71 ms
+   </td>
+   <td align="center">
+    161.55 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowDualTVL1::OCL_OpticalFlowDualTVL1Fixture::((3, 0.5), true)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    11513.94 ms
+   </td>
+   <td align="center">
+    11812.96 ms
+   </td>
+   <td align="center">
+    11831.60 ms
+   </td>
+   <td align="center">
+    11833.72 ms
+   </td>
+   <td align="center">
+    236.63 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    PyrLKOpticalFlow::OCL_PyrLKOpticalFlowFixture::(1000)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    190.00 ms
+   </td>
+   <td align="center">
+    191.51 ms
+   </td>
+   <td align="center">
+    191.38 ms
+   </td>
+   <td align="center">
+    191.39 ms
+   </td>
+   <td align="center">
+    0.67 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    PyrLKOpticalFlow::OCL_PyrLKOpticalFlowFixture::(1000)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    29.57 ms
+   </td>
+   <td align="center">
+    43.13 ms
+   </td>
+   <td align="center">
+    42.59 ms
+   </td>
+   <td align="center">
+    42.75 ms
+   </td>
+   <td align="center">
+    3.59 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    PyrLKOpticalFlow::OCL_PyrLKOpticalFlowFixture::(2000)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    320.87 ms
+   </td>
+   <td align="center">
+    334.85 ms
+   </td>
+   <td align="center">
+    334.33 ms
+   </td>
+   <td align="center">
+    334.36 ms
+   </td>
+   <td align="center">
+    5.04 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    PyrLKOpticalFlow::OCL_PyrLKOpticalFlowFixture::(2000)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    61.14 ms
+   </td>
+   <td align="center">
+    79.61 ms
+   </td>
+   <td align="center">
+    79.31 ms
+   </td>
+   <td align="center">
+    79.51 ms
+   </td>
+   <td align="center">
+    5.62 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    PyrLKOpticalFlow::OCL_PyrLKOpticalFlowFixture::(4000)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    584.14 ms
+   </td>
+   <td align="center">
+    600.61 ms
+   </td>
+   <td align="center">
+    601.19 ms
+   </td>
+   <td align="center">
+    601.23 ms
+   </td>
+   <td align="center">
+    7.31 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    PyrLKOpticalFlow::OCL_PyrLKOpticalFlowFixture::(4000)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    128.56 ms
+   </td>
+   <td align="center">
+    144.26 ms
+   </td>
+   <td align="center">
+    144.43 ms
+   </td>
+   <td align="center">
+    144.58 ms
+   </td>
+   <td align="center">
+    6.59 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 1, 1, (15, 15), 11, false)
+   </td>
+   <td align="center">
+    56
+   </td>
+   <td align="center">
+    4
+   </td>
+   <td align="center">
+    25.23 ms
+   </td>
+   <td align="center">
+    25.51 ms
+   </td>
+   <td align="center">
+    25.86 ms
+   </td>
+   <td align="center">
+    25.87 ms
+   </td>
+   <td align="center">
+    0.77 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 1, 1, (15, 15), 11, false)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    25.48 ms
+   </td>
+   <td align="center">
+    25.58 ms
+   </td>
+   <td align="center">
+    25.71 ms
+   </td>
+   <td align="center">
+    25.71 ms
+   </td>
+   <td align="center">
+    0.36 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 1, 1, (15, 15), 11, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    1.26 ms
+   </td>
+   <td align="center">
+    1.31 ms
+   </td>
+   <td align="center">
+    1.78 ms
+   </td>
+   <td align="center">
+    2.08 ms
+   </td>
+   <td align="center">
+    1.34 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 1, 1, (15, 15), 11, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    1.24 ms
+   </td>
+   <td align="center">
+    1.28 ms
+   </td>
+   <td align="center">
+    1.31 ms
+   </td>
+   <td align="center">
+    1.31 ms
+   </td>
+   <td align="center">
+    0.16 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 1, 1, (15, 15), 7, false)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    23.61 ms
+   </td>
+   <td align="center">
+    23.77 ms
+   </td>
+   <td align="center">
+    23.98 ms
+   </td>
+   <td align="center">
+    23.99 ms
+   </td>
+   <td align="center">
+    0.55 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 1, 1, (15, 15), 7, false)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    23.66 ms
+   </td>
+   <td align="center">
+    23.84 ms
+   </td>
+   <td align="center">
+    23.87 ms
+   </td>
+   <td align="center">
+    23.87 ms
+   </td>
+   <td align="center">
+    0.14 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 1, 1, (15, 15), 7, true)
+   </td>
+   <td align="center">
+    50
+   </td>
+   <td align="center">
+    4
+   </td>
+   <td align="center">
+    0.61 ms
+   </td>
+   <td align="center">
+    0.63 ms
+   </td>
+   <td align="center">
+    0.64 ms
+   </td>
+   <td align="center">
+    0.64 ms
+   </td>
+   <td align="center">
+    0.02 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 1, 1, (15, 15), 7, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    0.62 ms
+   </td>
+   <td align="center">
+    0.65 ms
+   </td>
+   <td align="center">
+    0.82 ms
+   </td>
+   <td align="center">
+    1.04 ms
+   </td>
+   <td align="center">
+    1.00 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 1, 1, (9, 9), 11, false)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    23.31 ms
+   </td>
+   <td align="center">
+    23.49 ms
+   </td>
+   <td align="center">
+    23.79 ms
+   </td>
+   <td align="center">
+    23.80 ms
+   </td>
+   <td align="center">
+    0.63 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 1, 1, (9, 9), 11, false)
+   </td>
+   <td align="center">
+    27
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    23.45 ms
+   </td>
+   <td align="center">
+    23.56 ms
+   </td>
+   <td align="center">
+    23.73 ms
+   </td>
+   <td align="center">
+    23.74 ms
+   </td>
+   <td align="center">
+    0.70 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 1, 1, (9, 9), 11, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    0.48 ms
+   </td>
+   <td align="center">
+    0.50 ms
+   </td>
+   <td align="center">
+    0.50 ms
+   </td>
+   <td align="center">
+    0.50 ms
+   </td>
+   <td align="center">
+    0.02 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 1, 1, (9, 9), 11, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    0.48 ms
+   </td>
+   <td align="center">
+    0.51 ms
+   </td>
+   <td align="center">
+    0.77 ms
+   </td>
+   <td align="center">
+    1.15 ms
+   </td>
+   <td align="center">
+    1.26 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 1, 1, (9, 9), 7, false)
+   </td>
+   <td align="center">
+    31
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    22.51 ms
+   </td>
+   <td align="center">
+    22.70 ms
+   </td>
+   <td align="center">
+    22.94 ms
+   </td>
+   <td align="center">
+    22.94 ms
+   </td>
+   <td align="center">
+    0.68 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 1, 1, (9, 9), 7, false)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    22.66 ms
+   </td>
+   <td align="center">
+    22.89 ms
+   </td>
+   <td align="center">
+    23.07 ms
+   </td>
+   <td align="center">
+    23.08 ms
+   </td>
+   <td align="center">
+    0.51 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 1, 1, (9, 9), 7, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    0.24 ms
+   </td>
+   <td align="center">
+    0.25 ms
+   </td>
+   <td align="center">
+    0.26 ms
+   </td>
+   <td align="center">
+    0.26 ms
+   </td>
+   <td align="center">
+    0.02 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 1, 1, (9, 9), 7, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    0.25 ms
+   </td>
+   <td align="center">
+    0.25 ms
+   </td>
+   <td align="center">
+    0.26 ms
+   </td>
+   <td align="center">
+    0.26 ms
+   </td>
+   <td align="center">
+    0.01 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 1, 3, (15, 15), 11, false)
+   </td>
+   <td align="center">
+    16
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    66.59 ms
+   </td>
+   <td align="center">
+    67.53 ms
+   </td>
+   <td align="center">
+    68.64 ms
+   </td>
+   <td align="center">
+    68.67 ms
+   </td>
+   <td align="center">
+    2.02 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 1, 3, (15, 15), 11, false)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    67.92 ms
+   </td>
+   <td align="center">
+    68.14 ms
+   </td>
+   <td align="center">
+    69.01 ms
+   </td>
+   <td align="center">
+    69.04 ms
+   </td>
+   <td align="center">
+    2.04 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 1, 3, (15, 15), 11, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    3.87 ms
+   </td>
+   <td align="center">
+    3.97 ms
+   </td>
+   <td align="center">
+    4.61 ms
+   </td>
+   <td align="center">
+    4.80 ms
+   </td>
+   <td align="center">
+    1.48 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 1, 3, (15, 15), 11, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    3.85 ms
+   </td>
+   <td align="center">
+    4.13 ms
+   </td>
+   <td align="center">
+    5.17 ms
+   </td>
+   <td align="center">
+    5.48 ms
+   </td>
+   <td align="center">
+    1.97 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 1, 3, (15, 15), 7, false)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    62.22 ms
+   </td>
+   <td align="center">
+    62.53 ms
+   </td>
+   <td align="center">
+    63.19 ms
+   </td>
+   <td align="center">
+    63.20 ms
+   </td>
+   <td align="center">
+    1.16 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 1, 3, (15, 15), 7, false)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    62.40 ms
+   </td>
+   <td align="center">
+    63.00 ms
+   </td>
+   <td align="center">
+    63.85 ms
+   </td>
+   <td align="center">
+    63.87 ms
+   </td>
+   <td align="center">
+    1.71 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 1, 3, (15, 15), 7, true)
+   </td>
+   <td align="center">
+    38
+   </td>
+   <td align="center">
+    3
+   </td>
+   <td align="center">
+    1.60 ms
+   </td>
+   <td align="center">
+    1.63 ms
+   </td>
+   <td align="center">
+    1.64 ms
+   </td>
+   <td align="center">
+    1.64 ms
+   </td>
+   <td align="center">
+    0.03 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 1, 3, (15, 15), 7, true)
+   </td>
+   <td align="center">
+    50
+   </td>
+   <td align="center">
+    4
+   </td>
+   <td align="center">
+    1.61 ms
+   </td>
+   <td align="center">
+    1.62 ms
+   </td>
+   <td align="center">
+    1.64 ms
+   </td>
+   <td align="center">
+    1.64 ms
+   </td>
+   <td align="center">
+    0.03 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 1, 3, (9, 9), 11, false)
+   </td>
+   <td align="center">
+    37
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    61.57 ms
+   </td>
+   <td align="center">
+    61.99 ms
+   </td>
+   <td align="center">
+    63.05 ms
+   </td>
+   <td align="center">
+    63.08 ms
+   </td>
+   <td align="center">
+    1.87 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 1, 3, (9, 9), 11, false)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    61.24 ms
+   </td>
+   <td align="center">
+    62.42 ms
+   </td>
+   <td align="center">
+    62.96 ms
+   </td>
+   <td align="center">
+    62.97 ms
+   </td>
+   <td align="center">
+    1.36 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 1, 3, (9, 9), 11, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    1.35 ms
+   </td>
+   <td align="center">
+    1.39 ms
+   </td>
+   <td align="center">
+    1.53 ms
+   </td>
+   <td align="center">
+    1.62 ms
+   </td>
+   <td align="center">
+    0.71 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 1, 3, (9, 9), 11, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    1.33 ms
+   </td>
+   <td align="center">
+    1.40 ms
+   </td>
+   <td align="center">
+    1.80 ms
+   </td>
+   <td align="center">
+    2.07 ms
+   </td>
+   <td align="center">
+    1.30 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 1, 3, (9, 9), 7, false)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    59.31 ms
+   </td>
+   <td align="center">
+    60.04 ms
+   </td>
+   <td align="center">
+    60.81 ms
+   </td>
+   <td align="center">
+    60.83 ms
+   </td>
+   <td align="center">
+    1.74 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 1, 3, (9, 9), 7, false)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    59.46 ms
+   </td>
+   <td align="center">
+    59.86 ms
+   </td>
+   <td align="center">
+    60.87 ms
+   </td>
+   <td align="center">
+    60.90 ms
+   </td>
+   <td align="center">
+    1.71 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 1, 3, (9, 9), 7, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    0.61 ms
+   </td>
+   <td align="center">
+    0.63 ms
+   </td>
+   <td align="center">
+    0.63 ms
+   </td>
+   <td align="center">
+    0.63 ms
+   </td>
+   <td align="center">
+    0.02 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 1, 3, (9, 9), 7, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    0.61 ms
+   </td>
+   <td align="center">
+    0.63 ms
+   </td>
+   <td align="center">
+    0.63 ms
+   </td>
+   <td align="center">
+    0.63 ms
+   </td>
+   <td align="center">
+    0.02 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 1, 4, (15, 15), 11, false)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    87.81 ms
+   </td>
+   <td align="center">
+    88.18 ms
+   </td>
+   <td align="center">
+    89.22 ms
+   </td>
+   <td align="center">
+    89.24 ms
+   </td>
+   <td align="center">
+    2.12 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 1, 4, (15, 15), 11, false)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    88.62 ms
+   </td>
+   <td align="center">
+    88.77 ms
+   </td>
+   <td align="center">
+    89.63 ms
+   </td>
+   <td align="center">
+    89.64 ms
+   </td>
+   <td align="center">
+    1.44 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 1, 4, (15, 15), 11, true)
+   </td>
+   <td align="center">
+    16
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    5.07 ms
+   </td>
+   <td align="center">
+    5.10 ms
+   </td>
+   <td align="center">
+    5.15 ms
+   </td>
+   <td align="center">
+    5.15 ms
+   </td>
+   <td align="center">
+    0.15 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 1, 4, (15, 15), 11, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    5.06 ms
+   </td>
+   <td align="center">
+    5.17 ms
+   </td>
+   <td align="center">
+    6.23 ms
+   </td>
+   <td align="center">
+    6.45 ms
+   </td>
+   <td align="center">
+    1.83 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 1, 4, (15, 15), 7, false)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    81.13 ms
+   </td>
+   <td align="center">
+    82.08 ms
+   </td>
+   <td align="center">
+    83.01 ms
+   </td>
+   <td align="center">
+    83.04 ms
+   </td>
+   <td align="center">
+    2.07 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 1, 4, (15, 15), 7, false)
+   </td>
+   <td align="center">
+    15
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    81.81 ms
+   </td>
+   <td align="center">
+    83.06 ms
+   </td>
+   <td align="center">
+    84.08 ms
+   </td>
+   <td align="center">
+    84.12 ms
+   </td>
+   <td align="center">
+    2.50 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 1, 4, (15, 15), 7, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    2.14 ms
+   </td>
+   <td align="center">
+    2.18 ms
+   </td>
+   <td align="center">
+    2.30 ms
+   </td>
+   <td align="center">
+    2.35 ms
+   </td>
+   <td align="center">
+    0.64 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 1, 4, (15, 15), 7, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    2.14 ms
+   </td>
+   <td align="center">
+    2.18 ms
+   </td>
+   <td align="center">
+    2.68 ms
+   </td>
+   <td align="center">
+    2.91 ms
+   </td>
+   <td align="center">
+    1.37 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 1, 4, (9, 9), 11, false)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    80.67 ms
+   </td>
+   <td align="center">
+    81.03 ms
+   </td>
+   <td align="center">
+    82.28 ms
+   </td>
+   <td align="center">
+    82.31 ms
+   </td>
+   <td align="center">
+    2.46 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 1, 4, (9, 9), 11, false)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    81.38 ms
+   </td>
+   <td align="center">
+    81.98 ms
+   </td>
+   <td align="center">
+    82.84 ms
+   </td>
+   <td align="center">
+    82.86 ms
+   </td>
+   <td align="center">
+    1.82 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 1, 4, (9, 9), 11, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    1.76 ms
+   </td>
+   <td align="center">
+    1.81 ms
+   </td>
+   <td align="center">
+    2.17 ms
+   </td>
+   <td align="center">
+    2.40 ms
+   </td>
+   <td align="center">
+    1.36 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 1, 4, (9, 9), 11, true)
+   </td>
+   <td align="center">
+    25
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    1.76 ms
+   </td>
+   <td align="center">
+    1.79 ms
+   </td>
+   <td align="center">
+    1.81 ms
+   </td>
+   <td align="center">
+    1.81 ms
+   </td>
+   <td align="center">
+    0.05 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 1, 4, (9, 9), 7, false)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    78.18 ms
+   </td>
+   <td align="center">
+    78.96 ms
+   </td>
+   <td align="center">
+    79.85 ms
+   </td>
+   <td align="center">
+    79.87 ms
+   </td>
+   <td align="center">
+    1.89 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 1, 4, (9, 9), 7, false)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    78.53 ms
+   </td>
+   <td align="center">
+    79.02 ms
+   </td>
+   <td align="center">
+    80.21 ms
+   </td>
+   <td align="center">
+    80.23 ms
+   </td>
+   <td align="center">
+    1.95 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 1, 4, (9, 9), 7, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    0.80 ms
+   </td>
+   <td align="center">
+    0.83 ms
+   </td>
+   <td align="center">
+    0.87 ms
+   </td>
+   <td align="center">
+    0.89 ms
+   </td>
+   <td align="center">
+    0.28 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 1, 4, (9, 9), 7, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    0.79 ms
+   </td>
+   <td align="center">
+    0.84 ms
+   </td>
+   <td align="center">
+    1.09 ms
+   </td>
+   <td align="center">
+    1.34 ms
+   </td>
+   <td align="center">
+    1.07 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 2, 1, (15, 15), 11, false)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    25.26 ms
+   </td>
+   <td align="center">
+    25.34 ms
+   </td>
+   <td align="center">
+    25.55 ms
+   </td>
+   <td align="center">
+    25.55 ms
+   </td>
+   <td align="center">
+    0.44 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 2, 1, (15, 15), 11, false)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    25.19 ms
+   </td>
+   <td align="center">
+    25.32 ms
+   </td>
+   <td align="center">
+    25.43 ms
+   </td>
+   <td align="center">
+    25.43 ms
+   </td>
+   <td align="center">
+    0.34 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 2, 1, (15, 15), 11, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    1.21 ms
+   </td>
+   <td align="center">
+    1.26 ms
+   </td>
+   <td align="center">
+    1.54 ms
+   </td>
+   <td align="center">
+    1.75 ms
+   </td>
+   <td align="center">
+    1.13 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 2, 1, (15, 15), 11, true)
+   </td>
+   <td align="center">
+    25
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    1.22 ms
+   </td>
+   <td align="center">
+    1.25 ms
+   </td>
+   <td align="center">
+    1.25 ms
+   </td>
+   <td align="center">
+    1.25 ms
+   </td>
+   <td align="center">
+    0.03 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 2, 1, (15, 15), 7, false)
+   </td>
+   <td align="center">
+    14
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    23.49 ms
+   </td>
+   <td align="center">
+    23.61 ms
+   </td>
+   <td align="center">
+    23.89 ms
+   </td>
+   <td align="center">
+    23.90 ms
+   </td>
+   <td align="center">
+    0.71 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 2, 1, (15, 15), 7, false)
+   </td>
+   <td align="center">
+    14
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    23.93 ms
+   </td>
+   <td align="center">
+    24.03 ms
+   </td>
+   <td align="center">
+    24.36 ms
+   </td>
+   <td align="center">
+    24.37 ms
+   </td>
+   <td align="center">
+    0.71 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 2, 1, (15, 15), 7, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    0.61 ms
+   </td>
+   <td align="center">
+    0.63 ms
+   </td>
+   <td align="center">
+    0.64 ms
+   </td>
+   <td align="center">
+    0.64 ms
+   </td>
+   <td align="center">
+    0.02 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 2, 1, (15, 15), 7, true)
+   </td>
+   <td align="center">
+    25
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    0.62 ms
+   </td>
+   <td align="center">
+    0.63 ms
+   </td>
+   <td align="center">
+    0.64 ms
+   </td>
+   <td align="center">
+    0.64 ms
+   </td>
+   <td align="center">
+    0.01 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 2, 1, (9, 9), 11, false)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    23.16 ms
+   </td>
+   <td align="center">
+    23.37 ms
+   </td>
+   <td align="center">
+    23.57 ms
+   </td>
+   <td align="center">
+    23.58 ms
+   </td>
+   <td align="center">
+    0.57 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 2, 1, (9, 9), 11, false)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    23.38 ms
+   </td>
+   <td align="center">
+    23.57 ms
+   </td>
+   <td align="center">
+    23.73 ms
+   </td>
+   <td align="center">
+    23.73 ms
+   </td>
+   <td align="center">
+    0.41 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 2, 1, (9, 9), 11, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    0.47 ms
+   </td>
+   <td align="center">
+    0.49 ms
+   </td>
+   <td align="center">
+    0.78 ms
+   </td>
+   <td align="center">
+    1.18 ms
+   </td>
+   <td align="center">
+    1.27 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 2, 1, (9, 9), 11, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    0.46 ms
+   </td>
+   <td align="center">
+    0.48 ms
+   </td>
+   <td align="center">
+    0.50 ms
+   </td>
+   <td align="center">
+    0.52 ms
+   </td>
+   <td align="center">
+    0.17 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 2, 1, (9, 9), 7, false)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    22.48 ms
+   </td>
+   <td align="center">
+    22.58 ms
+   </td>
+   <td align="center">
+    22.69 ms
+   </td>
+   <td align="center">
+    22.70 ms
+   </td>
+   <td align="center">
+    0.41 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 2, 1, (9, 9), 7, false)
+   </td>
+   <td align="center">
+    63
+   </td>
+   <td align="center">
+    5
+   </td>
+   <td align="center">
+    22.64 ms
+   </td>
+   <td align="center">
+    22.96 ms
+   </td>
+   <td align="center">
+    23.22 ms
+   </td>
+   <td align="center">
+    23.23 ms
+   </td>
+   <td align="center">
+    0.68 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 2, 1, (9, 9), 7, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    0.25 ms
+   </td>
+   <td align="center">
+    0.26 ms
+   </td>
+   <td align="center">
+    0.30 ms
+   </td>
+   <td align="center">
+    0.41 ms
+   </td>
+   <td align="center">
+    0.64 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 2, 1, (9, 9), 7, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    0.25 ms
+   </td>
+   <td align="center">
+    0.25 ms
+   </td>
+   <td align="center">
+    0.26 ms
+   </td>
+   <td align="center">
+    0.26 ms
+   </td>
+   <td align="center">
+    0.01 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 2, 3, (15, 15), 11, false)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    66.41 ms
+   </td>
+   <td align="center">
+    67.22 ms
+   </td>
+   <td align="center">
+    68.09 ms
+   </td>
+   <td align="center">
+    68.11 ms
+   </td>
+   <td align="center">
+    1.72 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 2, 3, (15, 15), 11, false)
+   </td>
+   <td align="center">
+    14
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    66.90 ms
+   </td>
+   <td align="center">
+    67.82 ms
+   </td>
+   <td align="center">
+    69.07 ms
+   </td>
+   <td align="center">
+    69.10 ms
+   </td>
+   <td align="center">
+    2.06 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 2, 3, (15, 15), 11, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    3.92 ms
+   </td>
+   <td align="center">
+    4.00 ms
+   </td>
+   <td align="center">
+    4.49 ms
+   </td>
+   <td align="center">
+    4.64 ms
+   </td>
+   <td align="center">
+    1.36 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 2, 3, (15, 15), 11, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    3.90 ms
+   </td>
+   <td align="center">
+    3.99 ms
+   </td>
+   <td align="center">
+    4.69 ms
+   </td>
+   <td align="center">
+    4.90 ms
+   </td>
+   <td align="center">
+    1.60 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 2, 3, (15, 15), 7, false)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    61.63 ms
+   </td>
+   <td align="center">
+    62.08 ms
+   </td>
+   <td align="center">
+    63.14 ms
+   </td>
+   <td align="center">
+    63.15 ms
+   </td>
+   <td align="center">
+    1.59 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 2, 3, (15, 15), 7, false)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    62.06 ms
+   </td>
+   <td align="center">
+    62.96 ms
+   </td>
+   <td align="center">
+    63.58 ms
+   </td>
+   <td align="center">
+    63.60 ms
+   </td>
+   <td align="center">
+    1.68 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 2, 3, (15, 15), 7, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    1.63 ms
+   </td>
+   <td align="center">
+    1.67 ms
+   </td>
+   <td align="center">
+    1.83 ms
+   </td>
+   <td align="center">
+    1.91 ms
+   </td>
+   <td align="center">
+    0.68 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 2, 3, (15, 15), 7, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    1.63 ms
+   </td>
+   <td align="center">
+    1.66 ms
+   </td>
+   <td align="center">
+    1.72 ms
+   </td>
+   <td align="center">
+    1.74 ms
+   </td>
+   <td align="center">
+    0.38 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 2, 3, (9, 9), 11, false)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    62.02 ms
+   </td>
+   <td align="center">
+    62.44 ms
+   </td>
+   <td align="center">
+    63.40 ms
+   </td>
+   <td align="center">
+    63.42 ms
+   </td>
+   <td align="center">
+    1.82 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 2, 3, (9, 9), 11, false)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    61.62 ms
+   </td>
+   <td align="center">
+    62.27 ms
+   </td>
+   <td align="center">
+    63.12 ms
+   </td>
+   <td align="center">
+    63.14 ms
+   </td>
+   <td align="center">
+    1.64 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 2, 3, (9, 9), 11, true)
+   </td>
+   <td align="center">
+    25
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    1.34 ms
+   </td>
+   <td align="center">
+    1.37 ms
+   </td>
+   <td align="center">
+    1.38 ms
+   </td>
+   <td align="center">
+    1.38 ms
+   </td>
+   <td align="center">
+    0.04 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 2, 3, (9, 9), 11, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    1.32 ms
+   </td>
+   <td align="center">
+    1.38 ms
+   </td>
+   <td align="center">
+    1.63 ms
+   </td>
+   <td align="center">
+    1.81 ms
+   </td>
+   <td align="center">
+    1.04 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 2, 3, (9, 9), 7, false)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    59.33 ms
+   </td>
+   <td align="center">
+    59.89 ms
+   </td>
+   <td align="center">
+    60.71 ms
+   </td>
+   <td align="center">
+    60.73 ms
+   </td>
+   <td align="center">
+    1.67 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 2, 3, (9, 9), 7, false)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    59.45 ms
+   </td>
+   <td align="center">
+    60.13 ms
+   </td>
+   <td align="center">
+    60.72 ms
+   </td>
+   <td align="center">
+    60.74 ms
+   </td>
+   <td align="center">
+    1.77 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 2, 3, (9, 9), 7, true)
+   </td>
+   <td align="center">
+    88
+   </td>
+   <td align="center">
+    7
+   </td>
+   <td align="center">
+    0.60 ms
+   </td>
+   <td align="center">
+    0.61 ms
+   </td>
+   <td align="center">
+    0.62 ms
+   </td>
+   <td align="center">
+    0.62 ms
+   </td>
+   <td align="center">
+    0.02 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 2, 3, (9, 9), 7, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    0.60 ms
+   </td>
+   <td align="center">
+    0.63 ms
+   </td>
+   <td align="center">
+    0.81 ms
+   </td>
+   <td align="center">
+    1.03 ms
+   </td>
+   <td align="center">
+    1.00 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 2, 4, (15, 15), 11, false)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    87.92 ms
+   </td>
+   <td align="center">
+    88.98 ms
+   </td>
+   <td align="center">
+    89.69 ms
+   </td>
+   <td align="center">
+    89.71 ms
+   </td>
+   <td align="center">
+    1.89 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 2, 4, (15, 15), 11, false)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    88.43 ms
+   </td>
+   <td align="center">
+    88.61 ms
+   </td>
+   <td align="center">
+    89.75 ms
+   </td>
+   <td align="center">
+    89.76 ms
+   </td>
+   <td align="center">
+    1.63 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 2, 4, (15, 15), 11, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    5.13 ms
+   </td>
+   <td align="center">
+    5.26 ms
+   </td>
+   <td align="center">
+    6.26 ms
+   </td>
+   <td align="center">
+    6.50 ms
+   </td>
+   <td align="center">
+    1.94 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 2, 4, (15, 15), 11, true)
+   </td>
+   <td align="center">
+    25
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    5.12 ms
+   </td>
+   <td align="center">
+    5.18 ms
+   </td>
+   <td align="center">
+    5.19 ms
+   </td>
+   <td align="center">
+    5.19 ms
+   </td>
+   <td align="center">
+    0.04 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 2, 4, (15, 15), 7, false)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    81.74 ms
+   </td>
+   <td align="center">
+    84.05 ms
+   </td>
+   <td align="center">
+    83.59 ms
+   </td>
+   <td align="center">
+    83.60 ms
+   </td>
+   <td align="center">
+    1.53 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 2, 4, (15, 15), 7, false)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    81.86 ms
+   </td>
+   <td align="center">
+    82.08 ms
+   </td>
+   <td align="center">
+    83.17 ms
+   </td>
+   <td align="center">
+    83.19 ms
+   </td>
+   <td align="center">
+    1.99 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 2, 4, (15, 15), 7, true)
+   </td>
+   <td align="center">
+    38
+   </td>
+   <td align="center">
+    3
+   </td>
+   <td align="center">
+    2.17 ms
+   </td>
+   <td align="center">
+    2.20 ms
+   </td>
+   <td align="center">
+    2.22 ms
+   </td>
+   <td align="center">
+    2.22 ms
+   </td>
+   <td align="center">
+    0.06 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 2, 4, (15, 15), 7, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    2.17 ms
+   </td>
+   <td align="center">
+    2.23 ms
+   </td>
+   <td align="center">
+    2.76 ms
+   </td>
+   <td align="center">
+    2.99 ms
+   </td>
+   <td align="center">
+    1.38 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 2, 4, (9, 9), 11, false)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    81.23 ms
+   </td>
+   <td align="center">
+    81.56 ms
+   </td>
+   <td align="center">
+    82.93 ms
+   </td>
+   <td align="center">
+    82.95 ms
+   </td>
+   <td align="center">
+    2.01 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 2, 4, (9, 9), 11, false)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    81.64 ms
+   </td>
+   <td align="center">
+    82.15 ms
+   </td>
+   <td align="center">
+    82.93 ms
+   </td>
+   <td align="center">
+    82.94 ms
+   </td>
+   <td align="center">
+    1.50 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 2, 4, (9, 9), 11, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    1.76 ms
+   </td>
+   <td align="center">
+    1.82 ms
+   </td>
+   <td align="center">
+    1.93 ms
+   </td>
+   <td align="center">
+    1.98 ms
+   </td>
+   <td align="center">
+    0.58 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 2, 4, (9, 9), 11, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    1.76 ms
+   </td>
+   <td align="center">
+    1.83 ms
+   </td>
+   <td align="center">
+    2.55 ms
+   </td>
+   <td align="center">
+    2.93 ms
+   </td>
+   <td align="center">
+    1.69 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 2, 4, (9, 9), 7, false)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    78.03 ms
+   </td>
+   <td align="center">
+    78.37 ms
+   </td>
+   <td align="center">
+    79.38 ms
+   </td>
+   <td align="center">
+    79.39 ms
+   </td>
+   <td align="center">
+    1.72 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 2, 4, (9, 9), 7, false)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    78.77 ms
+   </td>
+   <td align="center">
+    79.02 ms
+   </td>
+   <td align="center">
+    80.19 ms
+   </td>
+   <td align="center">
+    80.22 ms
+   </td>
+   <td align="center">
+    2.15 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 2, 4, (9, 9), 7, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    0.78 ms
+   </td>
+   <td align="center">
+    0.81 ms
+   </td>
+   <td align="center">
+    1.09 ms
+   </td>
+   <td align="center">
+    1.39 ms
+   </td>
+   <td align="center">
+    1.25 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/720p_%02d.png", 2, 4, (9, 9), 7, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    0.78 ms
+   </td>
+   <td align="center">
+    0.81 ms
+   </td>
+   <td align="center">
+    0.88 ms
+   </td>
+   <td align="center">
+    0.95 ms
+   </td>
+   <td align="center">
+    0.58 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 1, 1, (15, 15), 11, false)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    6.90 ms
+   </td>
+   <td align="center">
+    6.96 ms
+   </td>
+   <td align="center">
+    7.40 ms
+   </td>
+   <td align="center">
+    7.46 ms
+   </td>
+   <td align="center">
+    1.01 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 1, 1, (15, 15), 11, false)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    6.86 ms
+   </td>
+   <td align="center">
+    6.93 ms
+   </td>
+   <td align="center">
+    7.29 ms
+   </td>
+   <td align="center">
+    7.34 ms
+   </td>
+   <td align="center">
+    0.94 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 1, 1, (15, 15), 11, true)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    1.15 ms
+   </td>
+   <td align="center">
+    1.18 ms
+   </td>
+   <td align="center">
+    1.18 ms
+   </td>
+   <td align="center">
+    1.18 ms
+   </td>
+   <td align="center">
+    0.02 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 1, 1, (15, 15), 11, true)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    1.16 ms
+   </td>
+   <td align="center">
+    1.18 ms
+   </td>
+   <td align="center">
+    1.19 ms
+   </td>
+   <td align="center">
+    1.19 ms
+   </td>
+   <td align="center">
+    0.02 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 1, 1, (15, 15), 7, false)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    6.13 ms
+   </td>
+   <td align="center">
+    6.19 ms
+   </td>
+   <td align="center">
+    6.55 ms
+   </td>
+   <td align="center">
+    6.60 ms
+   </td>
+   <td align="center">
+    0.86 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 1, 1, (15, 15), 7, false)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    6.15 ms
+   </td>
+   <td align="center">
+    6.19 ms
+   </td>
+   <td align="center">
+    6.25 ms
+   </td>
+   <td align="center">
+    6.25 ms
+   </td>
+   <td align="center">
+    0.13 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 1, 1, (15, 15), 7, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    0.55 ms
+   </td>
+   <td align="center">
+    0.57 ms
+   </td>
+   <td align="center">
+    0.62 ms
+   </td>
+   <td align="center">
+    0.67 ms
+   </td>
+   <td align="center">
+    0.45 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 1, 1, (15, 15), 7, true)
+   </td>
+   <td align="center">
+    25
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    0.56 ms
+   </td>
+   <td align="center">
+    0.57 ms
+   </td>
+   <td align="center">
+    0.57 ms
+   </td>
+   <td align="center">
+    0.57 ms
+   </td>
+   <td align="center">
+    0.02 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 1, 1, (9, 9), 11, false)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    6.10 ms
+   </td>
+   <td align="center">
+    6.13 ms
+   </td>
+   <td align="center">
+    6.16 ms
+   </td>
+   <td align="center">
+    6.16 ms
+   </td>
+   <td align="center">
+    0.08 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 1, 1, (9, 9), 11, false)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    6.06 ms
+   </td>
+   <td align="center">
+    6.12 ms
+   </td>
+   <td align="center">
+    6.35 ms
+   </td>
+   <td align="center">
+    6.37 ms
+   </td>
+   <td align="center">
+    0.60 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 1, 1, (9, 9), 11, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    0.44 ms
+   </td>
+   <td align="center">
+    0.51 ms
+   </td>
+   <td align="center">
+    1.14 ms
+   </td>
+   <td align="center">
+    1.97 ms
+   </td>
+   <td align="center">
+    1.88 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 1, 1, (9, 9), 11, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    0.45 ms
+   </td>
+   <td align="center">
+    0.46 ms
+   </td>
+   <td align="center">
+    0.47 ms
+   </td>
+   <td align="center">
+    0.47 ms
+   </td>
+   <td align="center">
+    0.02 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 1, 1, (9, 9), 7, false)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    5.76 ms
+   </td>
+   <td align="center">
+    5.82 ms
+   </td>
+   <td align="center">
+    6.01 ms
+   </td>
+   <td align="center">
+    6.04 ms
+   </td>
+   <td align="center">
+    0.70 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 1, 1, (9, 9), 7, false)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    5.73 ms
+   </td>
+   <td align="center">
+    5.82 ms
+   </td>
+   <td align="center">
+    6.45 ms
+   </td>
+   <td align="center">
+    6.56 ms
+   </td>
+   <td align="center">
+    1.28 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 1, 1, (9, 9), 7, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    0.23 ms
+   </td>
+   <td align="center">
+    0.24 ms
+   </td>
+   <td align="center">
+    0.29 ms
+   </td>
+   <td align="center">
+    0.44 ms
+   </td>
+   <td align="center">
+    0.72 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 1, 1, (9, 9), 7, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    0.23 ms
+   </td>
+   <td align="center">
+    0.24 ms
+   </td>
+   <td align="center">
+    0.25 ms
+   </td>
+   <td align="center">
+    0.25 ms
+   </td>
+   <td align="center">
+    0.01 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 1, 3, (15, 15), 11, false)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    22.07 ms
+   </td>
+   <td align="center">
+    25.16 ms
+   </td>
+   <td align="center">
+    24.90 ms
+   </td>
+   <td align="center">
+    25.04 ms
+   </td>
+   <td align="center">
+    2.61 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 1, 3, (15, 15), 11, false)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    22.31 ms
+   </td>
+   <td align="center">
+    22.71 ms
+   </td>
+   <td align="center">
+    24.83 ms
+   </td>
+   <td align="center">
+    24.97 ms
+   </td>
+   <td align="center">
+    2.75 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 1, 3, (15, 15), 11, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    4.13 ms
+   </td>
+   <td align="center">
+    5.17 ms
+   </td>
+   <td align="center">
+    5.87 ms
+   </td>
+   <td align="center">
+    6.25 ms
+   </td>
+   <td align="center">
+    2.28 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 1, 3, (15, 15), 11, true)
+   </td>
+   <td align="center">
+    25
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    4.08 ms
+   </td>
+   <td align="center">
+    4.16 ms
+   </td>
+   <td align="center">
+    4.19 ms
+   </td>
+   <td align="center">
+    4.19 ms
+   </td>
+   <td align="center">
+    0.08 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 1, 3, (15, 15), 7, false)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    19.80 ms
+   </td>
+   <td align="center">
+    26.58 ms
+   </td>
+   <td align="center">
+    26.75 ms
+   </td>
+   <td align="center">
+    26.77 ms
+   </td>
+   <td align="center">
+    1.15 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 1, 3, (15, 15), 7, false)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    20.15 ms
+   </td>
+   <td align="center">
+    26.89 ms
+   </td>
+   <td align="center">
+    26.97 ms
+   </td>
+   <td align="center">
+    26.99 ms
+   </td>
+   <td align="center">
+    0.95 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 1, 3, (15, 15), 7, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    1.74 ms
+   </td>
+   <td align="center">
+    1.79 ms
+   </td>
+   <td align="center">
+    2.15 ms
+   </td>
+   <td align="center">
+    2.34 ms
+   </td>
+   <td align="center">
+    1.17 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 1, 3, (15, 15), 7, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    1.74 ms
+   </td>
+   <td align="center">
+    1.78 ms
+   </td>
+   <td align="center">
+    1.94 ms
+   </td>
+   <td align="center">
+    2.03 ms
+   </td>
+   <td align="center">
+    0.81 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 1, 3, (9, 9), 11, false)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    21.72 ms
+   </td>
+   <td align="center">
+    26.09 ms
+   </td>
+   <td align="center">
+    26.26 ms
+   </td>
+   <td align="center">
+    26.28 ms
+   </td>
+   <td align="center">
+    0.95 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 1, 3, (9, 9), 11, false)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    22.69 ms
+   </td>
+   <td align="center">
+    26.36 ms
+   </td>
+   <td align="center">
+    26.55 ms
+   </td>
+   <td align="center">
+    26.56 ms
+   </td>
+   <td align="center">
+    0.86 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 1, 3, (9, 9), 11, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    1.48 ms
+   </td>
+   <td align="center">
+    1.55 ms
+   </td>
+   <td align="center">
+    1.77 ms
+   </td>
+   <td align="center">
+    1.90 ms
+   </td>
+   <td align="center">
+    0.95 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 1, 3, (9, 9), 11, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    1.49 ms
+   </td>
+   <td align="center">
+    1.55 ms
+   </td>
+   <td align="center">
+    1.67 ms
+   </td>
+   <td align="center">
+    1.75 ms
+   </td>
+   <td align="center">
+    0.71 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 1, 3, (9, 9), 7, false)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    21.17 ms
+   </td>
+   <td align="center">
+    23.83 ms
+   </td>
+   <td align="center">
+    24.06 ms
+   </td>
+   <td align="center">
+    24.07 ms
+   </td>
+   <td align="center">
+    0.73 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 1, 3, (9, 9), 7, false)
+   </td>
+   <td align="center">
+    29
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    20.98 ms
+   </td>
+   <td align="center">
+    23.67 ms
+   </td>
+   <td align="center">
+    23.73 ms
+   </td>
+   <td align="center">
+    23.74 ms
+   </td>
+   <td align="center">
+    0.70 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 1, 3, (9, 9), 7, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    0.64 ms
+   </td>
+   <td align="center">
+    0.67 ms
+   </td>
+   <td align="center">
+    0.70 ms
+   </td>
+   <td align="center">
+    0.71 ms
+   </td>
+   <td align="center">
+    0.25 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 1, 3, (9, 9), 7, true)
+   </td>
+   <td align="center">
+    31
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    0.65 ms
+   </td>
+   <td align="center">
+    0.66 ms
+   </td>
+   <td align="center">
+    0.67 ms
+   </td>
+   <td align="center">
+    0.67 ms
+   </td>
+   <td align="center">
+    0.02 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 1, 4, (15, 15), 11, false)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    30.10 ms
+   </td>
+   <td align="center">
+    37.90 ms
+   </td>
+   <td align="center">
+    38.18 ms
+   </td>
+   <td align="center">
+    38.21 ms
+   </td>
+   <td align="center">
+    1.47 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 1, 4, (15, 15), 11, false)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    30.18 ms
+   </td>
+   <td align="center">
+    38.17 ms
+   </td>
+   <td align="center">
+    38.58 ms
+   </td>
+   <td align="center">
+    38.61 ms
+   </td>
+   <td align="center">
+    1.63 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 1, 4, (15, 15), 11, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    5.50 ms
+   </td>
+   <td align="center">
+    9.15 ms
+   </td>
+   <td align="center">
+    8.46 ms
+   </td>
+   <td align="center">
+    8.75 ms
+   </td>
+   <td align="center">
+    2.17 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 1, 4, (15, 15), 11, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    5.53 ms
+   </td>
+   <td align="center">
+    6.26 ms
+   </td>
+   <td align="center">
+    7.21 ms
+   </td>
+   <td align="center">
+    7.49 ms
+   </td>
+   <td align="center">
+    2.12 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 1, 4, (15, 15), 7, false)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    27.89 ms
+   </td>
+   <td align="center">
+    34.15 ms
+   </td>
+   <td align="center">
+    34.47 ms
+   </td>
+   <td align="center">
+    34.49 ms
+   </td>
+   <td align="center">
+    1.10 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 1, 4, (15, 15), 7, false)
+   </td>
+   <td align="center">
+    89
+   </td>
+   <td align="center">
+    7
+   </td>
+   <td align="center">
+    29.67 ms
+   </td>
+   <td align="center">
+    34.60 ms
+   </td>
+   <td align="center">
+    34.92 ms
+   </td>
+   <td align="center">
+    34.93 ms
+   </td>
+   <td align="center">
+    1.04 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 1, 4, (15, 15), 7, true)
+   </td>
+   <td align="center">
+    28
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    2.31 ms
+   </td>
+   <td align="center">
+    2.34 ms
+   </td>
+   <td align="center">
+    2.36 ms
+   </td>
+   <td align="center">
+    2.36 ms
+   </td>
+   <td align="center">
+    0.07 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 1, 4, (15, 15), 7, true)
+   </td>
+   <td align="center">
+    25
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    2.32 ms
+   </td>
+   <td align="center">
+    2.36 ms
+   </td>
+   <td align="center">
+    2.37 ms
+   </td>
+   <td align="center">
+    2.37 ms
+   </td>
+   <td align="center">
+    0.05 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 1, 4, (9, 9), 11, false)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    32.42 ms
+   </td>
+   <td align="center">
+    33.42 ms
+   </td>
+   <td align="center">
+    33.44 ms
+   </td>
+   <td align="center">
+    33.44 ms
+   </td>
+   <td align="center">
+    0.54 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 1, 4, (9, 9), 11, false)
+   </td>
+   <td align="center">
+    31
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    29.75 ms
+   </td>
+   <td align="center">
+    33.67 ms
+   </td>
+   <td align="center">
+    33.80 ms
+   </td>
+   <td align="center">
+    33.81 ms
+   </td>
+   <td align="center">
+    1.01 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 1, 4, (9, 9), 11, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    1.94 ms
+   </td>
+   <td align="center">
+    2.01 ms
+   </td>
+   <td align="center">
+    2.26 ms
+   </td>
+   <td align="center">
+    2.40 ms
+   </td>
+   <td align="center">
+    1.07 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 1, 4, (9, 9), 11, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    1.93 ms
+   </td>
+   <td align="center">
+    2.02 ms
+   </td>
+   <td align="center">
+    2.31 ms
+   </td>
+   <td align="center">
+    2.47 ms
+   </td>
+   <td align="center">
+    1.12 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 1, 4, (9, 9), 7, false)
+   </td>
+   <td align="center">
+    30
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    27.29 ms
+   </td>
+   <td align="center">
+    30.47 ms
+   </td>
+   <td align="center">
+    30.59 ms
+   </td>
+   <td align="center">
+    30.60 ms
+   </td>
+   <td align="center">
+    0.91 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 1, 4, (9, 9), 7, false)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    28.96 ms
+   </td>
+   <td align="center">
+    30.83 ms
+   </td>
+   <td align="center">
+    30.97 ms
+   </td>
+   <td align="center">
+    30.98 ms
+   </td>
+   <td align="center">
+    0.93 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 1, 4, (9, 9), 7, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    0.86 ms
+   </td>
+   <td align="center">
+    0.88 ms
+   </td>
+   <td align="center">
+    0.97 ms
+   </td>
+   <td align="center">
+    1.04 ms
+   </td>
+   <td align="center">
+    0.53 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 1, 4, (9, 9), 7, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    0.86 ms
+   </td>
+   <td align="center">
+    0.88 ms
+   </td>
+   <td align="center">
+    0.89 ms
+   </td>
+   <td align="center">
+    0.89 ms
+   </td>
+   <td align="center">
+    0.03 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 2, 1, (15, 15), 11, false)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    6.90 ms
+   </td>
+   <td align="center">
+    6.93 ms
+   </td>
+   <td align="center">
+    6.99 ms
+   </td>
+   <td align="center">
+    6.99 ms
+   </td>
+   <td align="center">
+    0.12 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 2, 1, (15, 15), 11, false)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    6.84 ms
+   </td>
+   <td align="center">
+    6.89 ms
+   </td>
+   <td align="center">
+    7.01 ms
+   </td>
+   <td align="center">
+    7.03 ms
+   </td>
+   <td align="center">
+    0.51 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 2, 1, (15, 15), 11, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    1.13 ms
+   </td>
+   <td align="center">
+    1.19 ms
+   </td>
+   <td align="center">
+    1.60 ms
+   </td>
+   <td align="center">
+    1.90 ms
+   </td>
+   <td align="center">
+    1.29 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 2, 1, (15, 15), 11, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    1.13 ms
+   </td>
+   <td align="center">
+    1.20 ms
+   </td>
+   <td align="center">
+    2.11 ms
+   </td>
+   <td align="center">
+    2.66 ms
+   </td>
+   <td align="center">
+    1.79 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 2, 1, (15, 15), 7, false)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    6.14 ms
+   </td>
+   <td align="center">
+    6.23 ms
+   </td>
+   <td align="center">
+    6.59 ms
+   </td>
+   <td align="center">
+    6.64 ms
+   </td>
+   <td align="center">
+    0.92 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 2, 1, (15, 15), 7, false)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    6.13 ms
+   </td>
+   <td align="center">
+    6.23 ms
+   </td>
+   <td align="center">
+    6.64 ms
+   </td>
+   <td align="center">
+    6.70 ms
+   </td>
+   <td align="center">
+    0.94 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 2, 1, (15, 15), 7, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    0.55 ms
+   </td>
+   <td align="center">
+    0.56 ms
+   </td>
+   <td align="center">
+    0.57 ms
+   </td>
+   <td align="center">
+    0.57 ms
+   </td>
+   <td align="center">
+    0.03 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 2, 1, (15, 15), 7, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    0.55 ms
+   </td>
+   <td align="center">
+    0.57 ms
+   </td>
+   <td align="center">
+    0.58 ms
+   </td>
+   <td align="center">
+    0.58 ms
+   </td>
+   <td align="center">
+    0.09 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 2, 1, (9, 9), 11, false)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    6.15 ms
+   </td>
+   <td align="center">
+    6.18 ms
+   </td>
+   <td align="center">
+    6.25 ms
+   </td>
+   <td align="center">
+    6.25 ms
+   </td>
+   <td align="center">
+    0.15 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 2, 1, (9, 9), 11, false)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    6.13 ms
+   </td>
+   <td align="center">
+    6.19 ms
+   </td>
+   <td align="center">
+    6.25 ms
+   </td>
+   <td align="center">
+    6.25 ms
+   </td>
+   <td align="center">
+    0.13 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 2, 1, (9, 9), 11, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    0.45 ms
+   </td>
+   <td align="center">
+    0.47 ms
+   </td>
+   <td align="center">
+    0.48 ms
+   </td>
+   <td align="center">
+    0.48 ms
+   </td>
+   <td align="center">
+    0.02 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 2, 1, (9, 9), 11, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    0.46 ms
+   </td>
+   <td align="center">
+    0.48 ms
+   </td>
+   <td align="center">
+    0.59 ms
+   </td>
+   <td align="center">
+    0.77 ms
+   </td>
+   <td align="center">
+    0.86 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 2, 1, (9, 9), 7, false)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    5.79 ms
+   </td>
+   <td align="center">
+    5.83 ms
+   </td>
+   <td align="center">
+    5.87 ms
+   </td>
+   <td align="center">
+    5.87 ms
+   </td>
+   <td align="center">
+    0.11 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 2, 1, (9, 9), 7, false)
+   </td>
+   <td align="center">
+    11
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    5.74 ms
+   </td>
+   <td align="center">
+    5.79 ms
+   </td>
+   <td align="center">
+    5.84 ms
+   </td>
+   <td align="center">
+    5.84 ms
+   </td>
+   <td align="center">
+    0.17 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 2, 1, (9, 9), 7, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    0.22 ms
+   </td>
+   <td align="center">
+    0.22 ms
+   </td>
+   <td align="center">
+    0.23 ms
+   </td>
+   <td align="center">
+    0.23 ms
+   </td>
+   <td align="center">
+    0.01 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 2, 1, (9, 9), 7, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    0.22 ms
+   </td>
+   <td align="center">
+    0.23 ms
+   </td>
+   <td align="center">
+    0.28 ms
+   </td>
+   <td align="center">
+    0.46 ms
+   </td>
+   <td align="center">
+    0.85 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 2, 3, (15, 15), 11, false)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    22.12 ms
+   </td>
+   <td align="center">
+    27.57 ms
+   </td>
+   <td align="center">
+    25.51 ms
+   </td>
+   <td align="center">
+    25.68 ms
+   </td>
+   <td align="center">
+    3.00 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 2, 3, (15, 15), 11, false)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    22.33 ms
+   </td>
+   <td align="center">
+    27.84 ms
+   </td>
+   <td align="center">
+    26.10 ms
+   </td>
+   <td align="center">
+    26.23 ms
+   </td>
+   <td align="center">
+    2.59 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 2, 3, (15, 15), 11, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    4.03 ms
+   </td>
+   <td align="center">
+    4.84 ms
+   </td>
+   <td align="center">
+    5.68 ms
+   </td>
+   <td align="center">
+    5.99 ms
+   </td>
+   <td align="center">
+    2.00 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 2, 3, (15, 15), 11, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    4.04 ms
+   </td>
+   <td align="center">
+    7.01 ms
+   </td>
+   <td align="center">
+    6.33 ms
+   </td>
+   <td align="center">
+    6.72 ms
+   </td>
+   <td align="center">
+    2.28 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 2, 3, (15, 15), 7, false)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    19.66 ms
+   </td>
+   <td align="center">
+    26.40 ms
+   </td>
+   <td align="center">
+    26.55 ms
+   </td>
+   <td align="center">
+    26.57 ms
+   </td>
+   <td align="center">
+    1.02 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 2, 3, (15, 15), 7, false)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    22.45 ms
+   </td>
+   <td align="center">
+    26.79 ms
+   </td>
+   <td align="center">
+    26.98 ms
+   </td>
+   <td align="center">
+    26.99 ms
+   </td>
+   <td align="center">
+    0.90 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 2, 3, (15, 15), 7, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    1.70 ms
+   </td>
+   <td align="center">
+    1.75 ms
+   </td>
+   <td align="center">
+    2.13 ms
+   </td>
+   <td align="center">
+    2.33 ms
+   </td>
+   <td align="center">
+    1.19 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 2, 3, (15, 15), 7, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    1.71 ms
+   </td>
+   <td align="center">
+    1.74 ms
+   </td>
+   <td align="center">
+    2.10 ms
+   </td>
+   <td align="center">
+    2.27 ms
+   </td>
+   <td align="center">
+    1.10 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 2, 3, (9, 9), 11, false)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    19.74 ms
+   </td>
+   <td align="center">
+    26.02 ms
+   </td>
+   <td align="center">
+    26.24 ms
+   </td>
+   <td align="center">
+    26.26 ms
+   </td>
+   <td align="center">
+    1.05 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 2, 3, (9, 9), 11, false)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    19.95 ms
+   </td>
+   <td align="center">
+    26.19 ms
+   </td>
+   <td align="center">
+    26.41 ms
+   </td>
+   <td align="center">
+    26.43 ms
+   </td>
+   <td align="center">
+    0.95 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 2, 3, (9, 9), 11, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    1.46 ms
+   </td>
+   <td align="center">
+    1.53 ms
+   </td>
+   <td align="center">
+    2.02 ms
+   </td>
+   <td align="center">
+    2.30 ms
+   </td>
+   <td align="center">
+    1.36 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 2, 3, (9, 9), 11, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    1.48 ms
+   </td>
+   <td align="center">
+    1.52 ms
+   </td>
+   <td align="center">
+    1.68 ms
+   </td>
+   <td align="center">
+    1.78 ms
+   </td>
+   <td align="center">
+    0.76 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 2, 3, (9, 9), 7, false)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    21.86 ms
+   </td>
+   <td align="center">
+    23.75 ms
+   </td>
+   <td align="center">
+    23.96 ms
+   </td>
+   <td align="center">
+    23.97 ms
+   </td>
+   <td align="center">
+    0.74 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 2, 3, (9, 9), 7, false)
+   </td>
+   <td align="center">
+    25
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    21.83 ms
+   </td>
+   <td align="center">
+    24.08 ms
+   </td>
+   <td align="center">
+    24.14 ms
+   </td>
+   <td align="center">
+    24.15 ms
+   </td>
+   <td align="center">
+    0.70 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 2, 3, (9, 9), 7, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    0.66 ms
+   </td>
+   <td align="center">
+    0.67 ms
+   </td>
+   <td align="center">
+    0.68 ms
+   </td>
+   <td align="center">
+    0.68 ms
+   </td>
+   <td align="center">
+    0.06 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 2, 3, (9, 9), 7, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    0.66 ms
+   </td>
+   <td align="center">
+    0.68 ms
+   </td>
+   <td align="center">
+    0.81 ms
+   </td>
+   <td align="center">
+    0.95 ms
+   </td>
+   <td align="center">
+    0.79 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 2, 4, (15, 15), 11, false)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    31.91 ms
+   </td>
+   <td align="center">
+    37.78 ms
+   </td>
+   <td align="center">
+    38.06 ms
+   </td>
+   <td align="center">
+    38.08 ms
+   </td>
+   <td align="center">
+    1.19 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 2, 4, (15, 15), 11, false)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    32.86 ms
+   </td>
+   <td align="center">
+    37.90 ms
+   </td>
+   <td align="center">
+    38.25 ms
+   </td>
+   <td align="center">
+    38.27 ms
+   </td>
+   <td align="center">
+    1.21 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 2, 4, (15, 15), 11, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    5.37 ms
+   </td>
+   <td align="center">
+    7.55 ms
+   </td>
+   <td align="center">
+    7.32 ms
+   </td>
+   <td align="center">
+    7.58 ms
+   </td>
+   <td align="center">
+    2.00 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 2, 4, (15, 15), 11, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    5.35 ms
+   </td>
+   <td align="center">
+    5.53 ms
+   </td>
+   <td align="center">
+    7.11 ms
+   </td>
+   <td align="center">
+    7.51 ms
+   </td>
+   <td align="center">
+    2.59 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 2, 4, (15, 15), 7, false)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    29.26 ms
+   </td>
+   <td align="center">
+    34.14 ms
+   </td>
+   <td align="center">
+    34.47 ms
+   </td>
+   <td align="center">
+    34.48 ms
+   </td>
+   <td align="center">
+    1.05 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 2, 4, (15, 15), 7, false)
+   </td>
+   <td align="center">
+    88
+   </td>
+   <td align="center">
+    7
+   </td>
+   <td align="center">
+    28.22 ms
+   </td>
+   <td align="center">
+    34.19 ms
+   </td>
+   <td align="center">
+    34.41 ms
+   </td>
+   <td align="center">
+    34.43 ms
+   </td>
+   <td align="center">
+    1.03 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 2, 4, (15, 15), 7, true)
+   </td>
+   <td align="center">
+    25
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    2.25 ms
+   </td>
+   <td align="center">
+    2.28 ms
+   </td>
+   <td align="center">
+    2.29 ms
+   </td>
+   <td align="center">
+    2.29 ms
+   </td>
+   <td align="center">
+    0.03 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 2, 4, (15, 15), 7, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    2.26 ms
+   </td>
+   <td align="center">
+    2.31 ms
+   </td>
+   <td align="center">
+    2.54 ms
+   </td>
+   <td align="center">
+    2.62 ms
+   </td>
+   <td align="center">
+    0.82 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 2, 4, (9, 9), 11, false)
+   </td>
+   <td align="center">
+    25
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    29.88 ms
+   </td>
+   <td align="center">
+    33.33 ms
+   </td>
+   <td align="center">
+    33.39 ms
+   </td>
+   <td align="center">
+    33.41 ms
+   </td>
+   <td align="center">
+    1.00 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 2, 4, (9, 9), 11, false)
+   </td>
+   <td align="center">
+    14
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    30.87 ms
+   </td>
+   <td align="center">
+    33.49 ms
+   </td>
+   <td align="center">
+    33.49 ms
+   </td>
+   <td align="center">
+    33.50 ms
+   </td>
+   <td align="center">
+    0.97 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 2, 4, (9, 9), 11, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    1.92 ms
+   </td>
+   <td align="center">
+    1.98 ms
+   </td>
+   <td align="center">
+    2.11 ms
+   </td>
+   <td align="center">
+    2.19 ms
+   </td>
+   <td align="center">
+    0.81 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 2, 4, (9, 9), 11, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    1.93 ms
+   </td>
+   <td align="center">
+    2.82 ms
+   </td>
+   <td align="center">
+    3.14 ms
+   </td>
+   <td align="center">
+    3.48 ms
+   </td>
+   <td align="center">
+    1.55 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 2, 4, (9, 9), 7, false)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    28.61 ms
+   </td>
+   <td align="center">
+    30.54 ms
+   </td>
+   <td align="center">
+    30.38 ms
+   </td>
+   <td align="center">
+    30.38 ms
+   </td>
+   <td align="center">
+    0.57 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 2, 4, (9, 9), 7, false)
+   </td>
+   <td align="center">
+    15
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    28.88 ms
+   </td>
+   <td align="center">
+    30.59 ms
+   </td>
+   <td align="center">
+    30.67 ms
+   </td>
+   <td align="center">
+    30.68 ms
+   </td>
+   <td align="center">
+    0.89 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 2, 4, (9, 9), 7, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    0.86 ms
+   </td>
+   <td align="center">
+    0.89 ms
+   </td>
+   <td align="center">
+    1.01 ms
+   </td>
+   <td align="center">
+    1.13 ms
+   </td>
+   <td align="center">
+    0.80 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_self::Path_Idx_Cn_NPoints_WSize_Deriv::("cv/optflow/frames/VGA_%02d.png", 2, 4, (9, 9), 7, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    0.86 ms
+   </td>
+   <td align="center">
+    0.89 ms
+   </td>
+   <td align="center">
+    0.97 ms
+   </td>
+   <td align="center">
+    1.04 ms
+   </td>
+   <td align="center">
+    0.56 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/720p_%02d.png", 1, 1, (15, 15), 11)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    37.59 ms
+   </td>
+   <td align="center">
+    38.01 ms
+   </td>
+   <td align="center">
+    38.16 ms
+   </td>
+   <td align="center">
+    38.16 ms
+   </td>
+   <td align="center">
+    0.82 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/720p_%02d.png", 1, 1, (15, 15), 11)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    38.24 ms
+   </td>
+   <td align="center">
+    38.36 ms
+   </td>
+   <td align="center">
+    38.90 ms
+   </td>
+   <td align="center">
+    38.91 ms
+   </td>
+   <td align="center">
+    1.03 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/720p_%02d.png", 1, 1, (15, 15), 7)
+   </td>
+   <td align="center">
+    25
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    36.07 ms
+   </td>
+   <td align="center">
+    36.25 ms
+   </td>
+   <td align="center">
+    36.55 ms
+   </td>
+   <td align="center">
+    36.56 ms
+   </td>
+   <td align="center">
+    0.81 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/720p_%02d.png", 1, 1, (15, 15), 7)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    36.15 ms
+   </td>
+   <td align="center">
+    36.31 ms
+   </td>
+   <td align="center">
+    36.35 ms
+   </td>
+   <td align="center">
+    36.35 ms
+   </td>
+   <td align="center">
+    0.18 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/720p_%02d.png", 1, 1, (9, 9), 11)
+   </td>
+   <td align="center">
+    25
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    35.63 ms
+   </td>
+   <td align="center">
+    35.78 ms
+   </td>
+   <td align="center">
+    35.83 ms
+   </td>
+   <td align="center">
+    35.83 ms
+   </td>
+   <td align="center">
+    0.16 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/720p_%02d.png", 1, 1, (9, 9), 11)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    35.78 ms
+   </td>
+   <td align="center">
+    36.02 ms
+   </td>
+   <td align="center">
+    36.35 ms
+   </td>
+   <td align="center">
+    36.36 ms
+   </td>
+   <td align="center">
+    0.80 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/720p_%02d.png", 1, 1, (9, 9), 7)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    34.58 ms
+   </td>
+   <td align="center">
+    35.39 ms
+   </td>
+   <td align="center">
+    35.42 ms
+   </td>
+   <td align="center">
+    35.43 ms
+   </td>
+   <td align="center">
+    0.77 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/720p_%02d.png", 1, 1, (9, 9), 7)
+   </td>
+   <td align="center">
+    11
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    34.87 ms
+   </td>
+   <td align="center">
+    35.28 ms
+   </td>
+   <td align="center">
+    35.75 ms
+   </td>
+   <td align="center">
+    35.77 ms
+   </td>
+   <td align="center">
+    1.07 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/720p_%02d.png", 1, 3, (15, 15), 11)
+   </td>
+   <td align="center">
+    30
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    107.93 ms
+   </td>
+   <td align="center">
+    108.62 ms
+   </td>
+   <td align="center">
+    110.42 ms
+   </td>
+   <td align="center">
+    110.49 ms
+   </td>
+   <td align="center">
+    4.13 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/720p_%02d.png", 1, 3, (15, 15), 11)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    108.20 ms
+   </td>
+   <td align="center">
+    108.95 ms
+   </td>
+   <td align="center">
+    110.07 ms
+   </td>
+   <td align="center">
+    110.09 ms
+   </td>
+   <td align="center">
+    2.30 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/720p_%02d.png", 1, 3, (15, 15), 7)
+   </td>
+   <td align="center">
+    15
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    102.28 ms
+   </td>
+   <td align="center">
+    103.13 ms
+   </td>
+   <td align="center">
+    104.22 ms
+   </td>
+   <td align="center">
+    104.26 ms
+   </td>
+   <td align="center">
+    3.05 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/720p_%02d.png", 1, 3, (15, 15), 7)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    102.11 ms
+   </td>
+   <td align="center">
+    103.01 ms
+   </td>
+   <td align="center">
+    104.32 ms
+   </td>
+   <td align="center">
+    104.36 ms
+   </td>
+   <td align="center">
+    2.71 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/720p_%02d.png", 1, 3, (9, 9), 11)
+   </td>
+   <td align="center">
+    16
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    101.87 ms
+   </td>
+   <td align="center">
+    103.34 ms
+   </td>
+   <td align="center">
+    104.52 ms
+   </td>
+   <td align="center">
+    104.56 ms
+   </td>
+   <td align="center">
+    3.12 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/720p_%02d.png", 1, 3, (9, 9), 11)
+   </td>
+   <td align="center">
+    30
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    102.32 ms
+   </td>
+   <td align="center">
+    102.94 ms
+   </td>
+   <td align="center">
+    104.64 ms
+   </td>
+   <td align="center">
+    104.69 ms
+   </td>
+   <td align="center">
+    3.45 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/720p_%02d.png", 1, 3, (9, 9), 7)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    99.52 ms
+   </td>
+   <td align="center">
+    100.15 ms
+   </td>
+   <td align="center">
+    100.54 ms
+   </td>
+   <td align="center">
+    100.56 ms
+   </td>
+   <td align="center">
+    1.73 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/720p_%02d.png", 1, 3, (9, 9), 7)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    99.13 ms
+   </td>
+   <td align="center">
+    99.35 ms
+   </td>
+   <td align="center">
+    100.29 ms
+   </td>
+   <td align="center">
+    100.33 ms
+   </td>
+   <td align="center">
+    3.00 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/720p_%02d.png", 1, 4, (15, 15), 11)
+   </td>
+   <td align="center">
+    30
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    145.85 ms
+   </td>
+   <td align="center">
+    147.13 ms
+   </td>
+   <td align="center">
+    149.47 ms
+   </td>
+   <td align="center">
+    149.54 ms
+   </td>
+   <td align="center">
+    4.66 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/720p_%02d.png", 1, 4, (15, 15), 11)
+   </td>
+   <td align="center">
+    25
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    145.57 ms
+   </td>
+   <td align="center">
+    146.87 ms
+   </td>
+   <td align="center">
+    148.90 ms
+   </td>
+   <td align="center">
+    148.94 ms
+   </td>
+   <td align="center">
+    3.30 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/720p_%02d.png", 1, 4, (15, 15), 7)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    139.65 ms
+   </td>
+   <td align="center">
+    139.81 ms
+   </td>
+   <td align="center">
+    140.84 ms
+   </td>
+   <td align="center">
+    140.86 ms
+   </td>
+   <td align="center">
+    2.52 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/720p_%02d.png", 1, 4, (15, 15), 7)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    138.77 ms
+   </td>
+   <td align="center">
+    139.49 ms
+   </td>
+   <td align="center">
+    141.66 ms
+   </td>
+   <td align="center">
+    141.71 ms
+   </td>
+   <td align="center">
+    4.08 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/720p_%02d.png", 1, 4, (9, 9), 11)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    139.57 ms
+   </td>
+   <td align="center">
+    140.48 ms
+   </td>
+   <td align="center">
+    142.32 ms
+   </td>
+   <td align="center">
+    142.36 ms
+   </td>
+   <td align="center">
+    3.71 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/720p_%02d.png", 1, 4, (9, 9), 11)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    138.50 ms
+   </td>
+   <td align="center">
+    139.60 ms
+   </td>
+   <td align="center">
+    141.17 ms
+   </td>
+   <td align="center">
+    141.20 ms
+   </td>
+   <td align="center">
+    2.98 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/720p_%02d.png", 1, 4, (9, 9), 7)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    135.70 ms
+   </td>
+   <td align="center">
+    136.75 ms
+   </td>
+   <td align="center">
+    138.57 ms
+   </td>
+   <td align="center">
+    138.62 ms
+   </td>
+   <td align="center">
+    4.10 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/720p_%02d.png", 1, 4, (9, 9), 7)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    135.74 ms
+   </td>
+   <td align="center">
+    136.29 ms
+   </td>
+   <td align="center">
+    138.96 ms
+   </td>
+   <td align="center">
+    139.01 ms
+   </td>
+   <td align="center">
+    3.96 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/720p_%02d.png", 2, 1, (15, 15), 11)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    37.67 ms
+   </td>
+   <td align="center">
+    37.85 ms
+   </td>
+   <td align="center">
+    37.92 ms
+   </td>
+   <td align="center">
+    37.93 ms
+   </td>
+   <td align="center">
+    0.20 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/720p_%02d.png", 2, 1, (15, 15), 11)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    37.57 ms
+   </td>
+   <td align="center">
+    38.25 ms
+   </td>
+   <td align="center">
+    38.48 ms
+   </td>
+   <td align="center">
+    38.50 ms
+   </td>
+   <td align="center">
+    1.08 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/720p_%02d.png", 2, 1, (15, 15), 7)
+   </td>
+   <td align="center">
+    24
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    36.18 ms
+   </td>
+   <td align="center">
+    36.37 ms
+   </td>
+   <td align="center">
+    36.94 ms
+   </td>
+   <td align="center">
+    36.95 ms
+   </td>
+   <td align="center">
+    1.09 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/720p_%02d.png", 2, 1, (15, 15), 7)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    35.94 ms
+   </td>
+   <td align="center">
+    36.48 ms
+   </td>
+   <td align="center">
+    36.54 ms
+   </td>
+   <td align="center">
+    36.54 ms
+   </td>
+   <td align="center">
+    0.69 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/720p_%02d.png", 2, 1, (9, 9), 11)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    35.52 ms
+   </td>
+   <td align="center">
+    35.70 ms
+   </td>
+   <td align="center">
+    35.75 ms
+   </td>
+   <td align="center">
+    35.75 ms
+   </td>
+   <td align="center">
+    0.17 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/720p_%02d.png", 2, 1, (9, 9), 11)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    36.19 ms
+   </td>
+   <td align="center">
+    36.59 ms
+   </td>
+   <td align="center">
+    37.12 ms
+   </td>
+   <td align="center">
+    37.13 ms
+   </td>
+   <td align="center">
+    1.09 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/720p_%02d.png", 2, 1, (9, 9), 7)
+   </td>
+   <td align="center">
+    20
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    34.62 ms
+   </td>
+   <td align="center">
+    35.03 ms
+   </td>
+   <td align="center">
+    35.50 ms
+   </td>
+   <td align="center">
+    35.52 ms
+   </td>
+   <td align="center">
+    1.04 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/720p_%02d.png", 2, 1, (9, 9), 7)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    35.08 ms
+   </td>
+   <td align="center">
+    35.23 ms
+   </td>
+   <td align="center">
+    35.35 ms
+   </td>
+   <td align="center">
+    35.35 ms
+   </td>
+   <td align="center">
+    0.29 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/720p_%02d.png", 2, 3, (15, 15), 11)
+   </td>
+   <td align="center">
+    15
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    107.22 ms
+   </td>
+   <td align="center">
+    108.01 ms
+   </td>
+   <td align="center">
+    109.26 ms
+   </td>
+   <td align="center">
+    109.31 ms
+   </td>
+   <td align="center">
+    3.27 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/720p_%02d.png", 2, 3, (15, 15), 11)
+   </td>
+   <td align="center">
+    25
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    108.00 ms
+   </td>
+   <td align="center">
+    108.70 ms
+   </td>
+   <td align="center">
+    110.37 ms
+   </td>
+   <td align="center">
+    110.42 ms
+   </td>
+   <td align="center">
+    3.30 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/720p_%02d.png", 2, 3, (15, 15), 7)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    102.01 ms
+   </td>
+   <td align="center">
+    102.78 ms
+   </td>
+   <td align="center">
+    104.40 ms
+   </td>
+   <td align="center">
+    104.44 ms
+   </td>
+   <td align="center">
+    3.05 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/720p_%02d.png", 2, 3, (15, 15), 7)
+   </td>
+   <td align="center">
+    11
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    102.04 ms
+   </td>
+   <td align="center">
+    102.50 ms
+   </td>
+   <td align="center">
+    103.87 ms
+   </td>
+   <td align="center">
+    103.91 ms
+   </td>
+   <td align="center">
+    3.02 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/720p_%02d.png", 2, 3, (9, 9), 11)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    102.49 ms
+   </td>
+   <td align="center">
+    103.20 ms
+   </td>
+   <td align="center">
+    104.88 ms
+   </td>
+   <td align="center">
+    104.92 ms
+   </td>
+   <td align="center">
+    3.01 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/720p_%02d.png", 2, 3, (9, 9), 11)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    102.87 ms
+   </td>
+   <td align="center">
+    103.29 ms
+   </td>
+   <td align="center">
+    104.58 ms
+   </td>
+   <td align="center">
+    104.62 ms
+   </td>
+   <td align="center">
+    3.01 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/720p_%02d.png", 2, 3, (9, 9), 7)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    99.62 ms
+   </td>
+   <td align="center">
+    100.04 ms
+   </td>
+   <td align="center">
+    100.53 ms
+   </td>
+   <td align="center">
+    100.54 ms
+   </td>
+   <td align="center">
+    1.29 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/720p_%02d.png", 2, 3, (9, 9), 7)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    99.72 ms
+   </td>
+   <td align="center">
+    100.44 ms
+   </td>
+   <td align="center">
+    101.42 ms
+   </td>
+   <td align="center">
+    101.44 ms
+   </td>
+   <td align="center">
+    2.05 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/720p_%02d.png", 2, 4, (15, 15), 11)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    146.22 ms
+   </td>
+   <td align="center">
+    149.60 ms
+   </td>
+   <td align="center">
+    149.93 ms
+   </td>
+   <td align="center">
+    149.97 ms
+   </td>
+   <td align="center">
+    3.59 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/720p_%02d.png", 2, 4, (15, 15), 11)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    146.77 ms
+   </td>
+   <td align="center">
+    148.79 ms
+   </td>
+   <td align="center">
+    149.43 ms
+   </td>
+   <td align="center">
+    149.45 ms
+   </td>
+   <td align="center">
+    2.92 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/720p_%02d.png", 2, 4, (15, 15), 7)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    139.28 ms
+   </td>
+   <td align="center">
+    140.09 ms
+   </td>
+   <td align="center">
+    141.79 ms
+   </td>
+   <td align="center">
+    141.83 ms
+   </td>
+   <td align="center">
+    3.65 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/720p_%02d.png", 2, 4, (15, 15), 7)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    139.24 ms
+   </td>
+   <td align="center">
+    142.04 ms
+   </td>
+   <td align="center">
+    142.61 ms
+   </td>
+   <td align="center">
+    142.64 ms
+   </td>
+   <td align="center">
+    3.07 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/720p_%02d.png", 2, 4, (9, 9), 11)
+   </td>
+   <td align="center">
+    12
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    139.15 ms
+   </td>
+   <td align="center">
+    139.75 ms
+   </td>
+   <td align="center">
+    142.02 ms
+   </td>
+   <td align="center">
+    142.07 ms
+   </td>
+   <td align="center">
+    4.17 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/720p_%02d.png", 2, 4, (9, 9), 11)
+   </td>
+   <td align="center">
+    12
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    138.96 ms
+   </td>
+   <td align="center">
+    139.92 ms
+   </td>
+   <td align="center">
+    142.05 ms
+   </td>
+   <td align="center">
+    142.10 ms
+   </td>
+   <td align="center">
+    4.22 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/720p_%02d.png", 2, 4, (9, 9), 7)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    135.50 ms
+   </td>
+   <td align="center">
+    136.59 ms
+   </td>
+   <td align="center">
+    137.79 ms
+   </td>
+   <td align="center">
+    137.83 ms
+   </td>
+   <td align="center">
+    3.21 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/720p_%02d.png", 2, 4, (9, 9), 7)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    135.84 ms
+   </td>
+   <td align="center">
+    136.50 ms
+   </td>
+   <td align="center">
+    138.13 ms
+   </td>
+   <td align="center">
+    138.17 ms
+   </td>
+   <td align="center">
+    3.85 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/VGA_%02d.png", 1, 1, (15, 15), 11)
+   </td>
+   <td align="center">
+    30
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    11.03 ms
+   </td>
+   <td align="center">
+    11.17 ms
+   </td>
+   <td align="center">
+    12.21 ms
+   </td>
+   <td align="center">
+    12.35 ms
+   </td>
+   <td align="center">
+    1.97 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/VGA_%02d.png", 1, 1, (15, 15), 11)
+   </td>
+   <td align="center">
+    30
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    10.97 ms
+   </td>
+   <td align="center">
+    11.11 ms
+   </td>
+   <td align="center">
+    12.25 ms
+   </td>
+   <td align="center">
+    12.38 ms
+   </td>
+   <td align="center">
+    1.97 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/VGA_%02d.png", 1, 1, (15, 15), 7)
+   </td>
+   <td align="center">
+    30
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    10.18 ms
+   </td>
+   <td align="center">
+    14.28 ms
+   </td>
+   <td align="center">
+    13.17 ms
+   </td>
+   <td align="center">
+    13.42 ms
+   </td>
+   <td align="center">
+    2.57 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/VGA_%02d.png", 1, 1, (15, 15), 7)
+   </td>
+   <td align="center">
+    30
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    10.20 ms
+   </td>
+   <td align="center">
+    10.31 ms
+   </td>
+   <td align="center">
+    12.15 ms
+   </td>
+   <td align="center">
+    12.45 ms
+   </td>
+   <td align="center">
+    2.87 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/VGA_%02d.png", 1, 1, (9, 9), 11)
+   </td>
+   <td align="center">
+    30
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    10.26 ms
+   </td>
+   <td align="center">
+    10.91 ms
+   </td>
+   <td align="center">
+    12.32 ms
+   </td>
+   <td align="center">
+    12.55 ms
+   </td>
+   <td align="center">
+    2.53 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/VGA_%02d.png", 1, 1, (9, 9), 11)
+   </td>
+   <td align="center">
+    30
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    10.23 ms
+   </td>
+   <td align="center">
+    10.45 ms
+   </td>
+   <td align="center">
+    12.22 ms
+   </td>
+   <td align="center">
+    12.45 ms
+   </td>
+   <td align="center">
+    2.53 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/VGA_%02d.png", 1, 1, (9, 9), 7)
+   </td>
+   <td align="center">
+    30
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    9.76 ms
+   </td>
+   <td align="center">
+    12.89 ms
+   </td>
+   <td align="center">
+    12.11 ms
+   </td>
+   <td align="center">
+    12.25 ms
+   </td>
+   <td align="center">
+    1.88 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/VGA_%02d.png", 1, 1, (9, 9), 7)
+   </td>
+   <td align="center">
+    30
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    9.83 ms
+   </td>
+   <td align="center">
+    13.68 ms
+   </td>
+   <td align="center">
+    12.86 ms
+   </td>
+   <td align="center">
+    13.05 ms
+   </td>
+   <td align="center">
+    2.24 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/VGA_%02d.png", 1, 3, (15, 15), 11)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    44.29 ms
+   </td>
+   <td align="center">
+    44.69 ms
+   </td>
+   <td align="center">
+    45.08 ms
+   </td>
+   <td align="center">
+    45.09 ms
+   </td>
+   <td align="center">
+    0.99 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/VGA_%02d.png", 1, 3, (15, 15), 11)
+   </td>
+   <td align="center">
+    28
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    44.43 ms
+   </td>
+   <td align="center">
+    44.88 ms
+   </td>
+   <td align="center">
+    45.38 ms
+   </td>
+   <td align="center">
+    45.40 ms
+   </td>
+   <td align="center">
+    1.36 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/VGA_%02d.png", 1, 3, (15, 15), 7)
+   </td>
+   <td align="center">
+    25
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    38.62 ms
+   </td>
+   <td align="center">
+    38.79 ms
+   </td>
+   <td align="center">
+    39.02 ms
+   </td>
+   <td align="center">
+    39.03 ms
+   </td>
+   <td align="center">
+    0.84 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/VGA_%02d.png", 1, 3, (15, 15), 7)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    39.00 ms
+   </td>
+   <td align="center">
+    39.19 ms
+   </td>
+   <td align="center">
+    39.31 ms
+   </td>
+   <td align="center">
+    39.31 ms
+   </td>
+   <td align="center">
+    0.34 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/VGA_%02d.png", 1, 3, (9, 9), 11)
+   </td>
+   <td align="center">
+    25
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    38.48 ms
+   </td>
+   <td align="center">
+    38.84 ms
+   </td>
+   <td align="center">
+    39.24 ms
+   </td>
+   <td align="center">
+    39.25 ms
+   </td>
+   <td align="center">
+    0.98 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/VGA_%02d.png", 1, 3, (9, 9), 11)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    38.68 ms
+   </td>
+   <td align="center">
+    39.08 ms
+   </td>
+   <td align="center">
+    39.13 ms
+   </td>
+   <td align="center">
+    39.13 ms
+   </td>
+   <td align="center">
+    0.43 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/VGA_%02d.png", 1, 3, (9, 9), 7)
+   </td>
+   <td align="center">
+    25
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    35.93 ms
+   </td>
+   <td align="center">
+    36.21 ms
+   </td>
+   <td align="center">
+    36.58 ms
+   </td>
+   <td align="center">
+    36.60 ms
+   </td>
+   <td align="center">
+    0.95 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/VGA_%02d.png", 1, 3, (9, 9), 7)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    36.22 ms
+   </td>
+   <td align="center">
+    36.41 ms
+   </td>
+   <td align="center">
+    36.47 ms
+   </td>
+   <td align="center">
+    36.47 ms
+   </td>
+   <td align="center">
+    0.24 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/VGA_%02d.png", 1, 4, (15, 15), 11)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    58.45 ms
+   </td>
+   <td align="center">
+    59.00 ms
+   </td>
+   <td align="center">
+    59.40 ms
+   </td>
+   <td align="center">
+    59.41 ms
+   </td>
+   <td align="center">
+    1.15 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/VGA_%02d.png", 1, 4, (15, 15), 11)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    58.48 ms
+   </td>
+   <td align="center">
+    58.89 ms
+   </td>
+   <td align="center">
+    59.23 ms
+   </td>
+   <td align="center">
+    59.24 ms
+   </td>
+   <td align="center">
+    1.29 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/VGA_%02d.png", 1, 4, (15, 15), 7)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    51.13 ms
+   </td>
+   <td align="center">
+    51.35 ms
+   </td>
+   <td align="center">
+    51.37 ms
+   </td>
+   <td align="center">
+    51.37 ms
+   </td>
+   <td align="center">
+    0.20 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/VGA_%02d.png", 1, 4, (15, 15), 7)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    51.00 ms
+   </td>
+   <td align="center">
+    51.34 ms
+   </td>
+   <td align="center">
+    51.49 ms
+   </td>
+   <td align="center">
+    51.49 ms
+   </td>
+   <td align="center">
+    0.48 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/VGA_%02d.png", 1, 4, (9, 9), 11)
+   </td>
+   <td align="center">
+    30
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    50.46 ms
+   </td>
+   <td align="center">
+    51.06 ms
+   </td>
+   <td align="center">
+    52.20 ms
+   </td>
+   <td align="center">
+    52.25 ms
+   </td>
+   <td align="center">
+    2.23 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/VGA_%02d.png", 1, 4, (9, 9), 11)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    51.01 ms
+   </td>
+   <td align="center">
+    51.30 ms
+   </td>
+   <td align="center">
+    51.57 ms
+   </td>
+   <td align="center">
+    51.58 ms
+   </td>
+   <td align="center">
+    1.07 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/VGA_%02d.png", 1, 4, (9, 9), 7)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    47.60 ms
+   </td>
+   <td align="center">
+    47.87 ms
+   </td>
+   <td align="center">
+    47.90 ms
+   </td>
+   <td align="center">
+    47.90 ms
+   </td>
+   <td align="center">
+    0.17 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/VGA_%02d.png", 1, 4, (9, 9), 7)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    47.78 ms
+   </td>
+   <td align="center">
+    48.21 ms
+   </td>
+   <td align="center">
+    48.75 ms
+   </td>
+   <td align="center">
+    48.76 ms
+   </td>
+   <td align="center">
+    1.26 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/VGA_%02d.png", 2, 1, (15, 15), 11)
+   </td>
+   <td align="center">
+    30
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    9.82 ms
+   </td>
+   <td align="center">
+    9.87 ms
+   </td>
+   <td align="center">
+    10.17 ms
+   </td>
+   <td align="center">
+    10.22 ms
+   </td>
+   <td align="center">
+    1.22 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/VGA_%02d.png", 2, 1, (15, 15), 11)
+   </td>
+   <td align="center">
+    30
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    9.99 ms
+   </td>
+   <td align="center">
+    10.86 ms
+   </td>
+   <td align="center">
+    10.88 ms
+   </td>
+   <td align="center">
+    10.99 ms
+   </td>
+   <td align="center">
+    1.81 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/VGA_%02d.png", 2, 1, (15, 15), 7)
+   </td>
+   <td align="center">
+    30
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    10.26 ms
+   </td>
+   <td align="center">
+    14.98 ms
+   </td>
+   <td align="center">
+    14.29 ms
+   </td>
+   <td align="center">
+    14.47 ms
+   </td>
+   <td align="center">
+    2.22 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/VGA_%02d.png", 2, 1, (15, 15), 7)
+   </td>
+   <td align="center">
+    30
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    12.54 ms
+   </td>
+   <td align="center">
+    16.33 ms
+   </td>
+   <td align="center">
+    16.09 ms
+   </td>
+   <td align="center">
+    16.21 ms
+   </td>
+   <td align="center">
+    1.98 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/VGA_%02d.png", 2, 1, (9, 9), 11)
+   </td>
+   <td align="center">
+    30
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    10.27 ms
+   </td>
+   <td align="center">
+    10.62 ms
+   </td>
+   <td align="center">
+    12.31 ms
+   </td>
+   <td align="center">
+    12.56 ms
+   </td>
+   <td align="center">
+    2.62 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/VGA_%02d.png", 2, 1, (9, 9), 11)
+   </td>
+   <td align="center">
+    30
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    10.24 ms
+   </td>
+   <td align="center">
+    10.55 ms
+   </td>
+   <td align="center">
+    12.42 ms
+   </td>
+   <td align="center">
+    12.68 ms
+   </td>
+   <td align="center">
+    2.64 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/VGA_%02d.png", 2, 1, (9, 9), 7)
+   </td>
+   <td align="center">
+    30
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    9.84 ms
+   </td>
+   <td align="center">
+    9.91 ms
+   </td>
+   <td align="center">
+    12.19 ms
+   </td>
+   <td align="center">
+    12.53 ms
+   </td>
+   <td align="center">
+    2.97 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/VGA_%02d.png", 2, 1, (9, 9), 7)
+   </td>
+   <td align="center">
+    30
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    9.81 ms
+   </td>
+   <td align="center">
+    15.14 ms
+   </td>
+   <td align="center">
+    12.69 ms
+   </td>
+   <td align="center">
+    13.00 ms
+   </td>
+   <td align="center">
+    2.80 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/VGA_%02d.png", 2, 3, (15, 15), 11)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    44.50 ms
+   </td>
+   <td align="center">
+    44.95 ms
+   </td>
+   <td align="center">
+    45.24 ms
+   </td>
+   <td align="center">
+    45.24 ms
+   </td>
+   <td align="center">
+    0.78 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/VGA_%02d.png", 2, 3, (15, 15), 11)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    44.41 ms
+   </td>
+   <td align="center">
+    44.59 ms
+   </td>
+   <td align="center">
+    44.88 ms
+   </td>
+   <td align="center">
+    44.88 ms
+   </td>
+   <td align="center">
+    0.81 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/VGA_%02d.png", 2, 3, (15, 15), 7)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    38.74 ms
+   </td>
+   <td align="center">
+    38.94 ms
+   </td>
+   <td align="center">
+    39.20 ms
+   </td>
+   <td align="center">
+    39.21 ms
+   </td>
+   <td align="center">
+    0.77 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/VGA_%02d.png", 2, 3, (15, 15), 7)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    38.87 ms
+   </td>
+   <td align="center">
+    39.10 ms
+   </td>
+   <td align="center">
+    39.12 ms
+   </td>
+   <td align="center">
+    39.12 ms
+   </td>
+   <td align="center">
+    0.20 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/VGA_%02d.png", 2, 3, (9, 9), 11)
+   </td>
+   <td align="center">
+    25
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    38.11 ms
+   </td>
+   <td align="center">
+    38.76 ms
+   </td>
+   <td align="center">
+    39.09 ms
+   </td>
+   <td align="center">
+    39.10 ms
+   </td>
+   <td align="center">
+    0.91 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/VGA_%02d.png", 2, 3, (9, 9), 11)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    38.44 ms
+   </td>
+   <td align="center">
+    38.86 ms
+   </td>
+   <td align="center">
+    39.51 ms
+   </td>
+   <td align="center">
+    39.53 ms
+   </td>
+   <td align="center">
+    1.17 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/VGA_%02d.png", 2, 3, (9, 9), 7)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    36.04 ms
+   </td>
+   <td align="center">
+    36.17 ms
+   </td>
+   <td align="center">
+    36.25 ms
+   </td>
+   <td align="center">
+    36.25 ms
+   </td>
+   <td align="center">
+    0.29 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/VGA_%02d.png", 2, 3, (9, 9), 7)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    34.59 ms
+   </td>
+   <td align="center">
+    36.13 ms
+   </td>
+   <td align="center">
+    36.07 ms
+   </td>
+   <td align="center">
+    36.08 ms
+   </td>
+   <td align="center">
+    0.56 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/VGA_%02d.png", 2, 4, (15, 15), 11)
+   </td>
+   <td align="center">
+    30
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    59.54 ms
+   </td>
+   <td align="center">
+    60.71 ms
+   </td>
+   <td align="center">
+    61.78 ms
+   </td>
+   <td align="center">
+    61.82 ms
+   </td>
+   <td align="center">
+    2.15 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/VGA_%02d.png", 2, 4, (15, 15), 11)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    58.59 ms
+   </td>
+   <td align="center">
+    58.90 ms
+   </td>
+   <td align="center">
+    58.89 ms
+   </td>
+   <td align="center">
+    58.90 ms
+   </td>
+   <td align="center">
+    0.26 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/VGA_%02d.png", 2, 4, (15, 15), 7)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    50.15 ms
+   </td>
+   <td align="center">
+    51.58 ms
+   </td>
+   <td align="center">
+    51.68 ms
+   </td>
+   <td align="center">
+    51.69 ms
+   </td>
+   <td align="center">
+    0.93 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/VGA_%02d.png", 2, 4, (15, 15), 7)
+   </td>
+   <td align="center">
+    14
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    51.30 ms
+   </td>
+   <td align="center">
+    51.70 ms
+   </td>
+   <td align="center">
+    52.44 ms
+   </td>
+   <td align="center">
+    52.46 ms
+   </td>
+   <td align="center">
+    1.54 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/VGA_%02d.png", 2, 4, (9, 9), 11)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    52.22 ms
+   </td>
+   <td align="center">
+    52.74 ms
+   </td>
+   <td align="center">
+    53.13 ms
+   </td>
+   <td align="center">
+    53.14 ms
+   </td>
+   <td align="center">
+    1.14 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/VGA_%02d.png", 2, 4, (9, 9), 11)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    50.82 ms
+   </td>
+   <td align="center">
+    51.02 ms
+   </td>
+   <td align="center">
+    51.37 ms
+   </td>
+   <td align="center">
+    51.37 ms
+   </td>
+   <td align="center">
+    0.98 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/VGA_%02d.png", 2, 4, (9, 9), 7)
+   </td>
+   <td align="center">
+    22
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    47.39 ms
+   </td>
+   <td align="center">
+    47.69 ms
+   </td>
+   <td align="center">
+    48.05 ms
+   </td>
+   <td align="center">
+    48.07 ms
+   </td>
+   <td align="center">
+    1.42 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_full::Path_Idx_Cn_NPoints_WSize::("cv/optflow/frames/VGA_%02d.png", 2, 4, (9, 9), 7)
+   </td>
+   <td align="center">
+    25
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    48.00 ms
+   </td>
+   <td align="center">
+    48.32 ms
+   </td>
+   <td align="center">
+    48.48 ms
+   </td>
+   <td align="center">
+    48.48 ms
+   </td>
+   <td align="center">
+    0.53 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_pyr::Path_Win_Deriv_Border_Reuse::("cv/optflow/frames/720p_01.png", 11, false, BORDER_DEFAULT, false)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    13.02 ms
+   </td>
+   <td align="center">
+    13.16 ms
+   </td>
+   <td align="center">
+    13.15 ms
+   </td>
+   <td align="center">
+    13.15 ms
+   </td>
+   <td align="center">
+    0.10 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_pyr::Path_Win_Deriv_Border_Reuse::("cv/optflow/frames/720p_01.png", 11, false, BORDER_DEFAULT, false)
+   </td>
+   <td align="center">
+    25
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    13.20 ms
+   </td>
+   <td align="center">
+    13.30 ms
+   </td>
+   <td align="center">
+    13.40 ms
+   </td>
+   <td align="center">
+    13.40 ms
+   </td>
+   <td align="center">
+    0.39 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_pyr::Path_Win_Deriv_Border_Reuse::("cv/optflow/frames/720p_01.png", 11, false, BORDER_DEFAULT, true)
+   </td>
+   <td align="center">
+    25
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    13.07 ms
+   </td>
+   <td align="center">
+    13.14 ms
+   </td>
+   <td align="center">
+    13.19 ms
+   </td>
+   <td align="center">
+    13.19 ms
+   </td>
+   <td align="center">
+    0.17 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_pyr::Path_Win_Deriv_Border_Reuse::("cv/optflow/frames/720p_01.png", 11, false, BORDER_DEFAULT, true)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    13.22 ms
+   </td>
+   <td align="center">
+    13.26 ms
+   </td>
+   <td align="center">
+    13.29 ms
+   </td>
+   <td align="center">
+    13.29 ms
+   </td>
+   <td align="center">
+    0.09 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_pyr::Path_Win_Deriv_Border_Reuse::("cv/optflow/frames/720p_01.png", 11, false, BORDER_TRANSPARENT, false)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    12.61 ms
+   </td>
+   <td align="center">
+    12.84 ms
+   </td>
+   <td align="center">
+    13.12 ms
+   </td>
+   <td align="center">
+    13.13 ms
+   </td>
+   <td align="center">
+    0.58 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_pyr::Path_Win_Deriv_Border_Reuse::("cv/optflow/frames/720p_01.png", 11, false, BORDER_TRANSPARENT, false)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    12.96 ms
+   </td>
+   <td align="center">
+    13.04 ms
+   </td>
+   <td align="center">
+    13.06 ms
+   </td>
+   <td align="center">
+    13.06 ms
+   </td>
+   <td align="center">
+    0.09 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_pyr::Path_Win_Deriv_Border_Reuse::("cv/optflow/frames/720p_01.png", 11, false, BORDER_TRANSPARENT, true)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    12.69 ms
+   </td>
+   <td align="center">
+    12.80 ms
+   </td>
+   <td align="center">
+    12.86 ms
+   </td>
+   <td align="center">
+    12.86 ms
+   </td>
+   <td align="center">
+    0.19 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_pyr::Path_Win_Deriv_Border_Reuse::("cv/optflow/frames/720p_01.png", 11, false, BORDER_TRANSPARENT, true)
+   </td>
+   <td align="center">
+    65
+   </td>
+   <td align="center">
+    5
+   </td>
+   <td align="center">
+    12.88 ms
+   </td>
+   <td align="center">
+    13.01 ms
+   </td>
+   <td align="center">
+    13.17 ms
+   </td>
+   <td align="center">
+    13.18 ms
+   </td>
+   <td align="center">
+    0.39 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_pyr::Path_Win_Deriv_Border_Reuse::("cv/optflow/frames/720p_01.png", 11, true, BORDER_DEFAULT, false)
+   </td>
+   <td align="center">
+    16
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    42.63 ms
+   </td>
+   <td align="center">
+    42.79 ms
+   </td>
+   <td align="center">
+    43.21 ms
+   </td>
+   <td align="center">
+    43.23 ms
+   </td>
+   <td align="center">
+    1.26 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_pyr::Path_Win_Deriv_Border_Reuse::("cv/optflow/frames/720p_01.png", 11, true, BORDER_DEFAULT, false)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    42.74 ms
+   </td>
+   <td align="center">
+    42.91 ms
+   </td>
+   <td align="center">
+    43.18 ms
+   </td>
+   <td align="center">
+    43.19 ms
+   </td>
+   <td align="center">
+    0.85 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_pyr::Path_Win_Deriv_Border_Reuse::("cv/optflow/frames/720p_01.png", 11, true, BORDER_DEFAULT, true)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    42.80 ms
+   </td>
+   <td align="center">
+    42.96 ms
+   </td>
+   <td align="center">
+    43.17 ms
+   </td>
+   <td align="center">
+    43.17 ms
+   </td>
+   <td align="center">
+    0.75 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_pyr::Path_Win_Deriv_Border_Reuse::("cv/optflow/frames/720p_01.png", 11, true, BORDER_DEFAULT, true)
+   </td>
+   <td align="center">
+    25
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    42.79 ms
+   </td>
+   <td align="center">
+    42.91 ms
+   </td>
+   <td align="center">
+    43.26 ms
+   </td>
+   <td align="center">
+    43.28 ms
+   </td>
+   <td align="center">
+    1.24 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_pyr::Path_Win_Deriv_Border_Reuse::("cv/optflow/frames/720p_01.png", 11, true, BORDER_TRANSPARENT, false)
+   </td>
+   <td align="center">
+    25
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    41.87 ms
+   </td>
+   <td align="center">
+    42.12 ms
+   </td>
+   <td align="center">
+    42.56 ms
+   </td>
+   <td align="center">
+    42.57 ms
+   </td>
+   <td align="center">
+    1.21 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_pyr::Path_Win_Deriv_Border_Reuse::("cv/optflow/frames/720p_01.png", 11, true, BORDER_TRANSPARENT, false)
+   </td>
+   <td align="center">
+    25
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    42.01 ms
+   </td>
+   <td align="center">
+    42.18 ms
+   </td>
+   <td align="center">
+    42.52 ms
+   </td>
+   <td align="center">
+    42.53 ms
+   </td>
+   <td align="center">
+    1.16 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_pyr::Path_Win_Deriv_Border_Reuse::("cv/optflow/frames/720p_01.png", 11, true, BORDER_TRANSPARENT, true)
+   </td>
+   <td align="center">
+    38
+   </td>
+   <td align="center">
+    3
+   </td>
+   <td align="center">
+    41.85 ms
+   </td>
+   <td align="center">
+    42.06 ms
+   </td>
+   <td align="center">
+    42.42 ms
+   </td>
+   <td align="center">
+    42.43 ms
+   </td>
+   <td align="center">
+    1.00 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_pyr::Path_Win_Deriv_Border_Reuse::("cv/optflow/frames/720p_01.png", 11, true, BORDER_TRANSPARENT, true)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    42.05 ms
+   </td>
+   <td align="center">
+    42.32 ms
+   </td>
+   <td align="center">
+    42.93 ms
+   </td>
+   <td align="center">
+    42.95 ms
+   </td>
+   <td align="center">
+    1.44 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_pyr::Path_Win_Deriv_Border_Reuse::("cv/optflow/frames/720p_01.png", 7, false, BORDER_DEFAULT, false)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    12.95 ms
+   </td>
+   <td align="center">
+    13.01 ms
+   </td>
+   <td align="center">
+    13.08 ms
+   </td>
+   <td align="center">
+    13.08 ms
+   </td>
+   <td align="center">
+    0.17 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_pyr::Path_Win_Deriv_Border_Reuse::("cv/optflow/frames/720p_01.png", 7, false, BORDER_DEFAULT, false)
+   </td>
+   <td align="center">
+    25
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    13.09 ms
+   </td>
+   <td align="center">
+    13.24 ms
+   </td>
+   <td align="center">
+    13.34 ms
+   </td>
+   <td align="center">
+    13.35 ms
+   </td>
+   <td align="center">
+    0.38 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_pyr::Path_Win_Deriv_Border_Reuse::("cv/optflow/frames/720p_01.png", 7, false, BORDER_DEFAULT, true)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    12.89 ms
+   </td>
+   <td align="center">
+    12.99 ms
+   </td>
+   <td align="center">
+    13.00 ms
+   </td>
+   <td align="center">
+    13.00 ms
+   </td>
+   <td align="center">
+    0.10 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_pyr::Path_Win_Deriv_Border_Reuse::("cv/optflow/frames/720p_01.png", 7, false, BORDER_DEFAULT, true)
+   </td>
+   <td align="center">
+    38
+   </td>
+   <td align="center">
+    3
+   </td>
+   <td align="center">
+    13.12 ms
+   </td>
+   <td align="center">
+    13.22 ms
+   </td>
+   <td align="center">
+    13.36 ms
+   </td>
+   <td align="center">
+    13.37 ms
+   </td>
+   <td align="center">
+    0.37 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_pyr::Path_Win_Deriv_Border_Reuse::("cv/optflow/frames/720p_01.png", 7, false, BORDER_TRANSPARENT, false)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    12.77 ms
+   </td>
+   <td align="center">
+    12.92 ms
+   </td>
+   <td align="center">
+    12.95 ms
+   </td>
+   <td align="center">
+    12.95 ms
+   </td>
+   <td align="center">
+    0.16 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_pyr::Path_Win_Deriv_Border_Reuse::("cv/optflow/frames/720p_01.png", 7, false, BORDER_TRANSPARENT, false)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    12.76 ms
+   </td>
+   <td align="center">
+    13.02 ms
+   </td>
+   <td align="center">
+    13.32 ms
+   </td>
+   <td align="center">
+    13.33 ms
+   </td>
+   <td align="center">
+    0.60 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_pyr::Path_Win_Deriv_Border_Reuse::("cv/optflow/frames/720p_01.png", 7, false, BORDER_TRANSPARENT, true)
+   </td>
+   <td align="center">
+    63
+   </td>
+   <td align="center">
+    5
+   </td>
+   <td align="center">
+    12.71 ms
+   </td>
+   <td align="center">
+    12.85 ms
+   </td>
+   <td align="center">
+    12.98 ms
+   </td>
+   <td align="center">
+    12.99 ms
+   </td>
+   <td align="center">
+    0.36 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_pyr::Path_Win_Deriv_Border_Reuse::("cv/optflow/frames/720p_01.png", 7, false, BORDER_TRANSPARENT, true)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    12.90 ms
+   </td>
+   <td align="center">
+    12.97 ms
+   </td>
+   <td align="center">
+    12.99 ms
+   </td>
+   <td align="center">
+    12.99 ms
+   </td>
+   <td align="center">
+    0.11 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_pyr::Path_Win_Deriv_Border_Reuse::("cv/optflow/frames/720p_01.png", 7, true, BORDER_DEFAULT, false)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    42.27 ms
+   </td>
+   <td align="center">
+    42.43 ms
+   </td>
+   <td align="center">
+    42.72 ms
+   </td>
+   <td align="center">
+    42.73 ms
+   </td>
+   <td align="center">
+    1.06 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_pyr::Path_Win_Deriv_Border_Reuse::("cv/optflow/frames/720p_01.png", 7, true, BORDER_DEFAULT, false)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    43.43 ms
+   </td>
+   <td align="center">
+    43.50 ms
+   </td>
+   <td align="center">
+    43.76 ms
+   </td>
+   <td align="center">
+    43.77 ms
+   </td>
+   <td align="center">
+    0.52 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_pyr::Path_Win_Deriv_Border_Reuse::("cv/optflow/frames/720p_01.png", 7, true, BORDER_DEFAULT, true)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    42.41 ms
+   </td>
+   <td align="center">
+    42.59 ms
+   </td>
+   <td align="center">
+    42.82 ms
+   </td>
+   <td align="center">
+    42.82 ms
+   </td>
+   <td align="center">
+    0.61 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_pyr::Path_Win_Deriv_Border_Reuse::("cv/optflow/frames/720p_01.png", 7, true, BORDER_DEFAULT, true)
+   </td>
+   <td align="center">
+    25
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    43.43 ms
+   </td>
+   <td align="center">
+    43.60 ms
+   </td>
+   <td align="center">
+    44.01 ms
+   </td>
+   <td align="center">
+    44.03 ms
+   </td>
+   <td align="center">
+    1.16 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_pyr::Path_Win_Deriv_Border_Reuse::("cv/optflow/frames/720p_01.png", 7, true, BORDER_TRANSPARENT, false)
+   </td>
+   <td align="center">
+    16
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    41.91 ms
+   </td>
+   <td align="center">
+    42.02 ms
+   </td>
+   <td align="center">
+    42.42 ms
+   </td>
+   <td align="center">
+    42.43 ms
+   </td>
+   <td align="center">
+    1.25 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_pyr::Path_Win_Deriv_Border_Reuse::("cv/optflow/frames/720p_01.png", 7, true, BORDER_TRANSPARENT, false)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    42.90 ms
+   </td>
+   <td align="center">
+    43.01 ms
+   </td>
+   <td align="center">
+    43.26 ms
+   </td>
+   <td align="center">
+    43.26 ms
+   </td>
+   <td align="center">
+    0.77 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_pyr::Path_Win_Deriv_Border_Reuse::("cv/optflow/frames/720p_01.png", 7, true, BORDER_TRANSPARENT, true)
+   </td>
+   <td align="center">
+    21
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    41.82 ms
+   </td>
+   <td align="center">
+    41.99 ms
+   </td>
+   <td align="center">
+    42.43 ms
+   </td>
+   <td align="center">
+    42.44 ms
+   </td>
+   <td align="center">
+    1.25 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    OpticalFlowPyrLK_pyr::Path_Win_Deriv_Border_Reuse::("cv/optflow/frames/720p_01.png", 7, true, BORDER_TRANSPARENT, true)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    42.87 ms
+   </td>
+   <td align="center">
+    43.03 ms
+   </td>
+   <td align="center">
+    43.06 ms
+   </td>
+   <td align="center">
+    43.06 ms
+   </td>
+   <td align="center">
+    0.19 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    findTransformECC::TransformationType::(MOTION_AFFINE)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    70.40 ms
+   </td>
+   <td align="center">
+    70.85 ms
+   </td>
+   <td align="center">
+    70.85 ms
+   </td>
+   <td align="center">
+    70.85 ms
+   </td>
+   <td align="center">
+    0.29 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    findTransformECC::TransformationType::(MOTION_AFFINE)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    70.09 ms
+   </td>
+   <td align="center">
+    70.46 ms
+   </td>
+   <td align="center">
+    71.19 ms
+   </td>
+   <td align="center">
+    71.22 ms
+   </td>
+   <td align="center">
+    1.99 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    findTransformECC::TransformationType::(MOTION_EUCLIDEAN)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    52.95 ms
+   </td>
+   <td align="center">
+    53.94 ms
+   </td>
+   <td align="center">
+    54.59 ms
+   </td>
+   <td align="center">
+    54.61 ms
+   </td>
+   <td align="center">
+    1.48 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    findTransformECC::TransformationType::(MOTION_EUCLIDEAN)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    52.62 ms
+   </td>
+   <td align="center">
+    53.95 ms
+   </td>
+   <td align="center">
+    54.02 ms
+   </td>
+   <td align="center">
+    54.02 ms
+   </td>
+   <td align="center">
+    0.57 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    findTransformECC::TransformationType::(MOTION_HOMOGRAPHY)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    140.22 ms
+   </td>
+   <td align="center">
+    141.64 ms
+   </td>
+   <td align="center">
+    144.32 ms
+   </td>
+   <td align="center">
+    144.41 ms
+   </td>
+   <td align="center">
+    5.33 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    findTransformECC::TransformationType::(MOTION_HOMOGRAPHY)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    140.15 ms
+   </td>
+   <td align="center">
+    141.54 ms
+   </td>
+   <td align="center">
+    143.18 ms
+   </td>
+   <td align="center">
+    143.24 ms
+   </td>
+   <td align="center">
+    4.20 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    findTransformECC::TransformationType::(MOTION_TRANSLATION)
+   </td>
+   <td align="center">
+    50
+   </td>
+   <td align="center">
+    4
+   </td>
+   <td align="center">
+    37.26 ms
+   </td>
+   <td align="center">
+    37.69 ms
+   </td>
+   <td align="center">
+    37.97 ms
+   </td>
+   <td align="center">
+    37.99 ms
+   </td>
+   <td align="center">
+    1.07 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    findTransformECC::TransformationType::(MOTION_TRANSLATION)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    37.47 ms
+   </td>
+   <td align="center">
+    37.67 ms
+   </td>
+   <td align="center">
+    37.75 ms
+   </td>
+   <td align="center">
+    37.75 ms
+   </td>
+   <td align="center">
+    0.21 ms
+   </td>
+  </tr>
+ </tbody>
+</table>
+</div>
+</body>
+</html>

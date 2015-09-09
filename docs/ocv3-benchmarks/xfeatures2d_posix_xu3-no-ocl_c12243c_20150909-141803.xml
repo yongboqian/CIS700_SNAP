@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites tests="10" failures="2" disabled="0" errors="0" timestamp="2015-09-09T14:18:03" time="97.561" cv_version="3.0.0" cv_vcs_version="3.0.0" cv_build_type="release" cv_parallel_framework="openmp" cv_cpu_features="" cv_module_name="xfeatures2d" cv_implementation="plain" cv_num_threads="-1" cv_ocl="disabled" name="AllTests">
+  <testsuite name="daisy_extract" tests="2" failures="2" disabled="0" errors="0" time="1.667">
+    <testcase name="extract/0" value_param="&quot;cv/detectors_descriptors_evaluation/images_datasets/leuven/img1.png&quot;" status="run" time="0.89" classname="daisy_extract">
+      <failure message="/home/odroid/codes/opencv/modules/ts/src/ts_perf.cpp:1702&#x0A;Failed&#x0A;Expected: PerfTestBody() doesn&apos;t throw an exception.&#x0A;  Actual: it throws cv::Exception:&#x0A;  /home/odroid/codes/opencv/modules/core/src/matrix.cpp:2294: error: (-215) d == 2 &amp;&amp; (sizes[0] == 1 || sizes[1] == 1 || sizes[0]*sizes[1] == 0) in function create&#x0A;" type=""><![CDATA[/home/odroid/codes/opencv/modules/ts/src/ts_perf.cpp:1702
+Failed
+Expected: PerfTestBody() doesn't throw an exception.
+  Actual: it throws cv::Exception:
+  /home/odroid/codes/opencv/modules/core/src/matrix.cpp:2294: error: (-215) d == 2 && (sizes[0] == 1 || sizes[1] == 1 || sizes[0]*sizes[1] == 0) in function create
+]]></failure>
+    </testcase>
+    <testcase name="extract/1" value_param="&quot;stitching/a3.png&quot;" status="run" time="0.777" classname="daisy_extract">
+      <failure message="/home/odroid/codes/opencv/modules/ts/src/ts_perf.cpp:1702&#x0A;Failed&#x0A;Expected: PerfTestBody() doesn&apos;t throw an exception.&#x0A;  Actual: it throws cv::Exception:&#x0A;  /home/odroid/codes/opencv/modules/core/src/matrix.cpp:2294: error: (-215) d == 2 &amp;&amp; (sizes[0] == 1 || sizes[1] == 1 || sizes[0]*sizes[1] == 0) in function create&#x0A;" type=""><![CDATA[/home/odroid/codes/opencv/modules/ts/src/ts_perf.cpp:1702
+Failed
+Expected: PerfTestBody() doesn't throw an exception.
+  Actual: it throws cv::Exception:
+  /home/odroid/codes/opencv/modules/core/src/matrix.cpp:2294: error: (-215) d == 2 && (sizes[0] == 1 || sizes[1] == 1 || sizes[0]*sizes[1] == 0) in function create
+]]></failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="latch_extract" tests="2" failures="0" disabled="0" errors="0" time="13.119">
+    <testcase name="extract/0" value_param="&quot;cv/detectors_descriptors_evaluation/images_datasets/leuven/img1.png&quot;" status="run" time="8.624" classname="latch_extract" bytesIn="540000" bytesOut="0" term="-1" samples="10" outliers="0" frequency="1000000000" min="836321157" median="839499607" gmean="840151956" gstddev="0.004212" mean="840158679" stddev="3550979" />
+    <testcase name="extract/1" value_param="&quot;stitching/a3.png&quot;" status="run" time="4.495" classname="latch_extract" bytesIn="460800" bytesOut="0" term="-1" samples="10" outliers="0" frequency="1000000000" min="430354784" median="432747063" gmean="432147721" gstddev="0.003751" mean="432150457" stddev="1621321" />
+  </testsuite>
+  <testsuite name="surf_detect" tests="2" failures="0" disabled="0" errors="0" time="33.744">
+    <testcase name="detect/0" value_param="&quot;cv/detectors_descriptors_evaluation/images_datasets/leuven/img1.png&quot;" status="run" time="19.264" classname="surf_detect" bytesIn="540000" bytesOut="0" term="0" samples="100" outliers="8" frequency="1000000000" min="166236211" median="189376306" gmean="189592256" gstddev="0.055532" mean="189880475" stddev="10486601" />
+    <testcase name="detect/1" value_param="&quot;stitching/a3.png&quot;" status="run" time="14.48" classname="surf_detect" bytesIn="460800" bytesOut="0" term="0" samples="100" outliers="8" frequency="1000000000" min="123326944" median="142526466" gmean="142434422" gstddev="0.051810" mean="142623389" stddev="7378159" />
+  </testsuite>
+  <testsuite name="surf_extract" tests="2" failures="0" disabled="0" errors="0" time="33.638">
+    <testcase name="extract/0" value_param="&quot;cv/detectors_descriptors_evaluation/images_datasets/leuven/img1.png&quot;" status="run" time="4.646" classname="surf_extract" bytesIn="540000" bytesOut="0" term="-1" samples="10" outliers="0" frequency="1000000000" min="425074220" median="437109321" gmean="439870366" gstddev="0.027481" mean="440021372" stddev="12275071" />
+    <testcase name="extract/1" value_param="&quot;stitching/a3.png&quot;" status="run" time="28.992" classname="surf_extract" bytesIn="460800" bytesOut="0" term="0" samples="100" outliers="8" frequency="1000000000" min="267281121" median="281518582" gmean="284256114" gstddev="0.031939" mean="284400549" stddev="9178355" />
+  </testsuite>
+  <testsuite name="surf_full" tests="2" failures="0" disabled="0" errors="0" time="15.39">
+    <testcase name="full/0" value_param="&quot;cv/detectors_descriptors_evaluation/images_datasets/leuven/img1.png&quot;" status="run" time="5.719" classname="surf_full" bytesIn="540000" bytesOut="0" term="-1" samples="10" outliers="0" frequency="1000000000" min="551445374" median="569283746" gmean="567518617" gstddev="0.022579" mean="567649277" stddev="12884532" />
+    <testcase name="full/1" value_param="&quot;stitching/a3.png&quot;" status="run" time="9.671" classname="surf_full" bytesIn="460800" bytesOut="0" term="-1" samples="25" outliers="2" frequency="1000000000" min="360860088" median="383055951" gmean="382139901" gstddev="0.029118" mean="382294612" stddev="11102805" />
+  </testsuite>
+</testsuites>

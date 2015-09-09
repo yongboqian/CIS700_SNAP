@@ -1,0 +1,1207 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<title>Report 40 tests from reg_posix_xu3-no-ocl_c12243c_20150909-154342.xml, reg_posix_xu3-no-ocl_c12243c_20150909-114539.xml</title>
+<style type="text/css">
+html, body {font-family: Lucida Console, Courier New, Courier;font-size: 16px;color:#3e4758;}
+.tbl{background:none repeat scroll 0 0 #FFFFFF;border-collapse:collapse;font-family:"Lucida Sans Unicode","Lucida Grande",Sans-Serif;font-size:14px;margin:20px;text-align:left;width:480px;margin-left: auto;margin-right: auto;white-space:nowrap;}
+.tbl span{display:block;white-space:nowrap;}
+.tbl thead tr:last-child th {padding-bottom:5px;}
+.tbl tbody tr:first-child td {border-top:3px solid #6678B1;}
+.tbl th{border:none;color:#003399;font-size:16px;font-weight:normal;white-space:nowrap;padding:3px 10px;}
+.tbl td{border:none;border-bottom:1px solid #CCCCCC;color:#666699;padding:6px 8px;white-space:nowrap;}
+.tbl tbody tr:hover td{color:#000099;}
+.tbl caption{font:italic 16px "Trebuchet MS",Verdana,Arial,Helvetica,sans-serif;padding:0 0 5px;text-align:right;white-space:normal;}
+.firstingroup {border-top:2px solid #6678B1;}
+</style>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+<script type="text/javascript">
+function abs(val) { return val < 0 ? -val : val }
+$(function(){
+  //generate filter rows
+  $("div.tableFormatter table.tbl").each(function(tblIdx, tbl) {
+    var head = $("thead", tbl)
+    var filters = $("<tr></tr>")
+    var hasAny = false
+    $("tr:first th", head).each(function(colIdx, col) {
+      col = $(col)
+      var cell
+      var id = "t" + tblIdx + "r" + colIdx
+      if (col.hasClass("col_name")){
+        cell = $("<th><input id='" + id + "' name='" + id + "' type='text' style='width:100%' class='filter_col_name' title='Regular expression for name filtering (&quot;resize.*640x480&quot; - resize tests on VGA resolution)'></input></th>")
+        hasAny = true
+      }
+      else if (col.hasClass("col_rel")){
+        cell = $("<th><input id='" + id + "' name='" + id + "' type='text' style='width:100%' class='filter_col_rel' title='Filter out lines with a x-factor of acceleration less than Nx'></input></th>")
+        hasAny = true
+      }
+      else if (col.hasClass("col_cr")){
+        cell = $("<th><input id='" + id + "' name='" + id + "' type='text' style='width:100%' class='filter_col_cr' title='Filter out lines with a percentage of acceleration less than N%'></input></th>")
+        hasAny = true
+      }
+      else
+        cell = $("<th></th>")
+      cell.appendTo(filters)
+    })
+
+   if (hasAny){
+     $(tbl).wrap("<form id='form_t" + tblIdx + "' method='get' action=''></form>")
+     $("<input it='test' type='submit' value='Apply Filters' style='margin-left:10px;'></input>")
+       .appendTo($("th:last", filters.appendTo(head)))
+   }
+  })
+
+  //get filter values
+  var vars = []
+  var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&')
+  for(var i = 0; i < hashes.length; ++i)
+  {
+     hash = hashes[i].split('=')
+     vars.push(decodeURIComponent(hash[0]))
+     vars[decodeURIComponent(hash[0])] = decodeURIComponent(hash[1]);
+  }
+
+  //set filter values
+  for(var i = 0; i < vars.length; ++i)
+     $("#" + vars[i]).val(vars[vars[i]])
+
+  //apply filters
+  $("div.tableFormatter table.tbl").each(function(tblIdx, tbl) {
+      filters = $("input:text", tbl)
+      var predicate = function(row) {return true;}
+      var empty = true
+      $.each($("input:text", tbl), function(i, flt) {
+         flt = $(flt)
+         var val = flt.val()
+         var pred = predicate;
+         if(val) {
+           empty = false
+           var colIdx = parseInt(flt.attr("id").slice(flt.attr("id").indexOf('r') + 1))
+           if(flt.hasClass("filter_col_name")) {
+              var re = new RegExp(val);
+              predicate = function(row) {
+                if (re.exec($(row.get(colIdx)).text()) == null)
+                  return false
+                return pred(row)
+          }
+           } else if(flt.hasClass("filter_col_rel")) {
+              var percent = parseFloat(val)
+              if (percent < 0) {
+                predicate = function(row) {
+                  var val = parseFloat($(row.get(colIdx)).text())
+                  if (!val || val >= 1 || val > 1+percent)
+                    return false
+                  return pred(row)
+            }
+              } else {
+                predicate = function(row) {
+                  var val = parseFloat($(row.get(colIdx)).text())
+                  if (!val || val < percent)
+                    return false
+                  return pred(row)
+            }
+              }
+           } else if(flt.hasClass("filter_col_cr")) {
+              var percent = parseFloat(val)
+              predicate = function(row) {
+                var val = parseFloat($(row.get(colIdx)).text())
+                if (!val || val < percent)
+                  return false
+                return pred(row)
+          }
+           }
+         }
+      });
+      if (!empty){
+         $("tbody tr", tbl).each(function (i, tbl_row) {
+            if(!predicate($("td", tbl_row)))
+               $(tbl_row).remove()
+         })
+         if($("tbody tr", tbl).length == 0) {
+           $("<tr><td colspan='"+$("thead tr:first th", tbl).length+"'>No results mathing your search criteria</td></tr>")
+             .appendTo($("tbody", tbl))
+         }
+      }
+  })
+})
+</script>
+</head>
+<body>
+<div class="tableFormatter">
+<table class="tbl">
+ <caption>reg_posix_xu3-no-ocl_c12243c_20150909-154342.xml, reg_posix_xu3-no-ocl_c12243c_20150909-114539.xml</caption>
+ <thead>
+  <tr>
+   <th align="center" valign="top">
+    Name of Test
+   </th>
+   <th align="center" valign="top">
+    Number of<br/>collected samples
+   </th>
+   <th align="center" valign="top">
+    Number of<br/>outliers
+   </th>
+   <th align="center" valign="top">
+    Min
+   </th>
+   <th align="center" valign="top">
+    Median
+   </th>
+   <th align="center" valign="top">
+    Geometric mean
+   </th>
+   <th align="center" valign="top">
+    Mean
+   </th>
+   <th align="center" valign="top">
+    Standard deviation
+   </th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>
+    Registration_Affine::Size_MatType::(128x128, 64FC1)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    32.61 ms
+   </td>
+   <td align="center">
+    34.84 ms
+   </td>
+   <td align="center">
+    35.19 ms
+   </td>
+   <td align="center">
+    35.22 ms
+   </td>
+   <td align="center">
+    1.54 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Registration_Affine::Size_MatType::(128x128, 64FC1)
+   </td>
+   <td align="center">
+    25
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    35.21 ms
+   </td>
+   <td align="center">
+    35.56 ms
+   </td>
+   <td align="center">
+    35.98 ms
+   </td>
+   <td align="center">
+    35.99 ms
+   </td>
+   <td align="center">
+    1.03 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Registration_Affine::Size_MatType::(128x128, 64FC3)
+   </td>
+   <td align="center">
+    25
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    134.77 ms
+   </td>
+   <td align="center">
+    136.01 ms
+   </td>
+   <td align="center">
+    138.04 ms
+   </td>
+   <td align="center">
+    138.10 ms
+   </td>
+   <td align="center">
+    4.08 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Registration_Affine::Size_MatType::(128x128, 64FC3)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    134.60 ms
+   </td>
+   <td align="center">
+    136.21 ms
+   </td>
+   <td align="center">
+    137.91 ms
+   </td>
+   <td align="center">
+    137.96 ms
+   </td>
+   <td align="center">
+    4.11 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Registration_Affine::Size_MatType::(64x64, 64FC1)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    6.06 ms
+   </td>
+   <td align="center">
+    6.12 ms
+   </td>
+   <td align="center">
+    6.14 ms
+   </td>
+   <td align="center">
+    6.14 ms
+   </td>
+   <td align="center">
+    0.10 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Registration_Affine::Size_MatType::(64x64, 64FC1)
+   </td>
+   <td align="center">
+    88
+   </td>
+   <td align="center">
+    7
+   </td>
+   <td align="center">
+    5.99 ms
+   </td>
+   <td align="center">
+    6.02 ms
+   </td>
+   <td align="center">
+    6.08 ms
+   </td>
+   <td align="center">
+    6.08 ms
+   </td>
+   <td align="center">
+    0.17 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Registration_Affine::Size_MatType::(64x64, 64FC3)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    21.71 ms
+   </td>
+   <td align="center">
+    22.02 ms
+   </td>
+   <td align="center">
+    22.37 ms
+   </td>
+   <td align="center">
+    22.39 ms
+   </td>
+   <td align="center">
+    0.98 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Registration_Affine::Size_MatType::(64x64, 64FC3)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    24.13 ms
+   </td>
+   <td align="center">
+    24.51 ms
+   </td>
+   <td align="center">
+    24.48 ms
+   </td>
+   <td align="center">
+    24.48 ms
+   </td>
+   <td align="center">
+    0.16 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Registration_Euclidean::Size_MatType::(128x128, 64FC1)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    16.94 ms
+   </td>
+   <td align="center">
+    17.07 ms
+   </td>
+   <td align="center">
+    17.12 ms
+   </td>
+   <td align="center">
+    17.12 ms
+   </td>
+   <td align="center">
+    0.17 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Registration_Euclidean::Size_MatType::(128x128, 64FC1)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    17.20 ms
+   </td>
+   <td align="center">
+    18.31 ms
+   </td>
+   <td align="center">
+    18.64 ms
+   </td>
+   <td align="center">
+    18.68 ms
+   </td>
+   <td align="center">
+    1.25 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Registration_Euclidean::Size_MatType::(128x128, 64FC3)
+   </td>
+   <td align="center">
+    50
+   </td>
+   <td align="center">
+    4
+   </td>
+   <td align="center">
+    60.64 ms
+   </td>
+   <td align="center">
+    61.24 ms
+   </td>
+   <td align="center">
+    61.89 ms
+   </td>
+   <td align="center">
+    61.91 ms
+   </td>
+   <td align="center">
+    1.69 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Registration_Euclidean::Size_MatType::(128x128, 64FC3)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    61.20 ms
+   </td>
+   <td align="center">
+    61.62 ms
+   </td>
+   <td align="center">
+    61.63 ms
+   </td>
+   <td align="center">
+    61.63 ms
+   </td>
+   <td align="center">
+    0.31 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Registration_Euclidean::Size_MatType::(64x64, 64FC1)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    3.72 ms
+   </td>
+   <td align="center">
+    3.77 ms
+   </td>
+   <td align="center">
+    3.76 ms
+   </td>
+   <td align="center">
+    3.76 ms
+   </td>
+   <td align="center">
+    0.02 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Registration_Euclidean::Size_MatType::(64x64, 64FC1)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    3.70 ms
+   </td>
+   <td align="center">
+    3.74 ms
+   </td>
+   <td align="center">
+    3.74 ms
+   </td>
+   <td align="center">
+    3.74 ms
+   </td>
+   <td align="center">
+    0.02 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Registration_Euclidean::Size_MatType::(64x64, 64FC3)
+   </td>
+   <td align="center">
+    50
+   </td>
+   <td align="center">
+    4
+   </td>
+   <td align="center">
+    10.11 ms
+   </td>
+   <td align="center">
+    10.23 ms
+   </td>
+   <td align="center">
+    10.33 ms
+   </td>
+   <td align="center">
+    10.34 ms
+   </td>
+   <td align="center">
+    0.29 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Registration_Euclidean::Size_MatType::(64x64, 64FC3)
+   </td>
+   <td align="center">
+    50
+   </td>
+   <td align="center">
+    4
+   </td>
+   <td align="center">
+    10.17 ms
+   </td>
+   <td align="center">
+    10.38 ms
+   </td>
+   <td align="center">
+    10.43 ms
+   </td>
+   <td align="center">
+    10.43 ms
+   </td>
+   <td align="center">
+    0.26 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Registration_Projective::Size_MatType::(128x128, 64FC1)
+   </td>
+   <td align="center">
+    23
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    51.94 ms
+   </td>
+   <td align="center">
+    52.21 ms
+   </td>
+   <td align="center">
+    52.80 ms
+   </td>
+   <td align="center">
+    52.82 ms
+   </td>
+   <td align="center">
+    1.57 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Registration_Projective::Size_MatType::(128x128, 64FC1)
+   </td>
+   <td align="center">
+    18
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    51.90 ms
+   </td>
+   <td align="center">
+    52.12 ms
+   </td>
+   <td align="center">
+    52.72 ms
+   </td>
+   <td align="center">
+    52.74 ms
+   </td>
+   <td align="center">
+    1.58 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Registration_Projective::Size_MatType::(128x128, 64FC3)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    193.73 ms
+   </td>
+   <td align="center">
+    196.46 ms
+   </td>
+   <td align="center">
+    199.92 ms
+   </td>
+   <td align="center">
+    200.01 ms
+   </td>
+   <td align="center">
+    6.09 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Registration_Projective::Size_MatType::(128x128, 64FC3)
+   </td>
+   <td align="center">
+    50
+   </td>
+   <td align="center">
+    4
+   </td>
+   <td align="center">
+    194.65 ms
+   </td>
+   <td align="center">
+    196.76 ms
+   </td>
+   <td align="center">
+    199.69 ms
+   </td>
+   <td align="center">
+    199.77 ms
+   </td>
+   <td align="center">
+    5.79 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Registration_Projective::Size_MatType::(64x64, 64FC1)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    11.36 ms
+   </td>
+   <td align="center">
+    12.33 ms
+   </td>
+   <td align="center">
+    12.23 ms
+   </td>
+   <td align="center">
+    12.23 ms
+   </td>
+   <td align="center">
+    0.31 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Registration_Projective::Size_MatType::(64x64, 64FC1)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    11.23 ms
+   </td>
+   <td align="center">
+    11.29 ms
+   </td>
+   <td align="center">
+    11.31 ms
+   </td>
+   <td align="center">
+    11.31 ms
+   </td>
+   <td align="center">
+    0.08 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Registration_Projective::Size_MatType::(64x64, 64FC3)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    34.62 ms
+   </td>
+   <td align="center">
+    34.89 ms
+   </td>
+   <td align="center">
+    34.96 ms
+   </td>
+   <td align="center">
+    34.96 ms
+   </td>
+   <td align="center">
+    0.29 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Registration_Projective::Size_MatType::(64x64, 64FC3)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    34.66 ms
+   </td>
+   <td align="center">
+    34.77 ms
+   </td>
+   <td align="center">
+    34.87 ms
+   </td>
+   <td align="center">
+    34.87 ms
+   </td>
+   <td align="center">
+    0.26 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Registration_Shift::Size_MatType::(128x128, 64FC1)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    11.01 ms
+   </td>
+   <td align="center">
+    11.05 ms
+   </td>
+   <td align="center">
+    11.16 ms
+   </td>
+   <td align="center">
+    11.16 ms
+   </td>
+   <td align="center">
+    0.23 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Registration_Shift::Size_MatType::(128x128, 64FC1)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    11.44 ms
+   </td>
+   <td align="center">
+    11.49 ms
+   </td>
+   <td align="center">
+    11.59 ms
+   </td>
+   <td align="center">
+    11.59 ms
+   </td>
+   <td align="center">
+    0.26 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Registration_Shift::Size_MatType::(128x128, 64FC3)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    35.77 ms
+   </td>
+   <td align="center">
+    35.99 ms
+   </td>
+   <td align="center">
+    36.06 ms
+   </td>
+   <td align="center">
+    36.06 ms
+   </td>
+   <td align="center">
+    0.29 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Registration_Shift::Size_MatType::(128x128, 64FC3)
+   </td>
+   <td align="center">
+    10
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    35.29 ms
+   </td>
+   <td align="center">
+    35.48 ms
+   </td>
+   <td align="center">
+    35.87 ms
+   </td>
+   <td align="center">
+    35.89 ms
+   </td>
+   <td align="center">
+    0.94 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Registration_Shift::Size_MatType::(64x64, 64FC1)
+   </td>
+   <td align="center">
+    77
+   </td>
+   <td align="center">
+    6
+   </td>
+   <td align="center">
+    2.75 ms
+   </td>
+   <td align="center">
+    2.84 ms
+   </td>
+   <td align="center">
+    2.87 ms
+   </td>
+   <td align="center">
+    2.87 ms
+   </td>
+   <td align="center">
+    0.09 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Registration_Shift::Size_MatType::(64x64, 64FC1)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    2.76 ms
+   </td>
+   <td align="center">
+    2.80 ms
+   </td>
+   <td align="center">
+    2.80 ms
+   </td>
+   <td align="center">
+    2.80 ms
+   </td>
+   <td align="center">
+    0.05 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Registration_Shift::Size_MatType::(64x64, 64FC3)
+   </td>
+   <td align="center">
+    25
+   </td>
+   <td align="center">
+    2
+   </td>
+   <td align="center">
+    6.75 ms
+   </td>
+   <td align="center">
+    6.81 ms
+   </td>
+   <td align="center">
+    6.86 ms
+   </td>
+   <td align="center">
+    6.86 ms
+   </td>
+   <td align="center">
+    0.16 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Registration_Shift::Size_MatType::(64x64, 64FC3)
+   </td>
+   <td align="center">
+    12
+   </td>
+   <td align="center">
+    0
+   </td>
+   <td align="center">
+    6.85 ms
+   </td>
+   <td align="center">
+    6.91 ms
+   </td>
+   <td align="center">
+    6.95 ms
+   </td>
+   <td align="center">
+    6.95 ms
+   </td>
+   <td align="center">
+    0.20 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Registration_Similarity::Size_MatType::(128x128, 64FC1)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    17.15 ms
+   </td>
+   <td align="center">
+    18.93 ms
+   </td>
+   <td align="center">
+    18.85 ms
+   </td>
+   <td align="center">
+    18.87 ms
+   </td>
+   <td align="center">
+    0.74 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Registration_Similarity::Size_MatType::(128x128, 64FC1)
+   </td>
+   <td align="center">
+    67
+   </td>
+   <td align="center">
+    5
+   </td>
+   <td align="center">
+    18.70 ms
+   </td>
+   <td align="center">
+    19.20 ms
+   </td>
+   <td align="center">
+    19.36 ms
+   </td>
+   <td align="center">
+    19.37 ms
+   </td>
+   <td align="center">
+    0.58 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Registration_Similarity::Size_MatType::(128x128, 64FC3)
+   </td>
+   <td align="center">
+    100
+   </td>
+   <td align="center">
+    8
+   </td>
+   <td align="center">
+    76.23 ms
+   </td>
+   <td align="center">
+    77.10 ms
+   </td>
+   <td align="center">
+    78.33 ms
+   </td>
+   <td align="center">
+    78.39 ms
+   </td>
+   <td align="center">
+    3.06 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Registration_Similarity::Size_MatType::(128x128, 64FC3)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    77.34 ms
+   </td>
+   <td align="center">
+    77.78 ms
+   </td>
+   <td align="center">
+    78.69 ms
+   </td>
+   <td align="center">
+    78.72 ms
+   </td>
+   <td align="center">
+    2.31 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Registration_Similarity::Size_MatType::(64x64, 64FC1)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    4.64 ms
+   </td>
+   <td align="center">
+    4.68 ms
+   </td>
+   <td align="center">
+    4.70 ms
+   </td>
+   <td align="center">
+    4.70 ms
+   </td>
+   <td align="center">
+    0.10 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Registration_Similarity::Size_MatType::(64x64, 64FC1)
+   </td>
+   <td align="center">
+    88
+   </td>
+   <td align="center">
+    7
+   </td>
+   <td align="center">
+    4.62 ms
+   </td>
+   <td align="center">
+    4.67 ms
+   </td>
+   <td align="center">
+    4.71 ms
+   </td>
+   <td align="center">
+    4.71 ms
+   </td>
+   <td align="center">
+    0.13 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Registration_Similarity::Size_MatType::(64x64, 64FC3)
+   </td>
+   <td align="center">
+    88
+   </td>
+   <td align="center">
+    7
+   </td>
+   <td align="center">
+    11.64 ms
+   </td>
+   <td align="center">
+    12.04 ms
+   </td>
+   <td align="center">
+    12.05 ms
+   </td>
+   <td align="center">
+    12.06 ms
+   </td>
+   <td align="center">
+    0.34 ms
+   </td>
+  </tr>
+  <tr>
+   <td>
+    Registration_Similarity::Size_MatType::(64x64, 64FC3)
+   </td>
+   <td align="center">
+    13
+   </td>
+   <td align="center">
+    1
+   </td>
+   <td align="center">
+    12.10 ms
+   </td>
+   <td align="center">
+    12.42 ms
+   </td>
+   <td align="center">
+    12.47 ms
+   </td>
+   <td align="center">
+    12.47 ms
+   </td>
+   <td align="center">
+    0.26 ms
+   </td>
+  </tr>
+ </tbody>
+</table>
+</div>
+</body>
+</html>
