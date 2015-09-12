@@ -1,0 +1,60 @@
+Andrew log: 9/12/15 1:20pm
+-got in turned on turtle bot and odriod.
+-rct battery at 12.5V
+-4:06 Battery is at 11.8 with 5 mins of driving and a lot of idel time (3hrs)
+-5:00pm 11.59V some more driving but mostly idel time
+-having trouble sshing into odriod. pwd not working...
+
+
+
+Getting Started:
+-get map info, follow Nicu's guide...
+
+
+1) Set up IP infor for communicating.
+-echo export ROS_MASTER_URI=http://158.130.109.95:11311 >> ~/.bashrc
+- echo export ROS_HOSTNAME=158.130.104.102 >> ~/.bashrc
+
+-on the odriod... I ran a roscore and it satrted to communicate... 
+-I needed to go into my bash and change some varibles
+vim ~/.bashrc
+then load changes
+source ~/.bashrc
+
+-ran verification hello messaage http://wiki.ros.org/turtlebot/Tutorials/indigo/Network%20Configuration
+NOTE: the turtlebot PC needs a roscore up to start the comm
+
+=======
+Following mappingtutu
+http://learn.turtlebot.com/2015/02/01/11/
+
+
+
+-running into communication issue
+
+-http://wiki.ros.org/turtlebot/Tutorials/indigo/Network%
+20Configuration
+
+-tried changing varibles in bashrc on odriod no luck...
+
+
+--- etc/hosts define <IP> Sundancekid-Satillite..... on odriod and on andrew i defined <ip> snap-upenn
+
+It works!!!
+=============
+Moved to TOWNE #rd floor sectioned off room. created saved and emailed map . Moving to Auto Drive Tut
+==============
+4:27
+got autocharging working (Note it does not avoid obsticles if you run the TUT cmd. Also it stuttered to charge its self (looping error)
+
+we are now going to look at code...
+5:00pm
+=================
+roscd turtlebot_navigation then gedit the package.xml to see something
+
+
+Questions to ask:
+-What does spinning do in ROS? why do it?
+
+
+
