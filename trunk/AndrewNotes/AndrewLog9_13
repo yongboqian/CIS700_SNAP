@@ -1,0 +1,37 @@
+Notes from 9/13/15 2:50pm
+Sean and I are working on researching the frontier algorithim. We will research for 30mins and then work on implimenting.
+====
+Package Options
+====
+----
+Nav2D:http://wiki.ros.org/nav2d
+-----
+
+-Monte Carlo Localizer. Can do multiple agents. looks like both tele and auto mapping.
+-Looks like it will do what we need, but only in the 2D sense.
+
+-------
+Frontier Exploration:http://wiki.ros.org/frontier_exploration
+--------
+5
+Simulator Demo for getting used to the program.
+
+http://wiki.ros.org/husky_navigation/Tutorials/Husky%20Frontier%20Exploration%20Demo
+
+*As a class we may want to add a tutorial to : http://wiki.ros.org/navigation/Tutorials 
+
+*Help the robot get started with frontier exploration
+http://answers.ros.org/question/204382/frontier_exploration-to-do-unbounded-exploration/
+
+
+http://answers.ros.org/question/208946/unbound-frontier_exploration/
+
+
+---------------
+INstalling Frontier
+-----------
+followed this post to install. http://answers.ros.org/question/208963/installing-package-from-source-in-indigo/
+
+Apparently launching the frontier global launch file is a good place to start.
+
+Now I am trying to understand the actionlib
