@@ -5,4 +5,4 @@
 # IF YOU CHANGE IT, USE rosinstall FOR THE CHANGES TO TAKE EFFECT
 - setup-file: {local-name: /opt/ros/indigo/setup.sh}
 - other: {local-name: package_dir}
-- git: {local-name: package_dir/lsd_slam, uri: 'git@github.com:nstiurca/lsd_slam.git'}
+- git: {local-name: package_dir/lsd_slam, uri: 'git@git.assembla.com:cis700-snap.lsd_slam2.git'}
