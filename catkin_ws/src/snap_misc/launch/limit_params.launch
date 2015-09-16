@@ -1,5 +1,0 @@
-<launch>
-    <param name="/move_base/DWAPlannerROS/max_trans_vel" value="0.2" />
-    <param name="/move_base/DWAPlannerROS/max_vel_x" value="0.2" />
-    <param name="/move_base/DWAPlannerROS/max_rot_vel" value="0.5" />
-</launch>
