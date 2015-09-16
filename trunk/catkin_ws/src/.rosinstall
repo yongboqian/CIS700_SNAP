@@ -1,1 +1,1 @@
-- git: {local-name: lsd_slam, uri: 'git@github.com:nstiurca/lsd_slam.git', version: catkin}
+- git: {local-name: lsd_slam, uri: 'git@git.assembla.com:cis700-snap.lsd_slam2.git', version: catkin}
