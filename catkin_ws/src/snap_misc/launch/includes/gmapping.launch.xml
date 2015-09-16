@@ -22,11 +22,11 @@
     <param name="srt" value="0.02"/>
     <param name="str" value="0.01"/>
     <param name="stt" value="0.02"/>
-    <param name="linearUpdate" value="0.18"/>
+    <param name="linearUpdate" value="0.16"/>
     <param name="angularUpdate" value="0.26"/> <!-- ~15 deg ~= 1/4 kineck HFOV -->
-    <param name="temporalUpdate" value="-1.0"/>
+    <param name="temporalUpdate" value="1.0"/>
     <param name="resampleThreshold" value="0.5"/>
-    <param name="particles" value="100"/>
+    <param name="particles" value="150"/>
   <!--
     <param name="xmin" value="-50.0"/>
     <param name="ymin" value="-50.0"/>
