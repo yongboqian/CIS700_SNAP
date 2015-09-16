@@ -1,0 +1,37 @@
+!!python/object/new:dynamic_reconfigure.encoding.Config
+dictitems:
+  acc_lim_theta: 1.5
+  acc_lim_x: 0.3
+  acc_lim_y: 0.0
+  acc_limit_trans: 0.3
+  angular_sim_granularity: 0.1
+  forward_point_distance: 0.325
+  goal_distance_bias: 24.0
+  max_rot_vel: 0.5
+  max_scaling_factor: 0.2
+  max_trans_vel: 0.25
+  max_vel_x: 0.5
+  max_vel_y: 0.0
+  min_rot_vel: 0.1
+  min_trans_vel: 0.1
+  min_vel_x: 0.03142626604335115
+  min_vel_y: 0.0
+  occdist_scale: 0.5
+  oscillation_reset_angle: 0.2
+  oscillation_reset_dist: 0.1
+  path_distance_bias: 64.0
+  prune_plan: true
+  restore_defaults: false
+  rot_stopped_vel: 0.05
+  scaling_speed: 0.25
+  sim_granularity: 0.025
+  sim_time: 1.0
+  stop_time_buffer: 0.5
+  trans_stopped_vel: 0.02
+  use_dwa: true
+  vth_samples: 5
+  vx_samples: 5
+  vy_samples: 1
+  xy_goal_tolerance: 0.18
+  yaw_goal_tolerance: 0.3
+state: []

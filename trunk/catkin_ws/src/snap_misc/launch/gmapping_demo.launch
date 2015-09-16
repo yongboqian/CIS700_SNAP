@@ -3,5 +3,6 @@
   <include file="$(find snap_misc)/launch/includes/gmapping.launch.xml"/>
 
   <include file="$(find snap_misc)/launch/includes/move_base.launch.xml"/>
+  <include file="$(find snap_misc)/launch/includes/limit_params.launch.xml"/>
 
 </launch>
