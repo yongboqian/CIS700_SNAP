@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="map_filename" default="my_map"/>
+
+    <node pkg="map_server" type="map_server" name="map_server"
+        args="$(find snap_misc)/maps/$(arg map_filename).yaml"/>
+
+</launch>
