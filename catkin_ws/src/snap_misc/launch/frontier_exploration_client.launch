@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<launch>
+    <node pkg="frontier_exploration" type="frontier_goal_client" name="frontier_goal_client" respawn="True"/>
+
+</launch>
