@@ -4,7 +4,7 @@ project(snap_misc)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED)
+find_package(catkin REQUIRED dynamic_reconfigure)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -80,11 +80,10 @@ find_package(catkin REQUIRED)
 ##   * uncomment the "generate_dynamic_reconfigure_options" section below
 ##     and list every .cfg file to be processed
 
-## Generate dynamic reconfigure parameters in the 'cfg' folder
-# generate_dynamic_reconfigure_options(
-#   cfg/DynReconf1.cfg
-#   cfg/DynReconf2.cfg
-# )
+# Generate dynamic reconfigure parameters in the 'cfg' folder
+generate_dynamic_reconfigure_options(
+  cfg/GettingStarted.cfg
+)
 
 ###################################
 ## catkin specific configuration ##
@@ -141,10 +140,17 @@ catkin_package(
 
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
-# install(PROGRAMS
-#   scripts/my_python_script
-#   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-# )
+install(PROGRAMS
+  scripts/getting_started_node.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+install(PROGRAMS
+  scripts/getting_started.bash
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+
+# make sure configure headers are built before any node using them
+#add_dependencies(getting_started_node.py ${PROJECT_NAME}_gencfg)
 
 ## Mark executables and/or libraries for installation
 # install(TARGETS snap_misc snap_misc_node
