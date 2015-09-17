@@ -6,9 +6,9 @@
   <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">
     <param name="base_frame" value="$(arg base_frame)"/>
     <param name="odom_frame" value="$(arg odom_frame)"/>
-    <param name="map_update_interval" value="5.0"/>
-    <param name="maxUrange" value="6.0"/>
-    <param name="maxRange" value="12.0"/>
+    <param name="map_update_interval" value="1.0"/>
+    <param name="maxUrange" value="10.0"/>
+    <param name="maxRange" value="10.0"/>
     <param name="sigma" value="0.05"/>
     <param name="kernelSize" value="1"/>
     <param name="lstep" value="0.05"/>
@@ -26,7 +26,7 @@
     <param name="angularUpdate" value="0.26"/> <!-- ~15 deg ~= 1/4 kineck HFOV -->
     <param name="temporalUpdate" value="1.0"/>
     <param name="resampleThreshold" value="0.5"/>
-    <param name="particles" value="150"/>
+    <param name="particles" value="50"/>
   <!--
     <param name="xmin" value="-50.0"/>
     <param name="ymin" value="-50.0"/>
