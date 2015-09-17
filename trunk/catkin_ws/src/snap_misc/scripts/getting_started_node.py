@@ -60,7 +60,9 @@ class ManagedLaunch(object):
 
 launches = [
         "minimal turtlebot_bringup minimal.launch",
-        "kinect turtlebot_bringup 3dsensor.launch"]
+        "kinect turtlebot_bringup 3dsensor.launch",
+        "move_base snap_misc move_base.launch.xml",
+        "limit_params snap_misc limit_params.launch.xml"]
 
 class LaunchManager(object):
     def __init__(self):
