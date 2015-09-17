@@ -1,0 +1,13 @@
+#A dummy file loaded when no custom param file is given 
+
+#planner_patience: 3.0
+#controller_patience: 1.0
+#clearing_rotation_allowed: true
+#conservative_reset_dist: 0.5
+#restore_defaults: true
+
+global_costmap:
+  robot_radius: 0.18
+
+local_costmap:
+  robot_radius: 0.18
