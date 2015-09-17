@@ -4,6 +4,7 @@ import rospy
 import subprocess
 
 from dynamic_reconfigure.server import Server
+from dynamic_reconfigure.client import Client
 from snap_misc.cfg import GettingStartedConfig
 
 class ManagedLaunch(object):
@@ -31,15 +32,27 @@ class ManagedLaunch(object):
         return False
 
     def died(self):
-        return self.process is not None and self.process.poll() is not None
+        if self.process is None:
+            # wasn't alive
+            rospy.logdebug("%s wasn't alive"%self.name)
+            return False
+        elif self.process.poll() is not None:
+            # process finished
+            rospy.logdebug("%s finished"%self.name)
+            return True
+        else:
+            # process hasn't finished yet
+            rospy.logdebug("%s still going"%self.name)
+            return False
 
-    def start(self):
+    def start(self, args=[]):
         if self.is_alive(): return
 
-        assert self.process is None
+        #assert self.process is None
 
-        rospy.loginfo("Launching %s: '%s %s %s'" % (self.name, self.package, self.fname, " ".join(self.args)))
-        self.process = subprocess.Popen(['roslaunch', self.package, self.fname]+self.args) #, shell=True)
+        rospy.loginfo("Launching %s: '%s %s %s'" % (self.name, self.package, self.fname, " ".join(self.args+args)))
+        self.process = subprocess.Popen(['roslaunch', self.package, self.fname]+self.args+args,
+                stdin=None, stdout=None, stderr=None) #, shell=True)
         rospy.loginfo("%s PID: %i" % (self.name, self.process.pid))
 
     def stop(self):
@@ -48,8 +61,8 @@ class ManagedLaunch(object):
         assert self.process is not None
         rospy.loginfo("Terminating %s (%i)..." % (self.name, self.process.pid))
         self.process.terminate()
-        #rospy.loginfo("Killing %s (%i)..." % (self.name, self.process.pid))
-        #self.process.kill()
+        rospy.loginfo("Killing %s (%i)..." % (self.name, self.process.pid))
+        self.process.kill()
         #rospy.loginfo("Waiting to die %s (%i)..." % (self.name, self.process.pid))
         #self.process.wait()
         #assert self.died()
@@ -58,11 +71,21 @@ class ManagedLaunch(object):
     def __str__(self):
         return " ".join([self.name, self.package, self.fname]+self.args)
 
-launches = [
+launches = [ # base
         "minimal turtlebot_bringup minimal.launch",
         "kinect turtlebot_bringup 3dsensor.launch",
+        # mapping
+        "gmapping snap_misc gmapping.launch.xml",
         "move_base snap_misc move_base.launch.xml",
-        "limit_params snap_misc limit_params.launch.xml"]
+        "reset_limit_params_defaults snap_misc limit_params.launch.xml",
+        "save_map snap_misc map_saver.launch",
+        "load_map snap_misc map_loader.launch",
+        # frontier exploration
+        "frontier_exploration_server frontier_exploration global_map.launch sensor_range:=10.0",
+        "frontier_exploration_client snap_misc frontier_exploration_client.launch",
+        # localization
+        "amcl turtlebot_navigation amcl.launch.xml"]
+
 
 class LaunchManager(object):
     def __init__(self):
@@ -74,15 +97,20 @@ class LaunchManager(object):
 
         self.config = None
         self.srv = Server(GettingStartedConfig, self.dynparam_cb)
+        self.client = Client("getting_started_node")
         
     def dynparam_cb(self, config, level):
-        rospy.loginfo("Reconfigure Request: (%i) %s"%(level, (str(config))))
-        rospy.loginfo("keys: %s" % str(config.keys()))
+        rospy.logdebug("Reconfigure Request: (%i) %s"%(level, (str(config))))
+        rospy.logdebug("keys: %s" % str(config.keys()))
 
         for name, ml in self.managed_launches.iteritems():
-            rospy.loginfo("cb: %s (%s)" % (name, str(ml)))
+            rospy.logdebug("cb: %s (%s)" % (name, str(ml)))
             if config[name]:
-                ml.start()
+                args = []
+                if name.endswith("_map"):
+                    args = ["map_filename:=%s"%config.map_filename] 
+                    rospy.loginfo("Map args: %s %s" % (name, args))
+                ml.start(args)
             else:
                 ml.stop()
 
@@ -90,19 +118,20 @@ class LaunchManager(object):
         return config
 
     def spin_once(self):
-        config_changed = False
+        config_updates = {}
         for name, ml in self.managed_launches.iteritems():
+            rospy.logdebug("Spin: check if %s has died..."%name)
             if ml.died():
                 rospy.logwarn("Launch %s (%i) has died..." % (name, ml.process.pid))
                 ml.process = None
-                if self.config is not None:
-                    self.config[name] = False
-                    config_changed = True
-        if config_changed:
-            rospy.logwarn("Config has changed. TODO: update it globally...")
+                config_updates[name] = False
+        if config_updates:
+            rospy.loginfo('updating config: %s'%str(config_updates))
+            #self.srv.update_configuration(config_updates)
+            self.client.update_configuration(config_updates)
 
     def spin(self, rate=5.0):
-        r = rospy.rate(rate)
+        r = rospy.Rate(rate)
         while not rospy.is_shutdown():
             self.spin_once()
             r.sleep()
@@ -111,4 +140,4 @@ if __name__ == "__main__":
     rospy.init_node("getting_started_node")
 
     lm = LaunchManager()
-    rospy.spin()
+    lm.spin()
