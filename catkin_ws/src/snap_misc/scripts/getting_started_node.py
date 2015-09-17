@@ -31,7 +31,7 @@ class ManagedLaunch(object):
         return False
 
     def died(self):
-        return self.process is not None and self.process.poll is not None
+        return self.process is not None and self.process.poll() is not None
 
     def start(self):
         if self.is_alive(): return
