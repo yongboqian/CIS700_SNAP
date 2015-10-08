@@ -1,0 +1,3 @@
+- git:
+    local-name: src/arbotix_ros
+    uri: https://github.com/vanadiumlabs/arbotix_ros.git
