@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<launch>
+
+    <include file="$(find snap_misc)/launch/machines.launch"/>
+
+    <!-- nodelet manager for crackle machine -->
+    <node pkg="nodelet" type="nodelet" name="camera_nodelet_manager2"
+        args="manager" ns="camera" machine="crackle"/>
+
+    <!-- camera nodelets for the arm and the mast-->
+    <node pkg="nodelet" type="nodelet" name="arm_camera_nodelet"
+        args="load uvc_camera/CameraNodelet /camera/camera_nodelet_manager"
+        ns="camera/arm"/>
+
+    <node pkg="nodelet" type="nodelet" name="mast_camera_nodelet"
+        args="load uvc_camera/CameraNodelet /camera/camera_nodelet_manager2"
+        ns="camera/mast"/>
+
+    <!-- DISABLED nodelets for rectifying webcams -->
+    <node pkg="nodelet" type="nodelet" name="arm_camera_rectify_nodelet"
+        args="load image_proc/rectify /camera/camera_nodelet_manager"
+        ns="camera/arm" if="False"/>
+
+    <node pkg="nodelet" type="nodelet" name="mast_camera_rectify_nodelet"
+        args="load image_proc/rectify /camera/camera_nodelet_manager2"
+        ns="camera/mast" if="False"/>
+
+</launch>

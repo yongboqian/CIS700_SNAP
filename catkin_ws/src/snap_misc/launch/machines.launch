@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<launch>
+    <machine name="snap" address="snap" user="odroid"/>
+    <machine name="crackle" address="crackle" user="odroid"/>
+</launch>
