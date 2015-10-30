@@ -1,5 +1,8 @@
 <?xml version="1.0"?>
 <launch>
+    <arg name="fps" default="30"/>
+    <arg name="width" default="640"/>
+    <arg name="height" default="480"/>
 
     <include file="$(find snap_misc)/launch/machines.launch"/>
 
@@ -10,11 +13,21 @@
     <!-- camera nodelets for the arm and the mast-->
     <node pkg="nodelet" type="nodelet" name="arm_camera_nodelet"
         args="load uvc_camera/CameraNodelet /camera/camera_nodelet_manager"
-        ns="camera/arm"/>
+        ns="camera/arm">
+        <param name="fps" value="$(arg fps)"/>
+        <param name="width" value="$(arg width)"/>
+        <param name="height" value="$(arg height)"/>
+        <param name="frame_id" value="arm_camera"/>
+    </node>
 
     <node pkg="nodelet" type="nodelet" name="mast_camera_nodelet"
         args="load uvc_camera/CameraNodelet /camera/camera_nodelet_manager2"
-        ns="camera/mast"/>
+        ns="camera/mast">
+        <param name="fps" value="$(arg fps)"/>
+        <param name="width" value="$(arg width)"/>
+        <param name="height" value="$(arg height)"/>
+        <param name="frame_id" value="mast_camera"/>
+    </node>
 
     <!-- DISABLED nodelets for rectifying webcams -->
     <node pkg="nodelet" type="nodelet" name="arm_camera_rectify_nodelet"
