@@ -1,2 +1,4 @@
-geometry_msgs/Point32 ul  # upper left corner
-geometry_msgs/Point32 br  # bottom right corner
+float32 x
+float32 y
+float32 width
+float32 height

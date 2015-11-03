@@ -1,0 +1,6 @@
+# TODO: string detector_name
+string topic_name
+uint32 queue_size
+# TODO: image transport?
+---
+Error error
