@@ -4,7 +4,7 @@
     <arg name="width" default="640"/>
     <arg name="height" default="480"/>
 
-    <include file="$(find snap_misc)/launch/machines.launch"/>
+    <include file="$(find snap_bringup)/launch/machines.launch"/>
 
     <!-- nodelet manager for crackle machine -->
     <node pkg="nodelet" type="nodelet" name="camera_nodelet_manager2"
