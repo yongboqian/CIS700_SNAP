@@ -1,0 +1,6 @@
+# Language independent constant
+string ALL = "__ALL_MODELS__"
+
+string[] model_names
+---
+Error error
