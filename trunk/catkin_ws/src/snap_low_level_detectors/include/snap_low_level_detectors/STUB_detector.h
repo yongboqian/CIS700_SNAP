@@ -10,11 +10,12 @@
  */
 
 #include "detector_base.h"
+#include "snap_low_level_detectors/STUBDetectorConfig.h"
 
 namespace snap_low_level_detectors
 {
 
-class STUBDetector : public DetectorBase
+class STUBDetector : public DetectorBase, private Reconfigurable<STUBDetectorConfig>
 {
     static snap_vision_msgs::Error E_STUB()
     {
@@ -30,13 +31,13 @@ class STUBDetector : public DetectorBase
         virtual void finalize() {}
 
         /** Parameters */
-        virtual snap_vision_msgs::Error loadParams(const std::string &fname) { return E_STUB(); }
-        virtual snap_vision_msgs::Error saveParams(const std::string &fname) { return E_STUB(); }
+        //virtual snap_vision_msgs::Error loadParams(const std::string &fname) { return E_STUB(); }
+        //virtual snap_vision_msgs::Error saveParams(const std::string &fname) { return E_STUB(); }
 
         /** Load/unload models */
-        virtual snap_vision_msgs::Error   load_models(const std::vector<std::string> &model_names)
+        virtual snap_vision_msgs::Error   loadModels(const std::vector<std::string> &model_names)
             { return E_STUB(); }
-        virtual snap_vision_msgs::Error unload_models(const std::vector<std::string> &model_names)
+        virtual snap_vision_msgs::Error unloadModels(const std::vector<std::string> &model_names)
             { return E_STUB(); }
 
         /** Detect */

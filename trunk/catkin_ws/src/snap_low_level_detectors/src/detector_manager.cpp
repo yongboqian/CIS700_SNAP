@@ -4,6 +4,7 @@
 #include <snap_vision_msgs/DetectionsStamped.h>
 #include "snap_low_level_detectors/detector_manager.h"
 #include "snap_low_level_detectors/STUB_detector.h"
+#include "snap_low_level_detectors/ocv_cascade_detector.h"
 
 using namespace snap_vision_msgs;
 using namespace snap_low_level_detectors;
@@ -35,10 +36,10 @@ DetectorManager::DetectorManager()
                 &DetectorManager::  loadModelsCb, this))
     , unload_models_(pnh_.advertiseService("unload_models",
                 &DetectorManager::unloadModelsCb, this))
-    , load_params_(pnh_.advertiseService("load_params",
-                &DetectorManager::loadParamsCb, this))
-    , save_params_(pnh_.advertiseService("save_params",
-                &DetectorManager::saveParamsCb, this))
+    //, load_params_(pnh_.advertiseService("load_params",
+    //            &DetectorManager::loadParamsCb, this))
+    //, save_params_(pnh_.advertiseService("save_params",
+    //            &DetectorManager::saveParamsCb, this))
     , start_stream_(pnh_.advertiseService("start_stream",
                 &DetectorManager::startStreamCb, this))
     ,  stop_stream_(pnh_.advertiseService( "stop_stream",
@@ -71,22 +72,25 @@ bool DetectorManager::loadDetectorCb(Detector::Request &req,
 {
     CHECK_UNLOADED;
 
-    if("STUBDetector" == req.type) {
-        try {
+    try {
+        if("STUBDetector" == req.type) {
             pDetector_ = std::make_unique<STUBDetector>();
-            pDetector_->init();
-            res.error.err_code = Error::E_OK;
-            res.error.err_str = "STUBDetector loaded";
-            return true;
-        } catch (const std::exception &e) {
-            res.error.err_code = Error::E_UNKNOWN_ERROR;
-            res.error.err_str = e.what();
+        } else if("OCVCascadeDetector" == req.type) {
+            pDetector_ = std::make_unique<OCVCascadeDetector>();
+        } else {
+            res.error.err_code = Error::E_DETECTOR_NOT_FOUND;
+            res.error.err_str = "Detector type '"
+                + req.type + "' not known.";
             return true;
         }
-    } else {
-        res.error.err_code = Error::E_DETECTOR_NOT_FOUND;
-        res.error.err_str = "Detector type '"
-            + req.type + "' not known.";
+
+        pDetector_->init();
+        res.error.err_code = Error::E_OK;
+        res.error.err_str = "STUBDetector loaded";
+        return true;
+    } catch (const std::exception &e) {
+        res.error.err_code = Error::E_UNKNOWN_ERROR;
+        res.error.err_str = e.what();
         return true;
     }
 }
@@ -122,6 +126,7 @@ bool DetectorManager::unloadModelsCb(Models::Request &req,
     return true;
 }
 
+/*
 bool DetectorManager::loadParamsCb(Params::Request &req,
                                    Params::Response &res)
 {
@@ -139,6 +144,7 @@ bool DetectorManager::saveParamsCb(Params::Request &req,
     res.error = pDetector_->saveParams(req.filename);
     return true;
 }
+*/
 
 bool DetectorManager::startStreamCb(Stream::Request &req,
                                     Stream::Response &res)

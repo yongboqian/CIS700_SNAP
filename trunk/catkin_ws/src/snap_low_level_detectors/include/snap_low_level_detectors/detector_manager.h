@@ -66,10 +66,10 @@ public:
     bool unloadModelsCb(snap_vision_msgs::Models::Request &req,
                         snap_vision_msgs::Models::Response &res);
 
-    bool loadParamsCb(snap_vision_msgs::Params::Request &req,
-                      snap_vision_msgs::Params::Response &res);
-    bool saveParamsCb(snap_vision_msgs::Params::Request &req,
-                      snap_vision_msgs::Params::Response &res);
+    //bool loadParamsCb(snap_vision_msgs::Params::Request &req,
+    //                  snap_vision_msgs::Params::Response &res);
+    //bool saveParamsCb(snap_vision_msgs::Params::Request &req,
+    //                  snap_vision_msgs::Params::Response &res);
  
     bool startStreamCb(snap_vision_msgs::Stream::Request &req,
                        snap_vision_msgs::Stream::Response &res);
