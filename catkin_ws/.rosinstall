@@ -2,5 +2,9 @@
     local-name: src/arbotix_ros
     uri: https://github.com/vanadiumlabs/arbotix_ros.git
 - git:
+    local-name: vision_opencv
+    uri: https://github.com/ros-perception/vision_opencv.git
+    version: indigo
+- git:
     uri: https://github.com/ros-planning/3d_navigation.git
     local-name: 3d_navigation

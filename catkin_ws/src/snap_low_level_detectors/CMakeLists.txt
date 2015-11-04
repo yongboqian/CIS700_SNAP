@@ -6,6 +6,7 @@ project(snap_low_level_detectors)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   actionlib
+  dynamic_reconfigure
   cv_bridge
   image_transport
   snap_vision_msgs
@@ -13,7 +14,11 @@ find_package(catkin REQUIRED COMPONENTS
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
-
+find_package(OpenCV 3 REQUIRED COMPONENTS
+  core
+  imgproc
+  objdetect
+)
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
@@ -86,10 +91,10 @@ find_package(catkin REQUIRED COMPONENTS
 ##     and list every .cfg file to be processed
 
 ## Generate dynamic reconfigure parameters in the 'cfg' folder
-# generate_dynamic_reconfigure_options(
-#   cfg/DynReconf1.cfg
-#   cfg/DynReconf2.cfg
-# )
+generate_dynamic_reconfigure_options(
+    cfg/OCVCascadeDetector.cfg
+    cfg/STUBDetector.cfg
+)
 
 ###################################
 ## catkin specific configuration ##
@@ -104,7 +109,7 @@ catkin_package(
   INCLUDE_DIRS include
   LIBRARIES snap_low_level_detectors
   CATKIN_DEPENDS actionlib cv_bridge image_transport snap_vision_msgs
-#  DEPENDS system_lib
+  DEPENDS ${OpenCV_LIBRARIES}
 )
 
 ###########
@@ -113,8 +118,11 @@ catkin_package(
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
-include_directories(include)
+include_directories(SYSTEM
+  ${OpenCV_INCLUDE_DIRS}
+)
 include_directories(
+  include
   ${catkin_INCLUDE_DIRS}
 )
 
@@ -122,24 +130,28 @@ include_directories(
 add_library(snap_low_level_detectors
   #src/${PROJECT_NAME}/snap_low_level_detectors.cpp
   src/detector_manager.cpp
+  src/ocv_cascade_detector.cpp
 )
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
-add_dependencies(snap_low_level_detectors ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(snap_low_level_detectors ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} ${PROJECT_NAME}_gencfg)
+target_link_libraries(snap_low_level_detectors ${OpenCV_LIBRARIES})
 
 ## Declare a C++ executable
-# add_executable(snap_low_level_detectors_node src/snap_low_level_detectors_node.cpp)
+add_executable(detector_manager_node src/detector_manager_node.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-# add_dependencies(snap_low_level_detectors_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(detector_manager_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(snap_low_level_detectors_node
-#   ${catkin_LIBRARIES}
-# )
+target_link_libraries(detector_manager_node
+  snap_low_level_detectors
+  ${catkin_LIBRARIES}
+  ${OpenCV_LIBRARIES}
+)
 
 #############
 ## Install ##
