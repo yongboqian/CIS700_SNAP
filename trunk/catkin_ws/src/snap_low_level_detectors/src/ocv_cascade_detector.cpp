@@ -1,4 +1,5 @@
 #include <opencv2/imgproc.hpp>
+#include <snap_vision_msgs/Models.h>
 #include "snap_low_level_detectors/ocv_cascade_detector.h"
 
 using namespace std;
@@ -31,6 +32,23 @@ void OCVCascadeDetector::finalize()
     numDetections_.clear();
 }
 
+static const std::vector<std::string>& resolveModelNames(const std::vector<std::string> &model_names)
+{
+    static std::vector<std::string> all_model_names;
+    if(all_model_names.empty()) {
+        for(auto &kv : s_cascadeFilename) {
+            all_model_names.push_back(kv.first);
+            ROS_INFO_STREAM("Known model: " << all_model_names.back());
+        }
+    }
+
+    if(model_names.size() == 1 && model_names[0] == snap_vision_msgs::Models::Request::ALL) {
+        return all_model_names;
+    } else {
+        return model_names;
+    }
+}
+
 SnapError OCVCascadeDetector::loadModels(const std::vector<std::string> &model_names)
 {
     size_t num_loaded = 0;
@@ -38,7 +56,7 @@ SnapError OCVCascadeDetector::loadModels(const std::vector<std::string> &model_n
     SnapError ret;
     ret.err_code = SnapError::E_OK;
 
-    for(const string &model_name : model_names) {
+    for(const string &model_name : resolveModelNames(model_names)) {
         CascadeClassifier &cc = classifiers_[model_name];   // std::map::operator[] default-constructs as needed
         if(cc.empty()) {
             try {
@@ -68,7 +86,7 @@ SnapError OCVCascadeDetector::loadModels(const std::vector<std::string> &model_n
 SnapError OCVCascadeDetector::unloadModels(const std::vector<std::string> &model_names)
 {
     size_t num_unloaded = 0;
-    for(const string &model_name : model_names) {
+    for(const string &model_name : resolveModelNames(model_names)) {
         num_unloaded += classifiers_.erase(model_name);
     }
     char buf[80];
