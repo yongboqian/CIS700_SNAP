@@ -1,4 +1,5 @@
 //#include <pluginlib/class_loader.h>
+#include <opencv2/imgproc.hpp>
 #include <cv_bridge/cv_bridge.h>
 #include <sensor_msgs/image_encodings.h>
 #include <snap_vision_msgs/DetectionsStamped.h>
@@ -23,7 +24,7 @@ std::unique_ptr<T> make_unique(Args&&... args)
 DetectorManager::DetectorManager()
     : nh_("")
     , pnh_("~")
-    , it_(nh_) /* should this be pnh_ ? */
+    , it_(pnh_) /* should this be nh_ ? */
     , sub_(/* no need to subscribe yet */)
     , pub_(pnh_.advertise<snap_vision_msgs::DetectionsStamped>(
                 "detections", 10))
@@ -44,6 +45,7 @@ DetectorManager::DetectorManager()
                 &DetectorManager::startStreamCb, this))
     ,  stop_stream_(pnh_.advertiseService( "stop_stream",
                 &DetectorManager:: stopStreamCb, this))
+    , pub_viz_(it_.advertise("detections_vizualization", 10))
 {}
 
 #define CHECK_LOADED \
@@ -93,6 +95,8 @@ bool DetectorManager::loadDetectorCb(Detector::Request &req,
         res.error.err_str = e.what();
         return true;
     }
+
+    rng_ = cv::RNG(0);
 }
 
 
@@ -172,9 +176,10 @@ void DetectorManager::imageCb(const sensor_msgs::ImageConstPtr& msg)
         return;
     }
 
-    if(pub_.getNumSubscribers() == 0) {
+    if(pub_.getNumSubscribers() == 0 && pub_viz_.getNumSubscribers() == 0) {
         ROS_WARN_STREAM_THROTTLE(5, "No subscribers on '"
-                << pub_.getTopic() << "' so not running detection.");
+                << pub_.getTopic() << "' nor '"
+                << pub_viz_.getTopic() << "' so not running detection.");
         return;
     }
 
@@ -194,5 +199,79 @@ void DetectorManager::imageCb(const sensor_msgs::ImageConstPtr& msg)
 
     pDetector_->detect(cv_ptr->image, dets.detections);
     pub_.publish(dets);
+
+    visualizeAndPublish(msg->header, cv_ptr->image, dets.detections);
 }
 
+void DetectorManager::visualizeAndPublish(const std_msgs::Header &header,
+        const cv::Mat &image, const vDetection &dets)
+{
+    if(pub_viz_.getNumSubscribers() == 0) {
+        ROS_INFO_STREAM_THROTTLE(5, "No subscribers on '"
+                << pub_viz_.getTopic() << "' so not visualizing.");
+        return;
+    }
+
+    image_.header = header;
+    image_.encoding = "bgr8";
+    const std::set<std::string> classes = drawDetections(image, dets, image_.image);
+    overlayDetectionsLegend(image_.image, classes);
+    image_.toImageMsg(image_msg_);
+    pub_viz_.publish(image_msg_);
+}
+
+static cv::Scalar randomColor( cv::RNG& rng )
+{
+    int icolor = (unsigned) rng;
+    return cv::Scalar( icolor&255, (icolor>>8)&255, (icolor>>16)&255 );
+}
+
+std::set<std::string> DetectorManager::drawDetections(const cv::Mat &imgIn, const vDetection &dets,
+        cv::Mat &imgOut)
+{
+    const int shift = 2;
+    const float mul = 1<<shift;
+    const int thickness = 2 << shift;
+    const int lineType = cv::LINE_8;
+
+    std::set<std::string> classes;
+
+    imgIn.copyTo(imgOut);
+
+    for(auto &det : dets) {
+        classes.insert(det.label);
+
+        cv::Scalar &color = dets_colors_[det.label];
+        if(cv::Scalar() == color) {
+            // first time seeing this label, so generate a new color
+            color = randomColor(rng_);
+        }
+
+        // TODO: do we need to check bounds?
+        cv::rectangle(imgOut, cv::Rect(cvRound(det.bbox.x*mul), cvRound(det.bbox.y*mul),
+                cvRound(det.bbox.width*mul), cvRound(det.bbox.height*mul)),
+                color, thickness, lineType, shift);
+    }
+
+    return classes;
+}
+
+void DetectorManager::overlayDetectionsLegend(cv::Mat &img,
+        const std::set<std::string> &classes)
+{
+    const int fontFace = cv::FONT_HERSHEY_SIMPLEX;
+    const double fontScale = 1.0;
+    const int thickness = 1;
+    const int lineType = cv::LINE_8;
+    const bool bottomLeftOrigin = false;
+
+    cv::Point org(0,0);
+    for(auto &cls : classes) {
+        const cv::Scalar &color = dets_colors_.at(cls);
+        
+        cv::putText(img, cls, org, fontFace, fontScale, color,
+                thickness, lineType, bottomLeftOrigin);
+
+        org.y += 20;
+    }
+}
