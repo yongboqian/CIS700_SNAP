@@ -14,6 +14,7 @@
 
 #include <ros/ros.h>
 #include <image_transport/image_transport.h>
+#include <cv_bridge/cv_bridge.h>
 #include <snap_vision_msgs/Detector.h>
 #include <snap_vision_msgs/Models.h>
 #include <snap_vision_msgs/Stream.h>
@@ -21,6 +22,8 @@
 
 namespace snap_low_level_detectors
 {
+
+typedef std::vector<snap_vision_msgs::Detection> vDetection;
 
 class DetectorManager
 {
@@ -48,6 +51,19 @@ class DetectorManager
                        start_stream_,
                         stop_stream_;
 
+    /** Outputting the image with detections */
+    image_transport::Publisher pub_viz_;
+    /** Persist the colors used for each type of detection */
+    std::map<std::string, cv::Scalar> dets_colors_;
+    /** Temporary images/messages */
+    cv_bridge::CvImage image_;
+    sensor_msgs::Image image_msg_;
+    cv::RNG rng_;
+
+    /** Drawing detections */
+    void visualizeAndPublish(const std_msgs::Header &header, const cv::Mat &image, const vDetection &dets);
+    std::set<std::string> drawDetections(const cv::Mat &imgIn, const vDetection &dets, cv::Mat &imgOut);
+    void overlayDetectionsLegend(cv::Mat &img, const std::set<std::string> &classes);
 
 public:
     /** Constructor */
