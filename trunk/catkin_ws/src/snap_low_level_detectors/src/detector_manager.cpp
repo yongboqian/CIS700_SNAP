@@ -88,7 +88,7 @@ bool DetectorManager::loadDetectorCb(Detector::Request &req,
 
         pDetector_->init();
         res.error.err_code = Error::E_OK;
-        res.error.err_str = "STUBDetector loaded";
+        res.error.err_str = req.type + " loaded";
         return true;
     } catch (const std::exception &e) {
         res.error.err_code = Error::E_UNKNOWN_ERROR;
@@ -231,7 +231,7 @@ std::set<std::string> DetectorManager::drawDetections(const cv::Mat &imgIn, cons
 {
     const int shift = 2;
     const float mul = 1<<shift;
-    const int thickness = 2 << shift;
+    const int thickness = 2;
     const int lineType = cv::LINE_8;
 
     std::set<std::string> classes;
@@ -261,17 +261,17 @@ void DetectorManager::overlayDetectionsLegend(cv::Mat &img,
 {
     const int fontFace = cv::FONT_HERSHEY_SIMPLEX;
     const double fontScale = 1.0;
-    const int thickness = 1;
+    const int thickness = 2;
     const int lineType = cv::LINE_8;
     const bool bottomLeftOrigin = false;
 
-    cv::Point org(0,0);
+    cv::Point org(10,30);
     for(auto &cls : classes) {
         const cv::Scalar &color = dets_colors_.at(cls);
         
         cv::putText(img, cls, org, fontFace, fontScale, color,
                 thickness, lineType, bottomLeftOrigin);
 
-        org.y += 20;
+        org.y += 25;
     }
 }
