@@ -1,0 +1,11 @@
+<library path="libsnap_rviz_plugins">
+  <class name="snap_rviz_plugins/ImageDetection" type="snap_rviz_plugins::ImageDetectionDisplay" base_class_type="rviz::Display">
+    <description>
+        Displays an image from a sensor_msgs/Image topic, along with corresponding detections on a snap_vision_msgs/DetectionsStamped.
+    </description>
+    <message_type>sensor_msgs/Image</message_type>
+    <message_type>sensor_msgs/CompressedImage</message_type>
+    <message_type>theora_image_transport/Packet</message_type>
+    <message_type>snap_vision_msgs/DetectionsStamped</message_type>
+  </class>
+</library>
