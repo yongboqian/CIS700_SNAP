@@ -188,6 +188,11 @@ install(DIRECTORY include/${PROJECT_NAME}/
 #   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 # )
 
+install(DIRECTORY cascades/
+    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/cascades)
+install(DIRECTORY cascades/
+    DESTINATION ${OpenCV_DIR}/custom_cascades/snap)
+
 #############
 ## Testing ##
 #############

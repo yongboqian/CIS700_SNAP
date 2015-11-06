@@ -11,7 +11,8 @@ typedef snap_vision_msgs::Error SnapError;
 const static map<string, string> s_cascadeFilename{
     {"frontalface", "/opt/opencv3/share/OpenCV/lbpcascades/lbpcascade_frontalface.xml"},
     {"profileface", "/opt/opencv3/share/OpenCV/lbpcascades/lbpcascade_profileface.xml"},
-    {"silverware", "/opt/opencv3/share/OpenCV/lbpcascades/lbpcascade_silverware.xml"}
+    {"silverware", "/opt/opencv3/share/OpenCV/lbpcascades/lbpcascade_silverware.xml"},
+    {"marker", "/opt/opencv3/share/OpenCV/custom_cascades/snap/marker.xml"},
 };
 
 void OCVCascadeDetector::init()
