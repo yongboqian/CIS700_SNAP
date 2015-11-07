@@ -4,38 +4,22 @@
     <arg name="width" default="640"/>
     <arg name="height" default="480"/>
 
-    <include file="$(find snap_bringup)/launch/machines.launch"/>
+    <include file="$(find snap_bringup)/launch/webcam.launch">
+        <arg name="fps" value="$(arg fps)"/>
+        <arg name="width" value="$(arg width)"/>
+        <arg name="height" value="$(arg height)"/>
+        <arg name="machine" value="snap"/>
+        <arg name="ns" value="camera/arm"/>
+        <!--arg name="needs_manager" value="false"/-->
+    </include>
 
-    <!-- nodelet manager for crackle machine -->
-    <node pkg="nodelet" type="nodelet" name="camera_nodelet_manager2"
-        args="manager" ns="camera" machine="crackle"/>
+    <include file="$(find snap_bringup)/launch/webcam.launch">
+        <arg name="fps" value="$(arg fps)"/>
+        <arg name="width" value="$(arg width)"/>
+        <arg name="height" value="$(arg height)"/>
+        <arg name="machine" value="crackle"/>
+        <arg name="ns" value="camera/mast"/>
+    </include>
 
-    <!-- camera nodelets for the arm and the mast-->
-    <node pkg="nodelet" type="nodelet" name="arm_camera_nodelet"
-        args="load uvc_camera/CameraNodelet /camera/camera_nodelet_manager"
-        ns="camera/arm">
-        <param name="fps" value="$(arg fps)"/>
-        <param name="width" value="$(arg width)"/>
-        <param name="height" value="$(arg height)"/>
-        <param name="frame_id" value="arm_camera"/>
-    </node>
-
-    <node pkg="nodelet" type="nodelet" name="mast_camera_nodelet"
-        args="load uvc_camera/CameraNodelet /camera/camera_nodelet_manager2"
-        ns="camera/mast">
-        <param name="fps" value="$(arg fps)"/>
-        <param name="width" value="$(arg width)"/>
-        <param name="height" value="$(arg height)"/>
-        <param name="frame_id" value="mast_camera"/>
-    </node>
-
-    <!-- DISABLED nodelets for rectifying webcams -->
-    <node pkg="nodelet" type="nodelet" name="arm_camera_rectify_nodelet"
-        args="load image_proc/rectify /camera/camera_nodelet_manager"
-        ns="camera/arm" if="False"/>
-
-    <node pkg="nodelet" type="nodelet" name="mast_camera_rectify_nodelet"
-        args="load image_proc/rectify /camera/camera_nodelet_manager2"
-        ns="camera/mast" if="False"/>
 
 </launch>
