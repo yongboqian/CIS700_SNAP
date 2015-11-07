@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="fps" default="30"/>
+    <arg name="width" default="640"/>
+    <arg name="height" default="480"/>
+    <arg name="machine" default=""/>
+    <arg name="ns"/>
+    <arg name="needs_manager" default="True"/>
+
+    <include file="$(find snap_bringup)/launch/machines.launch"/>
+
+    <group ns="$(arg ns)">
+        <node pkg="nodelet" type="nodelet" name="camera_nodelet_manager"
+            args="manager" machine="$(arg machine)" if="$(arg needs_manager)"/>
+
+        <node pkg="nodelet" type="nodelet" name="camera_nodelet"
+            args="load uvc_camera/CameraNodelet camera_nodelet_manager"
+            machine="$(arg machine)">
+            <param name="fps" value="$(arg fps)"/>
+            <param name="width" value="$(arg width)"/>
+            <param name="height" value="$(arg height)"/>
+            <param name="frame_id" value="arm_camera"/>
+        </node>
+
+        <!-- DISABLED nodelets for rectifying webcams -->
+        <node pkg="nodelet" type="nodelet" name="camera_rectify_nodelet"
+            args="load image_proc/rectify camera_nodelet_manager"
+            if="False" machine="$(arg machine)"/>
+    </group>
+</launch>
+
