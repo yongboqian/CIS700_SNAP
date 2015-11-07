@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <launch>
 
   <node name="arbotix" pkg="arbotix_python" type="arbotix_driver" output="screen">
@@ -8,6 +9,9 @@
       <param name="model" value="singlesided"/>
       <param name="invert" value="true"/>
       <param name="pad_width" value="0.0254"/>
+  </node>
+ <node name="test_arm" pkg="snap_bringup" type="snap_arm_controller.py">
+
   </node>
 
 </launch>
