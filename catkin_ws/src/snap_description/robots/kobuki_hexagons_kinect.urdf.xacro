@@ -9,16 +9,16 @@
   <xacro:include filename="$(find snap_description)/urdf/turtlebot_library.urdf.xacro" />
   <!--Since we do not want to edit the turtlebot description we add the arm and elevator information here -->
   <xacro:include filename="$(find turtlebot_arm_description)/urdf/arm.xacro" />
-  <!-- <xacro:include filename="$(find snap_description)/urdf/elevator/elevator_link" /> -->
+  <xacro:include filename="$(find snap_description)/urdf/elevator/elevator_link.urdf" /> 
   
   <kobuki/>
   <stack_hexagons parent="base_link"/>
   <sensor_kinect  parent="base_link"/>
   <!--Attach the turtlebot arm to the elevator which connects(at this moment) to the top hexagon plate -->
-  <!--<turtlebot_arm parent="elevator_arm_adapter_link" color="white" gripper_color="green"
+  <turtlebot_arm parent="elevator_arm_adapter_link" color="white" gripper_color="green"
                    joints_vlimit="1.571" pan_llimit="-2.617" pan_ulimit="2.617">
       <origin xyz="0 0.0254 0" rpy="0 1.571 1.571 "/>
-  </turtlebot_arm> -->
+  </turtlebot_arm> 
 </robot>
 
 
