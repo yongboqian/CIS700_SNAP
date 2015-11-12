@@ -9,7 +9,7 @@
 
     <include file="$(find snap_bringup)/launch/machines.launch"/>
 
-    <group ns="$(arg ns)">
+    <group ns="camera/$(arg ns)">
         <node pkg="nodelet" type="nodelet" name="camera_nodelet_manager"
             args="manager" machine="$(arg machine)" if="$(arg needs_manager)"/>
 
@@ -20,12 +20,17 @@
             <param name="width" value="$(arg width)"/>
             <param name="height" value="$(arg height)"/>
             <param name="frame_id" value="arm_camera"/>
+            <param name="camera_info_url" value="file://$(find snap_misc)/config/$(arg ns)_camera.yaml"/>
         </node>
 
-        <!-- DISABLED nodelets for rectifying webcams -->
+        <!-- nodelets for rectifying webcams -->
         <node pkg="nodelet" type="nodelet" name="camera_rectify_nodelet"
             args="load image_proc/rectify camera_nodelet_manager"
-            if="False" machine="$(arg machine)"/>
+            if="True" machine="$(arg machine)">
+            <remap from="image_mono" to="image_raw"/>
+            <remap from="image_rect" to="image_rect_color"/>
+            <param name="interpolation" value="1"/>
+        </node>
     </group>
 </launch>
 
