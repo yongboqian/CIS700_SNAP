@@ -9,7 +9,7 @@
         <arg name="width" value="$(arg width)"/>
         <arg name="height" value="$(arg height)"/>
         <arg name="machine" value="snap"/>
-        <arg name="ns" value="camera/arm"/>
+        <arg name="ns" value="arm"/>
         <!--arg name="needs_manager" value="false"/-->
     </include>
 
@@ -18,7 +18,7 @@
         <arg name="width" value="$(arg width)"/>
         <arg name="height" value="$(arg height)"/>
         <arg name="machine" value="crackle"/>
-        <arg name="ns" value="camera/mast"/>
+        <arg name="ns" value="mast"/>
     </include>
 
 
