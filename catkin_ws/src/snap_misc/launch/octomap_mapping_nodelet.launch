@@ -8,21 +8,38 @@
   www.ros.org/wiki/octomap_server for details  
 -->
 <launch>
+    <arg name="frame_id" default="map"/>
   <!--node pkg="nodelet" type="nodelet" name="octomap_server_nodelet" args="load octomap_server/OctomapServerNodelet camera/camera_nodelet_manager"-->
   <node pkg="nodelet" type="nodelet" name="octomap_server_nodelet" args="standalone octomap_server/OctomapServerNodelet">
 		<param name="resolution" value="0.05" />
 		
 		<!-- fixed map frame (set to 'map' if SLAM or localization running!) -->
-		<param name="frame_id" type="string" value="map" />
+		<param name="frame_id" type="string" value="$(arg frame_id)" />
 		
 		<!-- maximum range to integrate (speedup!) -->
-		<param name="sensor_model/max_range" value="9.0" />
+		<param name="sensor_model/max_range" value="5.0" />
+
+        <!-- Probabilities for hits and misses in the sensor model when dynamically building a map  -->
+        <param name="sensor_model/hit" value="0.7"/>
+        <param name="sensor_model/miss" value="0.4"/>
+		
+        <!-- Minimum and maximum probability for clamping when dynamically building a map  -->
+        <param name="sensor_model/min" value="0.12"/>
+        <param name="sensor_model/max" value="0.97"/>
 		
 		<!-- filter out the ground -->
-		<param name="filter_ground" value="True" />
-		<param name="ground_filter/distance" value="0.04"/> <!-- Distance threshold for points (in z direction) to be segmented to the ground plane -->
-		<param name="ground_filter/angle" value="0.524"/> <!-- 30 degrees -->
-		<param name="ground_filter/angle" value="0.07"/> <!-- Distance threshold from z=0 for a plane to be detected as ground (4th coefficient of the plane equation from PCL) -->
+		<param name="filter_ground" value="False" />
+		<param name="ground_filter/distance" value="0.05"/> <!-- Distance threshold for points (in z direction) to be segmented to the ground plane -->
+		<!--param name="ground_filter/angle" value="0.524"/--> <!-- 30 degrees -->
+		<param name="ground_filter/angle" value="0.175"/> <!-- 10 degrees -->
+		<param name="ground_filter/plane_distance" value="0.07"/> <!-- Distance threshold from z=0 for a plane to be detected as ground (4th coefficient of the plane equation from PCL) -->
+
+        <!-- Minimum and maximum height of points to consider for insertion in the callback. Any point
+             outside of this intervall will be discarded before running any insertion or ground plane
+             filtering. You can do a rough filtering based on height with this, but if you enable the
+             ground_filter this interval needs to include the ground plane. -->
+        <param name="pointcloud_min_z" value="0.05"/>
+        <param name="pointcloud_max_z" value="1.75"/>
 		
 		<!-- data source to integrate (PointCloud2) -->
 		<remap from="cloud_in" to="camera/depth_registered/points" />
