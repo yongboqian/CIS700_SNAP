@@ -17,3 +17,7 @@
 - git:
     uri: https://github.com/ros-planning/3d_navigation.git
     local-name: 3d_navigation
+- git: {local-name: lsd_slam, uri: 'git@git.assembla.com:cis700-snap.lsd_slam2.git',
+    version: catkin}
+- git: {local-name: src/frontier_exploration, uri: 'git@git.assembla.com:cis700-snap.frontier_exploration.git',
+    version: indigo-devel}
