@@ -1,0 +1,92 @@
+<?xml version="1.0" ?>
+<robot name="Elevator">
+<!--' every urdf should have a base link '-->
+
+<link name="elevator_stem_link">
+<inertial>
+     <origin xyz="0 0 0.5" rpy="0 0 0"/>
+     <mass value="1"/>
+     <inertia ixx="100"  ixy="0"  ixz="0" iyy="100" iyz="0" izz="100" />
+   </inertial>
+
+   <visual>
+     <origin xyz="0 0 0" rpy="0 0 0" />
+     <geometry>
+       <box size="0.025 0.025 0.7874" />
+     </geometry>
+     <material name="Grey">
+       <color rgba="0 1.0 1.0 1.0"/>
+     </material>
+   </visual>
+
+   <collision>
+     <origin xyz="0 0 0" rpy="0 0 0" />
+     <geometry>
+       <box size="0.025 0.025 0.7874" />
+     </geometry>
+   </collision>
+ </link>
+
+<link name="elevator_slider_link">
+
+   <visual>
+     <origin xyz="0 0 0" rpy="0 0 0" />
+     <geometry>
+       <box size="0.025 0.025 0.1" />
+     </geometry>
+     <material name="White">
+       <color rgba="0 0 0 1.0"/>
+     </material>
+   </visual>
+
+ </link>
+
+<link name="elevator_arm_adapter_link">
+<inertial>
+     <origin xyz="0 0 0.5" rpy="0 0 0"/>
+     <mass value="1"/>
+     <inertia ixx="100"  ixy="0"  ixz="0" iyy="100" iyz="0" izz="100" />
+   </inertial>
+
+   <visual>
+     <origin xyz="0 0 0" rpy="0 0 0" />
+     <geometry>
+       <box size="0.075 0.025 0.1" />
+     </geometry>
+     <material name="White">
+       <color rgba="0 1.0 1.0 1.0"/>
+     </material>
+   </visual>
+
+   <collision>
+     <origin xyz="0 0 0" rpy="0 0 0" />
+     <geometry>
+       <box size="0.025 0.025 0.7874" />
+     </geometry>
+   </collision>
+ </link>
+
+<!-- Change below to alter where the elevator will attach to on the turtlebot. xacro should replace the base_link and constants for location -->
+<joint name="elevator_base" type="fixed">
+   <!-- <origin xyz="0.025 0 0.825"/> -->
+    <!-- <parent link="base_link"/> -->
+    <origin xyz="0.0508 0 0.3937" rpy="0 0 -1.571"/>
+    <parent link="plate_top_link"/>
+    <child link="elevator_stem_link"/>
+</joint>
+
+
+  <joint name="Slider" type="prismatic">
+    <parent link="elevator_stem_link"/>
+    <child link="elevator_slider_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <axis xyz="0 0 1" />
+    <limit lower="-0.25" upper="0.25" effort="30" velocity="0.25"/>
+  </joint>
+
+  <joint name="arm_adapter" type="fixed">
+    <parent link="elevator_slider_link"/>
+    <child link="elevator_arm_adapter_link"/>
+    <origin xyz="0 0.025 0" rpy="0 0 0" />
+  </joint>
+</robot>
