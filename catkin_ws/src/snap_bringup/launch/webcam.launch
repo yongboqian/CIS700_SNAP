@@ -29,7 +29,7 @@
             if="True" machine="$(arg machine)">
             <remap from="image_mono" to="image_raw"/>
             <remap from="image_rect" to="image_rect_color"/>
-            <param name="interpolation" value="1"/>
+            <param name="interpolation" value="1"/> <!-- TODO: 1 is linear; 2 is cubic which is much better, but too slow -->
         </node>
     </group>
 </launch>
