@@ -51,7 +51,7 @@
    <visual>
      <origin xyz="0 0 0" rpy="0 0 0" />
      <geometry>
-       <box size="0.075 0.025 0.1" />
+       <box size="0.025 0.075 0.1" />
      </geometry>
      <material name="White">
        <color rgba="0 1.0 1.0 1.0"/>
@@ -61,7 +61,7 @@
    <collision>
      <origin xyz="0 0 0" rpy="0 0 0" />
      <geometry>
-       <box size="0.025 0.025 0.7874" />
+       <box size="0.025 0.075 0.1" />
      </geometry>
    </collision>
  </link>
@@ -70,11 +70,11 @@
    <joint name="elevator_base" type="fixed">
     <!-- <origin xyz="0.025 0 0.825"/> -->
     <!-- <parent link="base_link"/> -->
-    <origin xyz="0.0508 0 0.3937" rpy="0 0 -1.571"/>
+    <origin xyz="0.0508 0 0.3937" rpy="0 0 0"/>
     <parent link="plate_top_link"/>
     <child link="elevator_stem_link"/>
   </joint>
-  <joint name="Slider" type="prismatic">
+  <joint name="Slider" type="fixed">
     <parent link="elevator_stem_link"/>
     <child link="elevator_slider_link"/>
     <origin xyz="0 0 0" rpy="0 0 0" />
@@ -85,6 +85,6 @@
   <joint name="arm_adapter" type="fixed">
     <parent link="elevator_slider_link"/>
     <child link="elevator_arm_adapter_link"/>
-    <origin xyz="0 0.025 0" rpy="0 0 0" />
+    <origin xyz="0.025 0 0" rpy="0 0 0" />
   </joint>
 </robot>
