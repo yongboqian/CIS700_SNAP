@@ -10,7 +10,7 @@
   <!--Since we do not want to edit the turtlebot description we add the arm and elevator information here -->
   <xacro:include filename="$(find turtlebot_arm_description)/urdf/arm.xacro" />
   <xacro:include filename="$(find snap_description)/urdf/elevator/elevator_link.xacro" /> 
-  <xacro:include filename="$(find turtlebot_description)/urdf/sensors/webcamera.xacro" /> 
+  <xacro:include filename="$(find snap_description)/urdf/sensors/webcamera.xacro" /> 
   
   <kobuki/>
   <stack_hexagons parent="base_link"/>
