@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:property name="M_PI" value="3.1412" />
-  <xacro:property name="height" value="0.78" />
+  <xacro:property name="height_El" value="0.84455" />
   <xacro:macro name="elevator" params="parent *origin">
 <!--' every urdf should have a base link '-->
 
@@ -9,13 +9,13 @@
 <inertial>
      <origin xyz="0 0 0.5" rpy="0 0 0"/>
      <mass value="1"/>
-     <inertia ixx="100"  ixy="0"  ixz="0" iyy="100" iyz="0" izz="100" />
+     <inertia ixx="10"  ixy="0"  ixz="0" iyy="10" iyz="0" izz="10" />
    </inertial>
 
    <visual>
      <origin xyz="0 0 0" rpy="0 0 0" />
      <geometry>
-       <box size="0.025 0.025 0.7874" />
+       <box size="0.025 0.025 ${height_El}" />
      </geometry>
      <material name="Grey">
        <color rgba="0 1.0 1.0 1.0"/>
@@ -25,7 +25,7 @@
    <collision>
      <origin xyz="0 0 0" rpy="0 0 0" />
      <geometry>
-       <box size="0.025 0.025 0.7874" />
+       <box size="0.025 0.025 ${height_El}" />
      </geometry>
    </collision>
  </link>
