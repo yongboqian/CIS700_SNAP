@@ -1044,12 +1044,12 @@
     <inertial>
       <origin rpy="0 0 0" xyz="0 0 0.5"/>
       <mass value="1"/>
-      <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100"/>
+      <inertia ixx="10" ixy="0" ixz="0" iyy="10" iyz="0" izz="10"/>
     </inertial>
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <box size="0.025 0.025 0.7874"/>
+        <box size="0.025 0.025 0.84455"/>
       </geometry>
       <material name="Grey">
         <color rgba="0 1.0 1.0 1.0"/>
@@ -1058,7 +1058,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <box size="0.025 0.025 0.7874"/>
+        <box size="0.025 0.025 0.84455"/>
       </geometry>
     </collision>
   </link>
@@ -1099,7 +1099,7 @@
   <joint name="elevator_base" type="fixed">
     <!-- <origin xyz="0.025 0 0.825"/> -->
     <!-- <parent link="base_link"/> -->
-    <origin rpy="0 0 0" xyz="0.0508 0 0.3937"/>
+    <origin rpy="0 0 0" xyz="0.0508 0 0.422275"/>
     <parent link="plate_top_link"/>
     <child link="elevator_stem_link"/>
   </joint>
@@ -1118,7 +1118,7 @@
   <!--Attach the turtlebot arm to the elevator which connects(at this moment) to the top hexagon plate -->
   <link name="arm_base_link"/>
   <joint name="arm_base_joint" type="fixed">
-    <origin rpy="3.142 -1.571 0" xyz="0.0245 0 0"/>
+    <origin rpy="3.142 -1.571 0" xyz="0.0889 0 0"/>
     <parent link="elevator_arm_adapter_link"/>
     <child link="arm_base_link"/>
   </joint>
@@ -1724,7 +1724,7 @@
   <!-- attached pysical link to a parent -->
   <joint name="arm_cam_frame_joint" type="fixed">
     <origin xyz="0.0254 -0.07 -0.0254"/>
-    <parent link="gripper_static_link"/>
+    <parent link="arm_wrist_F3_0_link"/>
     <child link="arm_cam_frame"/>
   </joint>
   <!-- Define where the optical frame is in relation to the physical camera center -->
@@ -1736,6 +1736,7 @@
   <link name="arm_cam_optical_frame"/>
   <!-- extensions -->
   <!-- rpy="1.5708 -0.345 0" rotated on its side and tilted up about 20 degrees -->
+  <!-- rpy="1.5708 -1.222 0" rotated on its side and tilted up about 70 degrees so the optical Z axis is pointing out of the lens -->
   <link name="head_cam_frame">
     <visual>
       <geometry>
@@ -1758,7 +1759,7 @@
   </link>
   <!-- attached pysical link to a parent -->
   <joint name="head_cam_frame_joint" type="fixed">
-    <origin rpy="-1.571 -1.222 0 " xyz="0 0 .5"/>
+    <origin rpy="-1.571 -1.222 0 " xyz="-0.06985 0 0.663575"/>
     <parent link="elevator_stem_link"/>
     <child link="head_cam_frame"/>
   </joint>
