@@ -27,10 +27,12 @@
   <!--Webcameras. Parameters need to be tuned -->
   <webcamera parent="gripper_static_link" name="arm_cam">
     <origin xyz="0.0254 -0.07 -0.0254"/>
-  </webcamera>
+</webcamera>
+
+  <!-- rpy="1.5708 -0.345 0" rotated on its side and tilted up about 20 degrees -->
   <webcamera parent="elevator_stem_link" name="head_cam">
     <origin xyz="0 0 .5"/>
-  </webcamera>
+  </webcamera> 
 </robot>
 
 
