@@ -1758,7 +1758,7 @@
   </link>
   <!-- attached pysical link to a parent -->
   <joint name="head_cam_frame_joint" type="fixed">
-    <origin xyz="0 0 .5"/>
+    <origin rpy="-1.571 -1.222 0 " xyz="0 0 .5"/>
     <parent link="elevator_stem_link"/>
     <child link="head_cam_frame"/>
   </joint>

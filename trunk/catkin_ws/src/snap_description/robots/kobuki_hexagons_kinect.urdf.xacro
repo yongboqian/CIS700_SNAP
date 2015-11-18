@@ -30,8 +30,9 @@
 </webcamera>
 
   <!-- rpy="1.5708 -0.345 0" rotated on its side and tilted up about 20 degrees -->
+  <!-- rpy="1.5708 -1.222 0" rotated on its side and tilted up about 70 degrees so the optical Z axis is pointing out of the lens -->
   <webcamera parent="elevator_stem_link" name="head_cam">
-    <origin xyz="0 0 .5"/>
+    <origin xyz="0 0 .5" rpy="-1.571 -1.222 0 "/>
   </webcamera> 
 </robot>
 
