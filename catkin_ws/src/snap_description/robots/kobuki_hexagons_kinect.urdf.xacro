@@ -16,23 +16,23 @@
   <stack_hexagons parent="base_link"/>
   <sensor_kinect  parent="base_link"/>
   <elevator parent="plate_top_link">
-      <origin xyz="0.0508 0 0.3937" rpy="0 0 0"/>
+      <origin xyz="0.0508 0 ${height_El/2}" rpy="0 0 0"/>
   </elevator>
   <!--Attach the turtlebot arm to the elevator which connects(at this moment) to the top hexagon plate -->
   <turtlebot_arm parent="elevator_arm_adapter_link" color="white" gripper_color="green"
                    joints_vlimit="1.571" pan_llimit="-2.617" pan_ulimit="2.617">
-      <origin xyz="0.0245 0 0" rpy="3.142 -1.571 0"/>
+      <origin xyz="0.0889 0 0" rpy="3.142 -1.571 0"/>
   </turtlebot_arm> 
   
   <!--Webcameras. Parameters need to be tuned -->
-  <webcamera parent="gripper_static_link" name="arm_cam">
+  <webcamera parent="arm_wrist_F3_0_link" name="arm_cam">
     <origin xyz="0.0254 -0.07 -0.0254"/>
 </webcamera>
 
   <!-- rpy="1.5708 -0.345 0" rotated on its side and tilted up about 20 degrees -->
   <!-- rpy="1.5708 -1.222 0" rotated on its side and tilted up about 70 degrees so the optical Z axis is pointing out of the lens -->
   <webcamera parent="elevator_stem_link" name="head_cam">
-    <origin xyz="0 0 .5" rpy="-1.571 -1.222 0 "/>
+    <origin xyz="-0.06985 0 ${height_El/2 + 0.2413}" rpy="-1.571 -1.222 0 "/>
   </webcamera> 
 </robot>
 
