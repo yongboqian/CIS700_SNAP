@@ -1,0 +1,44 @@
+Things controller must do:
+0!) Prevent robot from crashing into itself
+1!) publish elevator current position
+2) move elevator using elevator
+3!) get parameters
+
+
+Todo:
+
+start up publisher to publish position to joint
+cmd to always check if limit is switched. maybe go slower if it is and update the position
+
+
+1) write controller to load elevator and just output position on request
+
+
+Launch file=> arbotix_driver=> inialize stuff =>init servos (even elevator)=> init controllers=> goes to controller file and calls class?
+
+arbotix driver inits joints publishers and controller and then updates them. io might have to be specified along with new controller
+
+
+-now: how to set position of elevator
+
+-create a joint that is not a dynamixel and specify that it is driven by the elevator servo?
+can i do this
+
+
+Notes to end day:
+-I understand the controller much better now!
+- controller skeletonis set up to set speed of elevator motor and to read if
+it is safe to move elevator by reading in digital input
+- I put a basic directino control in for now to control it use:
+rostopic pub -1 /elevator_slider_link/command_direction std_msgs/Float64 0.0
+for negative number use -- -1.0
+- there are some controller code that i left incase it was important so it may get in the way later
+- the config yaml file has been updated to start the elevator joint and link and to publish the limit switch states
+
+-Things to do:
+-- finish controller code
+--- how to calibrate location. setspeed in down direction until limit is hit. then start recording from there
+--- i need to put in limit trips (harware)
+--- i need to fix elevator motor
+--- come up with code to keep track of elevator position based on speed or position of motor.
+--- come up with a way to handle position commands/goals
