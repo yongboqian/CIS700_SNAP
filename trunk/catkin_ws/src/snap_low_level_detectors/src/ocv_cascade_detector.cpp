@@ -14,6 +14,7 @@ const static map<string, string> s_cascadeFilename{
     {"profileface", "/opt/opencv3/share/OpenCV/lbpcascades/lbpcascade_profileface.xml"},
     {"silverware", "/opt/opencv3/share/OpenCV/lbpcascades/lbpcascade_silverware.xml"},
     {"marker", "/opt/opencv3/share/OpenCV/custom_cascades/snap/marker.xml"},
+    {"duck", "/opt/opencv3/share/OpenCV/custom_cascades/snap/duck.xml"},
 };
 
 void OCVCascadeDetector::init()
