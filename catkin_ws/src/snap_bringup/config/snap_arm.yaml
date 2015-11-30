@@ -1,12 +1,18 @@
 port: /dev/arbotix
 read_rate: 15
 write_rate: 25
+sim: False
+digital_sensors: 
+    ele_limit_low: {pin: 6}
+    ele_limit_high: {pin: 1}
+
 joints: {
     arm_shoulder_pan_joint: {id: 1, neutral: 205, max_angle: 180, min_angle: -60, max_speed: 90},
     arm_shoulder_lift_joint: {id: 2, max_angle: 150, min_angle: -150, max_speed: 90},
     arm_elbow_flex_joint: {id: 3, max_angle: 150, min_angle: -150, max_speed: 90},
     arm_wrist_flex_joint: {id: 4, max_angle: 100, min_angle: -100, max_speed: 90},
     gripper_joint: {id: 5, max_angle: 100, min_angle: -100, max_speed: 90},
+    elevator_slider_link: {type: calibrated_linear, max_position: 0.54, min_position: 0, max_speed: 400, servoid: 6, high_pin: 1, low_pin: 6, speed_filter: 2000, ticks_const: 0.00011448}
 }
 controllers:
     arm_controller:
@@ -18,4 +24,12 @@ controllers:
             - arm_wrist_flex_joint
         action_name: arm_controller/follow_joint_trajectory
         onboard: False
+        
+    elevator_controller:
+        type: andrew_controller
+        joint:
+            - elevator_slider_link
+
+        
+
 
