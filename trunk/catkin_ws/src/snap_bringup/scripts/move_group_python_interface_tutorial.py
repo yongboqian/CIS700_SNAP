@@ -94,7 +94,7 @@ class move_traj_node():
       rospy.Subscriber("/simple_move", String, self.moveCb)
       ## Wait for RVIZ to initialize. This sleep is ONLY to allow Rviz to come up.
       print "============ Waiting for RVIZ..."
-      rospy.sleep(1)
+      rospy.sleep(5)
       print "============ Starting tutorial "
 
       ## Getting Basic Information
@@ -177,7 +177,7 @@ class move_traj_node():
       elif cmd == 'wave':
         rospy.loginfo('Attempting Wave State Plan')
         num_waves = 1
-        time_wait = 4
+        time_wait = 1
         wave_joint_goals0 = [1.6,1.8,-0.2,-1.5,0]
         wave_joint_goals1 = [0.9,1.8,-0.2,-1.5,0]
         #wave_joint_goals1[0] =1.6-0.7 
@@ -197,7 +197,7 @@ class move_traj_node():
             self.group.set_joint_value_target(group_variable_values)
             plan2 = self.group.plan()
             self.group.go(wait=True)
-            rospy.sleep(time_wait)
+            #rospy.sleep(time_wait)
             self.group.clear_pose_targets()
             
             
@@ -205,21 +205,21 @@ class move_traj_node():
             self.group.set_joint_value_target(group_variable_values)
             plan2 = self.group.plan()
             self.group.go(wait=True)
-            rospy.sleep(time_wait)
+            #rospy.sleep(time_wait)
             self.group.clear_pose_targets()
             
             group_variable_values = wave_joint_goals2
             self.group.set_joint_value_target(group_variable_values)
             plan2 = self.group.plan()
             self.group.go(wait=True)
-            rospy.sleep(time_wait)
+            #rospy.sleep(time_wait)
             self.group.clear_pose_targets()
             
             group_variable_values = wave_joint_goals0
             self.group.set_joint_value_target(group_variable_values)
             plan2 = self.group.plan()
             self.group.go(wait=True)
-            rospy.sleep(time_wait)
+            #rospy.sleep(time_wait)
             self.group.clear_pose_targets()
             count = count + 1
             
