@@ -2,7 +2,7 @@
 <launch>
 
   <node name="arbotix" pkg="arbotix_python" type="arbotix_driver" output="screen">
-      <rosparam file="$(find snap_bringup)/config/snap_arm.yaml" command="load" />
+      <rosparam file="$(find snap_bringup)/config/snap_arm_only.yaml" command="load" />
   </node>
 
   <node name="gripper_controller" pkg="arbotix_controllers" type="gripper_controller">
