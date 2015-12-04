@@ -1,0 +1,8 @@
+<launch>
+
+  <include file="$(find turtlebot_arm_moveit_config)/launch/demo.launch"/>
+
+  <node name="move_group_python_interface_tutorial" pkg="snap_bringup" type="move_group_python_interface_tutorial.py" respawn="false" output="screen">
+  </node>
+
+</launch>
