@@ -77,10 +77,10 @@
     <parent link="${parent}"/>
     <child link="elevator_stem_link"/>
   </joint>
-  <joint name="Slider" type="fixed">
+  <joint name="elevator_slider_link" type="prismatic"><!-- <joint name="Slider" type="fixed"> -->
     <parent link="elevator_stem_link"/>
     <child link="elevator_slider_link"/>
-    <origin xyz="0 0 0" rpy="0 0 0" />
+    <origin xyz="0 0 -${height_El/4}" rpy="0 0 0" />
     <axis xyz="0 0 1" />
     <limit lower="-0.25" upper="0.25" effort="30" velocity="0.25"/>
   </joint>
