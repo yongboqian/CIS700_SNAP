@@ -165,8 +165,8 @@ class move_traj_node():
       ## Now, let's modify one of the joints, plan to the new joint
       ## space goal and visualize the plan
       #group_variable_values[0] = 1.0
-      straight_joint_goals = [0,0,0,0,0]
-      rest_joint_goals = [1.4,2.3,-2.0,0,0]
+      straight_joint_goals = [-1.45,0,0,0,0]
+      rest_joint_goals = [0.0,2.3,-2.0,0,0]
       cmd = data.data
       if cmd == str('rest'):
         group_variable_values = rest_joint_goals
@@ -178,10 +178,10 @@ class move_traj_node():
         rospy.loginfo('Attempting Wave State Plan')
         num_waves = 1
         time_wait = 1
-        wave_joint_goals0 = [1.6,1.8,-0.2,-1.5,0]
-        wave_joint_goals1 = [0.9,1.8,-0.2,-1.5,0]
+        wave_joint_goals0 = [0.0,1.8,-0.2,-1.5,0]
+        wave_joint_goals1 = [(0.9-1.45),1.8,-0.2,-1.5,0]
         #wave_joint_goals1[0] =1.6-0.7 
-        wave_joint_goals2 = [2.3,1.8,-0.2,-1.5,0]
+        wave_joint_goals2 = [(2.3-1.45),1.8,-0.2,-1.5,0]
         #wave_joint_goals2[0] = 1.6+0.7 
         #import pdb; pdb.set_trace()
       else:
