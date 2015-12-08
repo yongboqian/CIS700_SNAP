@@ -1,4 +1,5 @@
 #include "dataset_collector.h"
+#include <fstream>
 
 const int DRAW_WIDTH = 5;
 
@@ -312,6 +313,19 @@ void DatasetCollector::saveCurrentGrabbedFrame()
     cv::displayStatusBar("grabbed frame", "Saved \"" + grabbed_frame_fname_ + "\"");
 
     if(isMaskValid()) {
+        /** save the bounding box */
+        cv::Rect tight = tight_bbox_;
+        tight.x -= bbox_.x;
+        tight.y -= bbox_.y;
+        std::ofstream ofs(fname_full.native()+".txt");
+        if(!ofs) {
+            ROS_ERROR_STREAM("Could not open " << fname_full << ".txt for writing tight bounding box.");
+            return;
+        }
+        ofs << "tight_segmented_" << fname_full.filename().native() << " 1 "
+            << tight.x << ' ' << tight.y << ' ' << tight.width << ' ' << tight.height;
+        ofs.close();
+
         /** save the cropped frame */
         fname_full = save_dir_ / ("cropped_" + grabbed_frame_fname_);
         cv::imwrite(fname_full.native(), cropped_frame_, compression_params);
@@ -323,9 +337,6 @@ void DatasetCollector::saveCurrentGrabbedFrame()
         cv::displayStatusBar("segmented frame", "Saved \"" + fname_full.filename().native() + "\"");
 
         /** also prepare the tightcrop */
-        cv::Rect tight = tight_bbox_;
-        tight.x -= bbox_.x;
-        tight.y -= bbox_.y;
         
         /** save the tight crop */
         fname_full = save_dir_ / ("tight_cropped_" + grabbed_frame_fname_);
