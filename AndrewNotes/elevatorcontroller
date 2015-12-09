@@ -42,3 +42,40 @@ for negative number use -- -1.0
 --- i need to fix elevator motor
 --- come up with code to keep track of elevator position based on speed or position of motor.
 --- come up with a way to handle position commands/goals
+
+
+11/20:
+--- Test how position feedback. publish ticks.positions
+
+The servo has a weird mapping.
+
+range of expected values are 0 to 1023
+There is a deadband of about 60 degrees in this the encoder will read either 0 1023 or a value around 600 to 700
+0 and 1023 might be read for awhile therefore I suggest only saying a value is real if it is greater than 0 or less than 1023. not including thos values.
+Also to excluded the skipping values we need to 
+speed of 600 units is about 1 rev per second
+
+using speed. if speed jump is >
+
+if i go forward lets assume the position climbs then resets so
+1,2,100,800,1023,0,10
+delta = current_position -last_position
+so delta should be positive
+If delta is negative then 
+
+if self.direction == forward and delta_ticks <0
+delta_ticks
+self.last_position
+
+speed of 600 is fast enough
+400 is nice 
+200 may be too slow
+
+filter above 2000 for both CW and CCW
+
+1.0 is down elevator need to reverse delta
+
+when the elevator goes up the ticks should decrease.
+
+ASk NIcu about quadrature and/or try speed controller for position
+
