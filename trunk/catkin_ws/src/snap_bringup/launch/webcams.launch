@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <launch>
     <arg name="fps" default="30"/>
-    <arg name="width" default="640"/>
-    <arg name="height" default="480"/>
+    <arg name="width" default="1280"/>
+    <arg name="height" default="720"/>
 
     <include file="$(find snap_bringup)/launch/webcam.launch">
         <arg name="fps" value="$(arg fps)"/>
