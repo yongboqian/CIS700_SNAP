@@ -37,7 +37,3 @@
     local-name: src/turtlebot_arm
     uri: git@git.assembla.com:cis700-snap.turtlebot_arm.git
     version: indigo-devel
-- git:
-    local-name: vision_opencv
-    uri: https://github.com/ros-perception/vision_opencv.git
-    version: indigo
