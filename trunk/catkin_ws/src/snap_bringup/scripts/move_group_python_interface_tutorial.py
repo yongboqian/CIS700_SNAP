@@ -166,7 +166,7 @@ class move_traj_node():
       ## space goal and visualize the plan
       #group_variable_values[0] = 1.0
       straight_joint_goals = [0,0,0,0,0]#[-1.45,0,0,0,0]
-      rest_joint_goals = [0.0,2.3,-2.3,0,0]
+      rest_joint_goals = [0.0,2.3,-2.3,-0.2,0]
       cmd = data.data
       if cmd == str('rest'):
         group_variable_values = rest_joint_goals
