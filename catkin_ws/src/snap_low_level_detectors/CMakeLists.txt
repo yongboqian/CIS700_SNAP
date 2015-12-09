@@ -6,6 +6,7 @@ project(snap_low_level_detectors)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   actionlib
+  nodelet
   dynamic_reconfigure
   cv_bridge
   image_transport
@@ -108,7 +109,7 @@ generate_dynamic_reconfigure_options(
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES snap_low_level_detectors
-  CATKIN_DEPENDS actionlib cv_bridge image_transport snap_vision_msgs
+  CATKIN_DEPENDS actionlib nodelet cv_bridge image_transport snap_vision_msgs
   DEPENDS ${OpenCV_LIBRARIES}
 )
 
@@ -131,13 +132,14 @@ add_library(snap_low_level_detectors
   #src/${PROJECT_NAME}/snap_low_level_detectors.cpp
   src/detector_manager.cpp
   src/ocv_cascade_detector.cpp
+  src/detector_manager_nodelet.cpp
 )
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
 add_dependencies(snap_low_level_detectors ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} ${PROJECT_NAME}_gencfg)
-target_link_libraries(snap_low_level_detectors ${OpenCV_LIBRARIES})
+target_link_libraries(snap_low_level_detectors ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 
 ## Declare a C++ executable
 add_executable(detector_manager_node src/detector_manager_node.cpp)
@@ -174,7 +176,7 @@ install(PROGRAMS
 )
 
 ## Mark executables and/or libraries for installation
-install(TARGETS snap_low_level_detectors #snap_low_level_detectors_node
+install(TARGETS snap_low_level_detectors detector_manager_node dataset_collector_node
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
@@ -188,16 +190,15 @@ install(DIRECTORY include/${PROJECT_NAME}/
 )
 
 ## Mark other files for installation (e.g. launch and bag files, etc.)
-# install(FILES
-#   # myfile1
-#   # myfile2
-#   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-# )
+install(FILES
+  nodelet_plugins.xml
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)
 
 install(DIRECTORY cascades/
     DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/cascades)
 install(DIRECTORY cascades/
-    DESTINATION ${OpenCV_DIR}/custom_cascades/snap)
+    DESTINATION ${OpenCV_DIR}/custom_cascades/snap/)
 
 #############
 ## Testing ##

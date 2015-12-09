@@ -27,9 +27,9 @@ static inline ros::Duration operator*(double t, const ros::Duration &d)
 #define DEBUG(x) ROS_DEBUG_STREAM(#x << ": " << x)
 #define INFO(x) ROS_INFO_STREAM(#x << ": " << x)
 
-DetectorManager::DetectorManager()
-    : nh_("")
-    , pnh_("~")
+DetectorManager::DetectorManager(ros::NodeHandle &nh, ros::NodeHandle &pnh)
+    : nh_(nh)
+    , pnh_(pnh)
     , it_(pnh_) /* should this be nh_ ? */
     , sub_(/* no need to subscribe yet */)
     , pub_(pnh_.advertise<snap_vision_msgs::DetectionsStamped>(

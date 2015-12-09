@@ -5,7 +5,8 @@ int main(int argc, char **argv)
 {
     ros::init(argc, argv, "detector_manager_node");
 
-    snap_low_level_detectors::DetectorManager dm;
+    ros::NodeHandle nh(""), pnh("~");
+    snap_low_level_detectors::DetectorManager dm(nh, pnh);
 
     ros::spin();
 

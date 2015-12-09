@@ -1,0 +1,7 @@
+<library path="lib/libsnap_low_level_detectors">
+    <class name="snap_low_level_detectors/DetectorManagerNodelet" type="snap_low_level_detectors::DetectorManagerNodelet" base_class_type="nodelet::Nodelet">
+        <description>
+            Nodelet for SNAP's low level detectors manager.
+        </description>
+    </class>
+</library>

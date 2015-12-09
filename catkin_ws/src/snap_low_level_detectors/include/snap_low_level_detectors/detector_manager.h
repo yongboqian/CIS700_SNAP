@@ -67,7 +67,7 @@ class DetectorManager
 
 public:
     /** Constructor */
-    DetectorManager();
+    DetectorManager(ros::NodeHandle &nh, ros::NodeHandle &pnh);
     /** Destructor */
     ~DetectorManager() {}
 
