@@ -21,6 +21,12 @@ std::unique_ptr<T> make_unique(Args&&... args)
 }
 } // namespace std
 
+static inline ros::Duration operator*(double t, const ros::Duration &d)
+    { return d * t; }
+
+#define DEBUG(x) ROS_DEBUG_STREAM(#x << ": " << x)
+#define INFO(x) ROS_INFO_STREAM(#x << ": " << x)
+
 DetectorManager::DetectorManager()
     : nh_("")
     , pnh_("~")
@@ -170,6 +176,7 @@ bool DetectorManager::stopStreamCb(Stream::Request &req,
 
 void DetectorManager::imageCb(const sensor_msgs::ImageConstPtr& msg)
 {
+    const ros::Time receive_time = ros::Time::now();
     if(!pDetector_) {
         ROS_ERROR_STREAM_THROTTLE(5, "Got an image on topic '"
                 << sub_.getTopic() << "' but no detector is loaded.");
@@ -197,10 +204,38 @@ void DetectorManager::imageCb(const sensor_msgs::ImageConstPtr& msg)
     snap_vision_msgs::DetectionsStamped dets;
     dets.header = msg->header;
 
+    const ros::Time decode_time = ros::Time::now();
     pDetector_->detect(cv_ptr->image, dets.detections);
+    const ros::Time detect_time = ros::Time::now();
     pub_.publish(dets);
+    const ros::Time publish_time = ros::Time::now();
 
     visualizeAndPublish(msg->header, cv_ptr->image, dets.detections);
+    const ros::Time visualize_time = ros::Time::now();
+
+    static ros::Duration receive_duration   = receive_time - msg->header.stamp;
+    static ros::Duration decode_duration    = decode_time - receive_time;
+    static ros::Duration detect_duration    = detect_time - decode_time;
+    static ros::Duration publish_duration   = publish_time - detect_time;
+    static ros::Duration publish_latency    = publish_time - msg->header.stamp;
+    static ros::Duration visualize_duration = visualize_time - publish_time;
+
+    const double alpha = 0.5;
+    const double beta = 1.0 - alpha;
+    receive_duration   = alpha*receive_duration   + beta*(receive_time - msg->header.stamp);
+    decode_duration    = alpha*decode_duration    + beta*(decode_time - receive_time)      ;
+    detect_duration    = alpha*detect_duration    + beta*(detect_time - decode_time)       ;
+    publish_duration   = alpha*publish_duration   + beta*(publish_time - detect_time)      ;
+    publish_latency    = alpha*publish_latency    + beta*(publish_time - msg->header.stamp);
+    visualize_duration = alpha*visualize_duration + beta*(visualize_time - publish_time)   ;
+
+
+    DEBUG(receive_duration);
+    DEBUG(decode_duration);
+    INFO(detect_duration);
+    DEBUG(publish_duration);
+    DEBUG(visualize_duration);
+    INFO(publish_latency);
 }
 
 void DetectorManager::visualizeAndPublish(const std_msgs::Header &header,
