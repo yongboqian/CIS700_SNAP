@@ -1,4 +1,4 @@
-#!/usr/bin/julia
+#!/usr/bin/env julia
 
 using Images
 using Colors
