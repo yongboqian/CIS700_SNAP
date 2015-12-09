@@ -11,7 +11,7 @@ import sensor_msgs.msg
 
 fname(hdr, extension) = @sprintf("%s_%05d_%d.%09d.%s", hdr.frame_id, hdr.seq, hdr.stamp.secs, hdr.stamp.nsecs, extension)
 
-const U16 = FixedPointNumbers.Ufixed16
+const U16 = FixedPointNumbers.UFixed{UInt16, 16}
 const ENCODINGS = Dict(
     "bgr8"=>BGR{U8},
     "bgra8"=>BGRA{U8},
@@ -26,7 +26,7 @@ const ENCODINGS = Dict(
 const PROPERTIES = Dict("spatialorder"=>["x", "y"])
 
 function imageCb(imageMsg::msg.Image, loop_rate, save_directory=".", extension="png")
-    @show imageMsg.header
+    logdebug("$(imageMsg.header)")
     fname_full = joinpath(save_directory, fname(imageMsg.header, extension))
 
     @assert imageMsg.is_bigendian == 0
@@ -46,10 +46,11 @@ function imageCb(imageMsg::msg.Image, loop_rate, save_directory=".", extension="
     #@assert size(data) == (imageMsg.width, imageMsg.height)
 
     image = Image(data, PROPERTIES)
-    @show T, size(image)
+    #@show T, size(image)
+    logdebug("$T, $(size(image))")
 
-    imwrite(image, fname_full)
-    @show fname_full
+    save(fname_full, image)
+    loginfo("Saving to '$fname_full'")
 
     rossleep(loop_rate)
     nothing
@@ -59,8 +60,8 @@ init_node("periodic_image_grabber"; argv=ARGS, anonymous=true)
 @printf "initialized node\n"
 
 extension = get_param("~extension", "png")
-save_directory = get_param("~save_directory", ".")
-rate = Float64(get_param("~rate", 1.0))
+save_directory = normpath(get_param("~save_directory", "."))
+rate = parse(Float64, (get_param("~rate", "1.0")))
 
 loop_rate = Rate(rate)
 sub = Subscriber{msg.Image}("image", imageCb, (loop_rate,save_directory,extension), queue_size=1)
