@@ -81,15 +81,18 @@ class duck_hunter_node():
       rospy.Subscriber("~/detector_manager_node/detections", DetectionsStamped, self.DetectionCb)
       
 
-      self.hunting_tolerance = 15 # tolerance on how zeroed in the arm needs to be
-      self.hunting_turn_speed = 0.4 # not sure what this is measured in
-      self.hunting_box_width_goal = 100 #ideal size of BB
-      self.hunting_box_height_goal = 100 #ideal size of BB
+      self.hunting_tolerance = 10 # tolerance on how zeroed in the arm needs to be
+      self.hunting_tolerance_bb = 10
+      self.hunting_turn_speed = 0.3 # not sure what this is measured in
+      self.hunting_for_speed = 0.02
+      self.hunting_box_width_goal = 170 #ideal size of BB
+      #self.hunting_box_height_goal = 100 #ideal size of BB
       self.hunting_img_width = 1280 #width of webcam image
       self.hunting_img_height = 720 #height of webcam image
       self.hunting_img_center_x = self.hunting_img_width/2
       self.hunting_img_center_y = self.hunting_img_height/2
       self.control_turn = 0.0
+      self.control_froward = 0.0
       self.grip_close = 1.6
       self.grip_open = 0
       ## Wait for RVIZ to initialize. This sleep is ONLY to allow Rviz to come up.
@@ -98,8 +101,9 @@ class duck_hunter_node():
       print "============ Sending arm to Rest Position and opening gripper"
       data = 'rest' #start cmd for moving arm
       self.move_arm(data)
-      rospy.sleep(5)
+      rospy.sleep(10)
       self.grip_pub.publish(self.grip_open)
+      rospy.sleep(5)
       print "============ Duck Hunter Started"
 
      
@@ -140,27 +144,31 @@ class duck_hunter_node():
               #Find the center of the bbox and calculate the offset
               bbox_center_x = data.detections[i].bbox.x+data.detections[i].bbox.width/2# to be calculated from msg
               bbox_center_y = data.detections[i].bbox.y+data.detections[i].bbox.height/2
-              center_offset_x = self.hunting_img_center_x-bbox_center_x #^
+              center_offset_x = self.hunting_img_center_x-bbox_center_x#^
               center_offset_y = self.hunting_img_center_y-bbox_center_y#0.0#^
               bb_width = data.detections[i].bbox.width#100#^
               bb_height = data.detections[i].bbox.height#100#^
+              #bb_offset = bb_width -hunting_box_width_goal
+              bb_offset = bb_width -  self.hunting_box_width_goal#
               print "offset"
               print center_offset_x
-              print "bbbox center"
-              print bbox_center_x
-              print "img center" 
-              print self.hunting_img_center_x
+              print "bb_offset"
+              print bb_offset
+              #print "bbbox center"
+              #print bbox_center_x
+              #print "img center" 
+              #print self.hunting_img_center_x
               
               #estimate how far away robot is based on the expected size of the bounding box
               #function of: width and/or height
-              distEst = bb_width -  self.hunting_box_width_goal#
+              
               
               target_aqrd = False
               # logic to control how to move base. and then cmd base movement
-              target_aqrd = self.move_base(center_offset_x, distEst) # i think it gets x. might need y instead
+              target_aqrd = self.move_base(center_offset_x, bb_offset) # i think it gets x. might need y instead
               # check how far away I am
               #TODO
-              
+              #target_aqrd = False
               #Do arm stuff
               #TODO
               if target_aqrd: #assume we are within pokeing distance to the 
@@ -169,16 +177,16 @@ class duck_hunter_node():
                 data = 'straight' #start cmd for moving arm
                 rospy.loginfo("Pokeing")
                 self.move_arm(data)
-                rospy.sleep(5)
+                rospy.sleep(10)
                 self.grip_pub.publish(self.grip_close)
-                rospy.sleep(3)
+                rospy.sleep(5)
                 #wait som time
                 rospy.loginfo("resting")
                 data = 'rest' #start cmd for moving arm
                 self.move_arm(data)
-                rospy.sleep(5)
+                rospy.sleep(10)
                 self.grip_pub.publish(self.grip_open)
-                rospy.sleep(3)
+                rospy.sleep(5)
                 #send to reset
                 #go
             
@@ -200,11 +208,22 @@ class duck_hunter_node():
       turn_speed = self.hunting_turn_speed
       #Kp = 1
       #turn_speed = rot_offset*Kp
-      if turn_speed > self.hunting_turn_speed:
+      if turn_speed < -self.hunting_turn_speed:
         turn_speed = self.hunting_turn_speed
-      elif turn_speed < self.hunting_turn_speed:
+      elif turn_speed > self.hunting_turn_speed:
         turn_speed = -self.hunting_turn_speed
       target_aqrd = False  
+      target_aqrd_for = False
+      #figure out how to go forward
+      forward_speed = self.hunting_for_speed
+      
+      if dist_off > self.hunting_tolerance_bb:
+        forward_speed = forward_speed
+      elif dist_off < -self.hunting_tolerance_bb:
+        forward_speed = -forward_speed
+      else:
+        forward_speed = 0
+        target_aqrd_for = True
       
       if rot_offset > self.hunting_tolerance:
         #turn CW i think
@@ -215,6 +234,7 @@ class duck_hunter_node():
         self.control_turn = 0.7*self.control_turn - 0.3*turn_speed
         #rospy.loginfo("Turning CW")
       else:
+        print "Target Aquired"
         target_aqrd = True
         self.control_turn = 0#0.9*self.control_turn
       
@@ -227,10 +247,10 @@ class duck_hunter_node():
       print self.control_turn
       #moveing forward code
       twist = Twist()
-      twist.linear.x = 0; twist.linear.y = 0; twist.linear.z = 0
+      twist.linear.x = forward_speed; twist.linear.y = 0; twist.linear.z = 0
       twist.angular.x = 0; twist.angular.y = 0; twist.angular.z = self.control_turn
       self.base_pub.publish(twist)
-      return target_aqrd
+      return (target_aqrd and target_aqrd_for)
 
       
   def shutdown(self):
