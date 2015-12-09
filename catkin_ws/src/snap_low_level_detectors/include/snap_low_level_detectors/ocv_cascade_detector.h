@@ -23,7 +23,7 @@ class OCVCascadeDetector : public DetectorBase, private Reconfigurable<OCVCascad
     std::map<std::string, cv::CascadeClassifier> classifiers_;
 
     /** Temporaries */
-    cv::Mat imageGray_;
+    cv::UMat imageGray_;
     std::vector<cv::Rect> objects_;
     std::vector<int> numDetections_;
 
