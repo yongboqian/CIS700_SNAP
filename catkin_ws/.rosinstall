@@ -1,7 +1,22 @@
 - git:
+    local-name: 3d_navigation
+    uri: https://github.com/ros-planning/3d_navigation.git
+- git:
+    local-name: lsd_slam
+    uri: git@git.assembla.com:cis700-snap.lsd_slam2.git
+    version: catkin
+- git:
     local-name: src/arbotix_ros
     uri: git@git.assembla.com:cis700-snap.arbotix_ros.git
     version: indigo-devel
+- git:
+    local-name: src/frontier_exploration
+    uri: git@git.assembla.com:cis700-snap.frontier_exploration.git
+    version: indigo-devel
+- git:
+    local-name: src/trac_ik
+    uri: https://bitbucket.org/traclabs/trac_ik.git
+    version: v1.3.1
 - git:
     local-name: src/turtlebot
     uri: git@git.assembla.com:cis700-snap.turtlebot.git
@@ -14,10 +29,3 @@
     local-name: vision_opencv
     uri: https://github.com/ros-perception/vision_opencv.git
     version: indigo
-- git:
-    uri: https://github.com/ros-planning/3d_navigation.git
-    local-name: 3d_navigation
-- git: {local-name: lsd_slam, uri: 'git@git.assembla.com:cis700-snap.lsd_slam2.git',
-    version: catkin}
-- git: {local-name: src/frontier_exploration, uri: 'git@git.assembla.com:cis700-snap.frontier_exploration.git',
-    version: indigo-devel}
