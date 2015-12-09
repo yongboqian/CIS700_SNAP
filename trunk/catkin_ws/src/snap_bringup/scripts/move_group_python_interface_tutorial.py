@@ -91,7 +91,7 @@ class move_traj_node():
       self.display_trajectory_publisher = rospy.Publisher(
                                           '/move_group/display_planned_path',
                                           moveit_msgs.msg.DisplayTrajectory)
-      rospy.Subscriber("/simple_move", String, self.moveCb)
+      rospy.Subscriber("~/simple_move", String, self.moveCb)
       ## Wait for RVIZ to initialize. This sleep is ONLY to allow Rviz to come up.
       print "============ Waiting for RVIZ..."
       rospy.sleep(5)
@@ -123,7 +123,7 @@ class move_traj_node():
       ## end-effector
       #put a while loop here to keep trying to update position or put this as a callback for joystick updates..
       pose_target = geometry_msgs.msg.Pose()
-      import pdb; pdb.set_trace()
+      #import pdb; pdb.set_trace()
       # Begin the main loop
       #while not rospy.is_shutdown():
            #r.sleep()

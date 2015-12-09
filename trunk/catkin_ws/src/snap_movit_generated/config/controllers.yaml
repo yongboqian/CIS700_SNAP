@@ -16,8 +16,8 @@ controller_list:
     command_joint: gripper_joint
     joints:
       - gripper_joint
-  - name: elevator_controller:
-        type: andrew_controller
-        joint:
-            - elevator_slider_link
+  - name: elevator_controller
+    type: andrew_controller
+    joint:
+      - elevator_slider_link
 
