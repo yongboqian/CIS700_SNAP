@@ -18,6 +18,10 @@
     uri: https://github.com/ros-perception/image_common.git
     version: hydro-devel
 - git:
+    local-name: src/vision_opencv
+    uri: https://github.com/ros-perception/vision_opencv.git
+    version: indigo
+- git:
     local-name: src/image_pipeline
     uri: https://github.com/ros-perception/image_pipeline.git
     version: indigo
