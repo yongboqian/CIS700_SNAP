@@ -14,6 +14,14 @@
     uri: git@git.assembla.com:cis700-snap.frontier_exploration.git
     version: indigo-devel
 - git:
+    local-name: src/image_common
+    uri: https://github.com/ros-perception/image_common.git
+    version: hydro-devel
+- git:
+    local-name: src/image_pipeline
+    uri: https://github.com/ros-perception/image_pipeline.git
+    version: indigo
+- git:
     local-name: src/trac_ik
     uri: https://bitbucket.org/traclabs/trac_ik.git
     version: v1.3.1
