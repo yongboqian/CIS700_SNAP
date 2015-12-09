@@ -24,6 +24,8 @@
   <include file="$(find turtlebot_bringup)/launch/includes/netbook.launch.xml">
     <arg name="battery" value="$(arg battery)" />
   </include>
+  <include  file="$(find snap_bringup)/launch/snap_arm.launch"/>
+
   
   <!-- Rapp Manager --> 
   <arg name="rapp_auto_installation"            default="false"  doc="automatically install rapps from the web (not typically used)"/> <!-- http://wiki.ros.org/rocon_app_manager/Tutorials/indigo/Automatic Rapp Installation -->
