@@ -44,6 +44,7 @@ import rospy
 #import moveit_commander
 import moveit_msgs.msg
 import geometry_msgs.msg
+from std_msgs.msg import Float64
 from geometry_msgs.msg import Twist
 from std_msgs.msg import String
 from snap_vision_msgs.msg import *
@@ -76,23 +77,29 @@ class duck_hunter_node():
       #move base veolicty and arm traj topic 
       self.base_pub = rospy.Publisher('~/cmd_vel_mux/input/teleop', Twist, queue_size=5)                                    
       self.arm_pub = rospy.Publisher("~/simple_move", String, queue_size=1)
+      self.grip_pub = rospy.Publisher('~/gripper_joint/command', Float64, queue_size=2) 
       rospy.Subscriber("~/detector_manager_node/detections", DetectionsStamped, self.DetectionCb)
       
 
-      self.hunting_tolerance = 0.01 # tolerance on how zeroed in the arm needs to be
-      self.hunting_turn_speed = 0.5 # not sure what this is measured in
+      self.hunting_tolerance = 15 # tolerance on how zeroed in the arm needs to be
+      self.hunting_turn_speed = 0.4 # not sure what this is measured in
       self.hunting_box_width_goal = 100 #ideal size of BB
       self.hunting_box_height_goal = 100 #ideal size of BB
-      self.hunting_img_width = 640 #width of webcam image
-      self.hunting_img_height = 360 #height of webcam image
+      self.hunting_img_width = 1280 #width of webcam image
+      self.hunting_img_height = 720 #height of webcam image
       self.hunting_img_center_x = self.hunting_img_width/2
       self.hunting_img_center_y = self.hunting_img_height/2
+      self.control_turn = 0.0
+      self.grip_close = 1.6
+      self.grip_open = 0
       ## Wait for RVIZ to initialize. This sleep is ONLY to allow Rviz to come up.
       #print "============ Waiting for RVIZ..."
       #rospy.sleep(5)
-      print "============ Sending arm to Rest Position"
+      print "============ Sending arm to Rest Position and opening gripper"
       data = 'rest' #start cmd for moving arm
       self.move_arm(data)
+      rospy.sleep(5)
+      self.grip_pub.publish(self.grip_open)
       print "============ Duck Hunter Started"
 
      
@@ -108,7 +115,7 @@ class duck_hunter_node():
       #plan1 = group.plan()
   def DetectionCb(self, data):
       ## I have recieved data on a duck that has been detected. I will now process this data and command the base to center in on the duck. Then I will command the arm to poke the duck
-      
+      #print "Callback"
       ## Processing data
       #check if there is good data
       #TODO
@@ -118,29 +125,37 @@ class duck_hunter_node():
         good_data = False
       #
       #Find detection with best confidence
+      #print good_data
       if good_data:
           i = []
           best_conf = 0
           for j in range(0,len(data.detections)):
-            if data.detections[j].confidence > best_conf and data.detections[j].label =="duck":
+            if data.detections[j].confidence > best_conf and data.detections[j].label =="duck_16x16_haar":
                 best_conf = data.detections[j].confidence
                 i = j
           #we should have the index of the most duckly object
+          print best_conf
           if best_conf != 0:#if we have a duck 
-              #print "Quack"   
+              print "Quack"   
               #Find the center of the bbox and calculate the offset
-              bbox_center_x = data.detections[i].bbox.x-data.detections[i].bbox.width/2# to be calculated from msg
-              bbox_center_y = data.detections[i].bbox.y-data.detections[i].bbox.height/2
+              bbox_center_x = data.detections[i].bbox.x+data.detections[i].bbox.width/2# to be calculated from msg
+              bbox_center_y = data.detections[i].bbox.y+data.detections[i].bbox.height/2
               center_offset_x = self.hunting_img_center_x-bbox_center_x #^
               center_offset_y = self.hunting_img_center_y-bbox_center_y#0.0#^
               bb_width = data.detections[i].bbox.width#100#^
               bb_height = data.detections[i].bbox.height#100#^
+              print "offset"
+              print center_offset_x
+              print "bbbox center"
+              print bbox_center_x
+              print "img center" 
+              print self.hunting_img_center_x
               
               #estimate how far away robot is based on the expected size of the bounding box
               #function of: width and/or height
               distEst = bb_width -  self.hunting_box_width_goal#
               
-              
+              target_aqrd = False
               # logic to control how to move base. and then cmd base movement
               target_aqrd = self.move_base(center_offset_x, distEst) # i think it gets x. might need y instead
               # check how far away I am
@@ -151,8 +166,21 @@ class duck_hunter_node():
               if target_aqrd: #assume we are within pokeing distance to the 
                 #do arm stuff
                 rospy.loginfo("target aquired")
+                data = 'straight' #start cmd for moving arm
+                rospy.loginfo("Pokeing")
+                self.move_arm(data)
+                rospy.sleep(5)
+                self.grip_pub.publish(self.grip_close)
+                rospy.sleep(3)
+                #wait som time
+                rospy.loginfo("resting")
                 data = 'rest' #start cmd for moving arm
                 self.move_arm(data)
+                rospy.sleep(5)
+                self.grip_pub.publish(self.grip_open)
+                rospy.sleep(3)
+                #send to reset
+                #go
             
           
           
@@ -178,24 +206,29 @@ class duck_hunter_node():
         turn_speed = -self.hunting_turn_speed
       target_aqrd = False  
       
-      if rot_offset < -self.hunting_tolerance:
+      if rot_offset > self.hunting_tolerance:
         #turn CW i think
-        control_turn = turn_speed
+        self.control_turn = 0.7*self.control_turn + 0.3*turn_speed
         #rospy.loginfo("Turning CCW")
-      elif rot_offset > self.hunting_tolerance:
+      elif rot_offset < -self.hunting_tolerance:
         #turn CCW i think
-        control_turn = -turn_speed
+        self.control_turn = 0.7*self.control_turn - 0.3*turn_speed
         #rospy.loginfo("Turning CW")
       else:
         target_aqrd = True
-        control_turn = 0
+        self.control_turn = 0#0.9*self.control_turn
       
+      
+      if self.control_turn > self.hunting_turn_speed:
+        self.control_turn = self.hunting_turn_speed
+      elif self.control_turn < -self.hunting_turn_speed:
+        self.control_turn = -self.hunting_turn_speed
+      print "Turn Speed"
+      print self.control_turn
       #moveing forward code
-      
-      
       twist = Twist()
       twist.linear.x = 0; twist.linear.y = 0; twist.linear.z = 0
-      twist.angular.x = 0; twist.angular.y = 0; twist.angular.z = control_turn
+      twist.angular.x = 0; twist.angular.y = 0; twist.angular.z = self.control_turn
       self.base_pub.publish(twist)
       return target_aqrd
 
