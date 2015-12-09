@@ -16,6 +16,8 @@ const static map<string, string> s_cascadeFilename{
     {"marker", "/opt/opencv3/share/OpenCV/custom_cascades/snap/marker.xml"},
     {"duck", "/opt/opencv3/share/OpenCV/custom_cascades/snap/duck.xml"},
     {"duck_16x16_haar", "/opt/opencv3/share/OpenCV/custom_cascades/snap/duck_16x16_haar.xml"},
+    {"tape_16x16_haar", "/opt/opencv3/share/OpenCV/custom_cascades/snap/tape_16x16_haar.xml"},
+    {"bottle_12x16_haar", "/opt/opencv3/share/OpenCV/custom_cascades/snap/bottle_12x16_haar.xml"},
 };
 
 void OCVCascadeDetector::init()
