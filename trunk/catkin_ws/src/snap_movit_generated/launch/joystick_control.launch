@@ -14,6 +14,6 @@
   <!-- Launch python interface 
   <node pkg="moveit_ros_visualization" type="moveit_joy.py" output="screen" name="moveit_joy"/>
         -->
-  <node pkg="turtlebot_teleop" type="moveit_joy.py" output="screen" name="moveit_joy"/>
+  <node pkg="snap_misc" type="moveit_joy.py" output="screen" name="moveit_joy"/>
         
 </launch>

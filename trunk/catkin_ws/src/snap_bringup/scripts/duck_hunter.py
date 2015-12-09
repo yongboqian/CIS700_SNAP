@@ -45,6 +45,7 @@ import moveit_commander
 import moveit_msgs.msg
 import geometry_msgs.msg
 from std_msgs.msg import String
+from snap_vision_msgs import *
 ## END_SUB_TUTORIAL
 
 from std_msgs.msg import String
@@ -62,13 +63,13 @@ class move_traj_node():
       print "============ Starting tutorial setup"
       #import pdb; pdb.set_trace()
       moveit_commander.roscpp_initialize(sys.argv)
-      rospy.init_node('move_group_python_interface_tutorial',
+      rospy.init_node('duck_hunter',
                       anonymous=True)
       # Execute this function when shutting down
       rospy.on_shutdown(self.shutdown)
       
       # Set the update rate to 1 second by default
-      self.rate = rospy.get_param("~node_rate", 1)
+      self.rate = rospy.get_param("~node_rate", 10)
       r = rospy.Rate(self.rate)
 
       ## Instantiate a RobotCommander object.  This object is an interface to
@@ -91,11 +92,23 @@ class move_traj_node():
       self.display_trajectory_publisher = rospy.Publisher(
                                           '/move_group/display_planned_path',
                                           moveit_msgs.msg.DisplayTrajectory)
+      self.base_pub = rospy.Publisher('~cmd_vel', Twist, queue_size=5)                                    
       rospy.Subscriber("/simple_move", String, self.moveCb)
+      rospy.Subscriber("/Detection", DetectionStamped, self.DetectionCb)
+      
+      
+      self.hunting.tolerance = 0.01 # tolerance on how zeroed in the arm needs to be
+      self.hunting.turn_speed = 0.1 # not sure what this is measured in
+      self.hunting.box_width_goal = 100 #ideal size of BB
+      self.hunting.box_height_goal = 100 #ideal size of BB
+      self.hunting.image.width = 640 #width of webcam image
+      self.hunting.image.height = 360 #height of webcam image
+      self.hunting.image.center.x = self.hunting.image.width/2
+      self.hunting.image.center.y = self.hunting.image.height/2
       ## Wait for RVIZ to initialize. This sleep is ONLY to allow Rviz to come up.
       print "============ Waiting for RVIZ..."
       rospy.sleep(5)
-      print "============ Starting tutorial "
+      print "============ Starting Duck Hunter "
 
       ## Getting Basic Information
       ## ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -123,7 +136,7 @@ class move_traj_node():
       ## end-effector
       #put a while loop here to keep trying to update position or put this as a callback for joystick updates..
       pose_target = geometry_msgs.msg.Pose()
-      import pdb; pdb.set_trace()
+      #import pdb; pdb.set_trace()
       # Begin the main loop
       #while not rospy.is_shutdown():
            #r.sleep()
@@ -134,6 +147,89 @@ class move_traj_node():
       ## Note that we are just planning, not asking move_group 
       ## to actually move the robot
       #plan1 = group.plan()
+  def DetectionCb(self, data):
+      ## I have recieved data on a duck that has been detected. I will now process this data and command the base to center in on the duck. Then I will command the arm to poke the duck
+      
+      ## Processing data
+      #check if there is good data
+      #TODO
+      if data.detections:#is array is empty this will return false else true
+        good_data = True #assume data will always be good
+      else:
+        good_data = False
+      #
+      #Find detection with best confidence
+      if good_data:
+          i = []
+          best_conf = 0
+          for j in range(0,len(data.detections)):
+            if data.detections[j].confidence > best_conf and data.detections[j].label =="duck":
+                best_conf = data.detections[j].confidence
+                i = j
+          #we should have the index of the most duckly object
+          if best_conf != 0:#if we have a duck    
+              #Find the center of the bbox and calculate the offset
+              bbox_center.x = data.detection[i].bbox.x-data.detection[i].bbox.width/2# to be calculated from msg
+              bbox_center.y = data.detection[i].bbox.y-data.detection[i].bbox.height/2
+              center_offset.x = self.hunting.image.center.x-bbox_center.x #^
+              center_offset.y = self.hunting.image.center.y-bbox_center.y#0.0#^
+              bb_width = data.detection[i].bbox.width#100#^
+              bb_height = data.detection[i].bbox.height#100#^
+              
+              #estimate how far away robot is based on the expected size of the bounding box
+              #function of: width and/or height
+              distEst = bbwidth -  self.hunting.box_width_goal#
+              
+              
+              # logic to control how to move base. and then cmd base movement
+              target_aqrd = self.move_base(center_offset.x, distEst) # i think it gets x. might need y instead
+              # check how far away I am
+              #TODO
+              
+              #Do arm stuff
+              #TODO
+              if target_aqrd: #assume we are within pokeing distance to the 
+                #do arm stuff
+                rospy.loginfo("target aquired")
+                data.data = 'rest' #start cmd for moving arm
+                self.moveCb(data)
+            
+          
+          
+      
+      
+  def move_base(self, rot_offset, dist_off)
+      ## method will handel cmding the base to turn an amount based on how much offset
+      ## there is. The offset is directional, the sign defines the rotation, CCW or CW
+      
+      # I may want to make this a propostional controller with limits
+      turn_speed = self.hunting.turn_speed
+      #Kp = 1
+      #turn_speed = rot_offset*Kp
+      if turn_speed > self.hunting.turn_speed:
+        turn_speed = self.hunting.turn_speed
+      elif turn_speed < self.hunting.turn_speed:
+        turn_speed = -self.hunting.turn_speed
+      target_aqrd = False  
+      
+      if rot_offset > self.hunting.tolerance:
+        #turn CW i think
+        control_turn = turn_speed
+        rospy.loginfo("Turning CW")
+      elif rot_offset < -self.hunting.tolerance:
+        #turn CCW i think
+        control_turn = -turn_speed
+        rospy.loginfo("Turning CCW")
+      else:
+        target_aqrd = True
+        control_turn = 0
+        
+      twist = Twist()
+      twist.linear.x = 0; twist.linear.y = 0; twist.linear.z = 0
+      twist.angular.x = 0; twist.angular.y = 0; twist.angular.z = control_turn
+      self.base_pub.publish(twist)
+      return target_aqrd
+          
   def moveCb(self, data):
 
       ## Moving to a pose goal
@@ -243,6 +339,10 @@ class move_traj_node():
 
       ## When finished shut down moveit_commander.
       moveit_commander.roscpp_shutdown()
+      twist = Twist()
+      twist.linear.x = 0; twist.linear.y = 0; twist.linear.z = 0
+      twist.angular.x = 0; twist.angular.y = 0; twist.angular.z = 0
+      self.base_pub.publish(twist)
 
       ## END_TUTORIAL
 
