@@ -155,12 +155,7 @@ bool DetectorManager::startStreamCb(Stream::Request &req,
 {
     //CHECK_LOADED;
     //CHECK_NOT_STREAMING;
-    int queue_size = req.queue_size;
-    if(!queue_size) {
-        ROS_WARN("Requested queue size is 0. Overriding to 1");
-        queue_size = 1;
-    }
-    sub_ = it_.subscribe(req.topic_name, queue_size, &DetectorManager::imageCb, this);
+    sub_ = it_.subscribe(req.topic_name, req.queue_size, &DetectorManager::imageCb, this);
     res.error.err_code = Error::E_OK;
     return true;
 }
