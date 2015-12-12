@@ -9,6 +9,7 @@ SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 CREATE_SAMPLES="${SCRIPT_DIR}/createsamples.pl"
 MERGE_VEC="${SCRIPT_DIR}/mergevec.py"
 OCV_BIN="/opt/opencv3/bin"
+#OCV_BIN="/data/v52/nstiurca/codes/opencv-3.0.0-beta-Release/bin"
 OCV_CREATE_SAMPLES="${OCV_BIN}/opencv_createsamples"
 OCV_TRAIN_CASCADE="${OCV_BIN}/opencv_traincascade"
 
@@ -16,10 +17,10 @@ LABEL="$1"
 IMAGES_DIR="images"
 TIGHT="tight_"
 CLASSIFIER="classifier_"
-EXT="png"
+EXTS="png jpg JPG jpeg"
 WIDTH=32
 HEIGHT=32
-NUM_POS_TOTAL=4500
+NUM_POS_TOTAL=2500
 BGCOLOR=0
 BGTHRESH=0
 MAX_X_ANGLE=1.1
@@ -28,9 +29,9 @@ MAX_Z_ANGLE=0.5
 MAX_I_DEV=40
 BUF_SIZE=1024
 FEATURE_TYPE=HAAR #HAAR LBP or HOG
-NUM_POS=1000
-NUM_NEG=1000
-NUM_STAGES=40
+NUM_POS=2000
+NUM_NEG=2000
+NUM_STAGES=27
 BT=GAB # DAR RAB LB or GAB
 MIN_HIT_RATE=0.995
 MAX_FALSE_ALARM_RATE=0.5
@@ -43,8 +44,12 @@ MODE=ALL
 FG="${TIGHT}${LABEL}.txt"
 BG="not_${FG}"
 echo Preparing text files $FG and $BG
-ls ${IMAGES_DIR}/${TIGHT}segmented_${LABEL}*.$EXT > "$FG"
-ls ${IMAGES_DIR}/*.$EXT | grep -v cropped | grep -v segmented | grep -v "$LABEL" > "$BG"
+rm -f "$FG" "$BG"
+for EXT in $EXTS; do
+    ls ${IMAGES_DIR}/${TIGHT}segmented_${LABEL}*.$EXT >>"$FG"
+    ls ${IMAGES_DIR}/*.$EXT | grep -v cropped | grep -v segmented | grep -v "$LABEL" >> "$BG"
+done
+return
 
 # create samples
 VECS_DIR="${TIGHT}${LABEL}_vecs_${WIDTH}x${HEIGHT}/"
