@@ -1,0 +1,10 @@
+<launch>
+
+  <node name="recognizer" pkg="pocketsphinx" type="recognizer.py" output="screen">
+
+  	<param name="source" value="alsasrc" />
+    <param name="lm" value="$(find pocketsphinx)/config/demo_squirtle_command.lm"/>
+    <param name="dict" value="$(find pocketsphinx)/config/demo_squirtle_command.dic"/>
+  </node>
+
+</launch>

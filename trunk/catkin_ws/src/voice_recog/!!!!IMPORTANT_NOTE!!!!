@@ -1,0 +1,22 @@
+
+There are dependency must be installed before integrated into catkin_ws
+OR it will fail to catkin_make
+
+please run the following command: 
+$ rosdep install sound_play
+$ rosdep install audio_capture 
+
+(then the required package may install, if not, try install dependency using similar command like above)
+
+If problem still exist(with make this into catkin workspace), please remove this folder from catkin_ws
+
+
+if runtime errors occured or the recognition is not working, try following command to install dependencies
+$ sudo apt-get install gstreamer0.10-gconf
+$ sudo apt-get install gstreamer0.10-pocketsphinx
+
+If you encounter runtime errors saying that festival voice stuff. 
+That's probably because you didn't install festival additional voice package that the script using.
+You can find step-by-step tutorials installing such packages in "userguide" folder.
+Or you can simply select default voice by uncommenting "self.voice = 'voice_kal_diphone'" line.
+

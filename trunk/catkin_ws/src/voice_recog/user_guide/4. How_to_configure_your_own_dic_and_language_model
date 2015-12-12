@@ -1,0 +1,32 @@
+This tutorial will tell you how to configure your own dictionary and language model.
+
+Introduction:
+	Pocketsphinx is capable of using customized dictionary and language model(i.e. it can only recognize words you specified), which is recommended when using pocketsphinx with robotics implementation. (In previous example, it also using a pre-built lm and dic)
+
+	The motivation of specifying your own dictionary and language model is that general language recognition is still not perfect today, the usual way of increasing robustness is to specify your own corpus, which only contains a few words useful for a specific task.
+
+Steps:
+	1. Determine your own corpus. 
+		Determine what words you need for recognizing. An example corpus file is: (POCKETSPHINX_DIR)/configure/demo_squirtle_commands.txt 
+		Which determined several commands like: move forward, turn left etc.
+
+	2. Compile language model and dictionary.
+		Go to website: http://www.speech.cs.cmu.edu/tools/lmtool-new.html
+		Upload your corpus file. It will generate compiled files like "3335.dic", "3335.lm" (rename them if you want), you can download them and store them on your computer(actually the only files you need are .lm and .dic, just delete others).
+
+	3. Write launch file to use lm and dic.
+		An example file could be found at
+		(POCKETSPHINX_DIR)/launch/demo_squirtle_command.launch
+		change the lines
+		    <param name="lm" value="$(find pocketsphinx)/config/demo_squirtle_command.lm"/>
+    		<param name="dict" value="$(find pocketsphinx)/config/demo_squirtle_command.dic"/>
+    	to indicate your own files.
+
+    4. Try it!
+    	run the launch file:
+    	$ roslaunch pocketsphinx demo_squirtle_command.launch
+    	Try talking to it, it should be recognizing now!
+
+NOTE:
+	After specifying your own dictionary it should be more robust and task-specific, in our test, it recognizes accurately for most phrases(and can be even better if you pronouce them in a sphinx way :D). 
+	In our later tutorial we'll be seeking more to increase its robustness.

@@ -1,0 +1,6 @@
+
+Simply use command line 
+
+$ pacmd list-sources
+
+will give you info of input and output sources which will be needed to set up your pocketsphinx.

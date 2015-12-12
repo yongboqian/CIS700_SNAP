@@ -1,0 +1,25 @@
+This tutorial will tell you how to do Text-to-Speech in ROS
+
+
+Prerequisite:
+	Package sound_play and its dependencies (use $ rosdep install sound_play if dependencies not satisfied)
+
+
+
+Steps:
+	1. Fire up sound_play node.
+		$ roslaunch sound_play soundplay_node.launch
+		This actually providing an actionlib service for soundplay
+
+	2. Run example script.
+		$ rosrun sound_play say.py "Greetings Human, my name is squirtle."
+		Then the computer will say this sentence!
+		You can look into say.py to get what you need to write your own speech script.
+
+
+
+NOTE: 
+	The voice pronouncer can be changed(will shown in later tutorial).
+	
+
+
