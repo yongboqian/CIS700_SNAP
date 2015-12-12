@@ -285,7 +285,7 @@ std::set<std::string> DetectorManager::drawDetections(const cv::Mat &imgIn, cons
         // TODO: do we need to check bounds?
         cv::rectangle(imgOut, cv::Rect(cvRound(det.bbox.x*mul), cvRound(det.bbox.y*mul),
                 cvRound(det.bbox.width*mul), cvRound(det.bbox.height*mul)),
-                color, (int)(std::ceil(thickness*det.confidence)), lineType, shift);
+                color, (int)(std::ceil(std::sqrt(thickness*det.confidence))), lineType, shift);
     }
 
     return classes;
