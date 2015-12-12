@@ -1,0 +1,34 @@
+hello
+yes
+no
+turtlebot
+squirtle
+introduce yourself
+go forward
+go backward
+move forward
+move backward
+turn left
+turn right
+spin 
+spinning
+power shut down 
+begin exploration
+cancel exploration
+mute
+begin mimic
+start mimic
+enter mimic
+stop mimic
+go to charity's office
+are you busy
+doing anything
+what are you doing
+nothing
+no thanks
+dismiss
+how are you 
+greetings turtlebot
+whats up
+stop your task
+stop current task

@@ -1,0 +1,64 @@
+This tutorial will tell you how to change voice in this Text-to-Speech package
+
+We are using CMU Festival speech synthesis, there are several voice model available both on CMU Festival website and debian repository
+
+
+Steps:
+	1. What's available?
+		You can use command:
+		$ sudo apt-cache search --names-only festvox-*
+		There will be a list of about 20 models, with different language:
+		British English
+		American English
+		Catlan
+		Czech
+		Hindi
+		Italian
+		Marathi
+		Russian
+		Finnish
+		Telugu
+		You can download them with 
+		$ sudo apt-get install <NAME_OF_MODEL_YOU_FOUND>
+
+		There are also some additional voices available on CMU Festival website:
+		http://www.speech.cs.cmu.edu/cmu_arctic/
+		Which is newer versions having higher quality in terms of voice fluency and accuracy.
+
+		In our tests, we noted some high quality voices, they are:
+		(default voice)     (male)
+		cmu_us_rms_arctic   (male)
+		cmu_us_slt_arctic	(female)
+		cmu_us_clb_arctic	(female)
+		
+		You can download them by using following command:
+		$ sudo apt-get install festlex-cmu
+		$ cd /usr/share/festival/voices/english/
+		$ sudo wget -c http://www.speech.cs.cmu.edu/cmu_arctic/packed/cmu_us_rms_arctic-0.95-release.tar.bz2
+		$ sudo wget -c http://www.speech.cs.cmu.edu/cmu_arctic/packed/cmu_us_slt_arctic-0.95-release.tar.bz2
+		$ sudo wget -c http://www.speech.cs.cmu.edu/cmu_arctic/packed/cmu_us_clb_arctic-0.95-release.tar.bz2
+		$ sudo tar jxfv cmu_us_rms_arctic-0.95-release.tar.bz2
+		$ sudo tar jxfv cmu_us_slt_arctic-0.95-release.tar.bz2
+		$ sudo tar jxfv cmu_us_clb_arctic-0.95-release.tar.bz2
+		$ sudo rm cmu_us_rms_arctic-0.95-release.tar.bz2
+		$ sudo rm cmu_us_slt_arctic-0.95-release.tar.bz2
+		$ sudo rm cmu_us_clb_arctic-0.95-release.tar.bz2
+		$ sudo ln -s cmu_us_rms_arctic cmu_us_rms_arctic_clunits
+		$ sudo ln -s cmu_us_rms_arctic cmu_us_slt_arctic_clunits
+		$ sudo ln -s cmu_us_rms_arctic cmu_us_clb_arctic_clunits
+
+	2. Use these voice
+		You can simply use them by: 
+		Launch sound play service:
+		$ roslaunch sound_play soundplay_node.launch 
+		Say something:
+		$ rosrun sound_play say.py "Yes, sir, my name is squirtle, waiting for your command." voice_cmu_us_rms_arctic_clunits
+		You can also specify voice in script "say.py" or write your own script.
+
+
+
+
+
+
+
+

@@ -1,0 +1,40 @@
+NOTE: This tutorial is obsolete.A newer and stable version is available.
+
+This Tutorial will tell you how to use ROS package pocketsphinx to do a simple speech-to-text
+
+Prerequisite:
+	You need to set sound input to your mic(in System Settings, Sound) 
+	You need to have your PulseAudio Source Name (e.g. My mic has a name of "alsa_card.usb-C-Media_Electronics_Inc._USB_PnP_Sound_Device-00-Device"), how-to-find-it is in Tutorial0
+
+
+Steps:
+	1. Open pocketsphinx/example/robocup.launch, Change the parameter "mic_name" to your PulseAudio Source Name.
+
+	2. Launch the launch file.
+		$ roslaunch pocketsphinx robocup.launch
+
+		Now that you can say something and text will displayed on screen
+
+	3. Topics and Services
+		It publishes text String to /recognizer/output topic
+		It provides Service /recognizer/start and /recognizer/stop, which could be used to do controled recognition rather than continuous recognition(proves to be not robust)
+
+
+Notes:
+	Pocketsphinx is using a local language model and dictionary to do recognition, so it will only recognize what you specified. (e.g. In this example, it has a robocup corpus with a few sentence like "bring me the milk")
+
+	You can specify a language Model yourself (which is also recommended!). (see later tutorial)
+
+	It is NOT recommended to use the computer internal mic with pocketsphinx, since the noise voice will make the accuracy extremely low. In fact, in my test, the accuracy is not good even when you have some distance(say, 1 meter) to the mic.
+
+	The recognizer WILL generate some text(with NO confidence score) even when there is only noise, and the accuracy is not quite Satisfiable, definetely not suitable when directly used as voice command if you don't want mistakened control. But we can do other stuff to make it more robust (actually we will FOCUS on this in later tutorial).
+
+	However it does have some advantage, it's a local recognizer(not a Internet-required recognizer like Google Speech Recognition) so it does not rely on Internet connection. It's free and easy to implement.
+
+
+
+
+
+
+
+
