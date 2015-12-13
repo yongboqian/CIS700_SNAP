@@ -18,20 +18,21 @@ IMAGES_DIR="images"
 TIGHT="tight_"
 CLASSIFIER="classifier_"
 EXTS="png jpg JPG jpeg"
-WIDTH=32
-HEIGHT=32
-NUM_POS_TOTAL=2500
+WIDTH=16
+HEIGHT=16
+NUM_POS_TOTAL=250
 BGCOLOR=0
 BGTHRESH=0
-MAX_X_ANGLE=1.1
-MAX_Y_ANGLE=1.1
+MAX_X_ANGLE=0.0
+MAX_Y_ANGLE=0.0
 MAX_Z_ANGLE=0.5
+SCALE=16.0
 MAX_I_DEV=40
 BUF_SIZE=1024
 FEATURE_TYPE=HAAR #HAAR LBP or HOG
-NUM_POS=2000
-NUM_NEG=2000
-NUM_STAGES=27
+NUM_POS=200
+NUM_NEG=200
+NUM_STAGES=25
 BT=GAB # DAR RAB LB or GAB
 MIN_HIT_RATE=0.995
 MAX_FALSE_ALARM_RATE=0.5
@@ -56,7 +57,8 @@ VECS_DIR="${TIGHT}${LABEL}_vecs_${WIDTH}x${HEIGHT}/"
 echo
 echo Creating samples to $VECS_DIR
 $CREATE_SAMPLES "$FG" "$BG" "$VECS_DIR" $NUM_POS_TOTAL \
-    "$OCV_CREATE_SAMPLES -bgcolor $BGCOLOR -bgthresh $BGTHRESH -w $WIDTH -h $HEIGHT"
+    "$OCV_CREATE_SAMPLES -bgcolor $BGCOLOR -bgthresh $BGTHRESH -w $WIDTH -h $HEIGHT \
+    -maxxangle $MAX_X_ANGLE -maxyangle $MAX_Y_ANGLE -maxzangle $MAX_Z_ANGLE"
 
 # view samples
 # TODO: optional?
@@ -66,7 +68,7 @@ echo Here is $SAMPLE_VEC
 echo "================================================================="
 echo "======================= PRESS ESCAPE ============================"
 echo "================================================================="
-$OCV_CREATE_SAMPLES -vec "${VECS_DIR}/${SAMPLE_VEC}" -w $WIDTH -h $HEIGHT
+$OCV_CREATE_SAMPLES -vec "${VECS_DIR}/${SAMPLE_VEC}" -w $WIDTH -h $HEIGHT -show scale = $SCALE
 
 # merge vecs
 MERGED_VEC="${TIGHT}${LABEL}_${WIDTH}x${HEIGHT}.vec"
