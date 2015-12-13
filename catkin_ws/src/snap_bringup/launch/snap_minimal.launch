@@ -24,7 +24,7 @@
   <include file="$(find turtlebot_bringup)/launch/includes/netbook.launch.xml">
     <arg name="battery" value="$(arg battery)" />
   </include>
-  <include  file="$(find snap_bringup)/launch/snap_arm.launch"/>
+  <include  file="$(find snap_bringup)/launch/snap_arm_ele.launch"/>
 
   
   <!-- Rapp Manager --> 
