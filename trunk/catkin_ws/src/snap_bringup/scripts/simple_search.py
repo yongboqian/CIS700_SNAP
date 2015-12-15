@@ -124,9 +124,9 @@ class simple_search_node():
       rospy.sleep(5)
       self.grip_pub.publish(self.grip_open)
       rospy.sleep(5)
-      
-
-     
+      #import pdb; pdb.set_trace()
+      #data = rospy.client.wait_for_message("/simple_search/activeCmd", Bool, timeout = 10)
+      print "Begining Search"
       # Begin the main loop
       while not rospy.is_shutdown():
            self.SimpleSearch()
@@ -147,6 +147,9 @@ class simple_search_node():
       #set timeout Time maybe?
       
   def SimpleSearch(self):
+      #print self.timeout_time
+      #print rospy.get_time()
+      #print self.active
       timein= self.timeout_time>rospy.get_time()
       #self print.active
       #print timein
@@ -203,6 +206,7 @@ class simple_search_node():
       ## Processing data
       #check if there is good data
       #TODO
+      
       timein= self.timeout_time>rospy.get_time()
       #self print.active
       print timein
@@ -222,6 +226,7 @@ class simple_search_node():
       if good_data:
           #send cmd to next node to start
           self.move_base(0.0,0.0)
+          self.status_info_pub.publish ('Duck Found')
           print 'finished searching. Found duck. Continue to next node'
           
             
