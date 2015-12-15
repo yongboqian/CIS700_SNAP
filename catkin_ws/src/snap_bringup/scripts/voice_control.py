@@ -10,26 +10,29 @@ import os
 from std_msgs.msg import *
 from geometry_msgs.msg import *
 
+rospy.init_node('voice_control',anonymous=True)
+
 os.system("rosrun sound_play say.py 'Hey folks, I am snap, what can I do for you'")
 
 received_voice = None
-while received_voice is None or received_voice.data != "happy hunting": 
+
+while received_voice is None or received_voice.data != 'happy hunting': 
       if rospy.is_shutdown():
           os._exit(0)
       try:
-         received_voice = rospy.wait_for_message("/recognizer/output",String,timeout=10)
+         #import pdb; pdb.set_trace()
+         received_voice = rospy.client.wait_for_message("/recognizer/output",String,timeout=5)
       except Exception, e:
-         os.system("rosrun sound_play say.py 'what should i hunt'")
+         os.system("rosrun sound_play say.py 'I cannot hear you'")
          rospy.sleep(2)
-         break
          
-
+os.system("rosrun sound_play say.py 'what should i hunt'")
 obj = "duck"
 while received_voice is None or received_voice.data != obj: #model name
       if rospy.is_shutdown():
           os._exit(0)
       try:
-         received_voice = rospy.wait_for_message("/recognizer/output",String,timeout=10)
+         received_voice = rospy.client.wait_for_message("/recognizer/output",String,timeout=100)
       except Exception, e:
          cmd = "rosservice call /detector_manager_node/load_models 'model_names: ['"+ str(obj)+"_32x32_haar']'"
         # cmd = "rosservice call /detector_manager_node/load_models 'model_names: ['duck_32x32_haar']'"
@@ -55,7 +58,8 @@ while search_status is None or search_status.data != "Simple search has timed ou
       if rospy.is_shutdown():
          os._exit(0)
       try:
-         search_status = rospy.wait_for_message("/status/updates",String,timeout=40)
+         search_status = rospy.client.wait_for_message("/status/updates",String,timeout=30)
+         import pdb; pdb.set_trace()
          print (search_status.data)
       except Exception, e:
          os.system("rosrun sound_play say.py 'I cannot see duck, can you lead me to it'")

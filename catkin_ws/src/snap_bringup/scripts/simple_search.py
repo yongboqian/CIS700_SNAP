@@ -108,7 +108,7 @@ class simple_search_node():
       self.active = False
       self.active_time0 = 0.0
       self.timeout_time = 0.0
-      self.active_timeout = 30 #30seconds to timeout
+      self.active_timeout = 55 #30seconds to timeout
       self.turn_timeout = 5
       self.turn_timeout0 = 0.0
       self.turn_last = False
