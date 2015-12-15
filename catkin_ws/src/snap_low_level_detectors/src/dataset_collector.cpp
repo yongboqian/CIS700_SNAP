@@ -59,8 +59,8 @@ DatasetCollector::DatasetCollector()
     cv::namedWindow("grabbed frame", CV_WINDOW_NORMAL | CV_WINDOW_KEEPRATIO | CV_GUI_NORMAL);
     cv::namedWindow("cropped frame", CV_WINDOW_NORMAL | CV_WINDOW_KEEPRATIO | CV_GUI_NORMAL);
     cv::namedWindow("segmented frame", CV_WINDOW_NORMAL | CV_WINDOW_KEEPRATIO | CV_GUI_NORMAL);
-    cv::createButton("Grab frame", grabCurrentFrameButtonCb, this, cv::QT_PUSH_BUTTON);
-    cv::createButton("Save grabbed frame", saveCurrentGrabbedFrameButtonCb, this, cv::QT_PUSH_BUTTON);
+    //cv::createButton("Grab frame", grabCurrentFrameButtonCb, this, cv::QT_PUSH_BUTTON);
+    //cv::createButton("Save grabbed frame", saveCurrentGrabbedFrameButtonCb, this, cv::QT_PUSH_BUTTON);
     cv::setMouseCallback("grabbed frame", ::grabbedFrameMouseCb, this);
     ROS_INFO("Controls:\n"
              "\tq/Q/ESC\t\tQuit\n"
@@ -281,7 +281,7 @@ void DatasetCollector::grabCurrentFrame()
             cv_grabbed_frame_ptr_->header.stamp.sec,
             cv_grabbed_frame_ptr_->header.stamp.nsec, extension_.c_str());
     grabbed_frame_fname_ = buf;
-    cv::displayStatusBar("grabbed frame", "Grabbed \"" + grabbed_frame_fname_ + "\" (UNSAVED)");
+    //cv::displayStatusBar("grabbed frame", "Grabbed \"" + grabbed_frame_fname_ + "\" (UNSAVED)");
 
     // update counters/flags
     ++count_;
@@ -310,7 +310,7 @@ void DatasetCollector::saveCurrentGrabbedFrame()
 
     cv::imwrite(fname_full.native(), cv_grabbed_frame_ptr_->image, compression_params);
 
-    cv::displayStatusBar("grabbed frame", "Saved \"" + grabbed_frame_fname_ + "\"");
+    //cv::displayStatusBar("grabbed frame", "Saved \"" + grabbed_frame_fname_ + "\"");
 
     if(isMaskValid()) {
         /** save the bounding box */
@@ -329,24 +329,24 @@ void DatasetCollector::saveCurrentGrabbedFrame()
         /** save the cropped frame */
         fname_full = save_dir_ / ("cropped_" + grabbed_frame_fname_);
         cv::imwrite(fname_full.native(), cropped_frame_, compression_params);
-        cv::displayStatusBar("cropped frame", "Saved \"" + fname_full.filename().native() + "\"");
+        //cv::displayStatusBar("cropped frame", "Saved \"" + fname_full.filename().native() + "\"");
 
         /** save the segmnted (and cropped) frame */
         fname_full = save_dir_ / ("segmented_" + grabbed_frame_fname_);
         cv::imwrite(fname_full.native(), segmented_frame_, compression_params);
-        cv::displayStatusBar("segmented frame", "Saved \"" + fname_full.filename().native() + "\"");
+        //cv::displayStatusBar("segmented frame", "Saved \"" + fname_full.filename().native() + "\"");
 
         /** also prepare the tightcrop */
         
         /** save the tight crop */
         fname_full = save_dir_ / ("tight_cropped_" + grabbed_frame_fname_);
         cv::imwrite(fname_full.native(), cropped_frame_(tight), compression_params);
-        cv::displayStatusBar("cropped frame", "Saved \"" + fname_full.filename().native() + "\"");
+        //cv::displayStatusBar("cropped frame", "Saved \"" + fname_full.filename().native() + "\"");
 
         /** save the tight-cropped segmentation */
         fname_full = save_dir_ / ("tight_segmented_" + grabbed_frame_fname_);
         cv::imwrite(fname_full.native(), segmented_frame_(tight), compression_params);
-        cv::displayStatusBar("segmented frame", "Saved \"" + fname_full.filename().native() + "\"");
+        //cv::displayStatusBar("segmented frame", "Saved \"" + fname_full.filename().native() + "\"");
     }
 }
 
