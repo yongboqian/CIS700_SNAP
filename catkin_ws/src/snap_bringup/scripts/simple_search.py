@@ -114,6 +114,7 @@ class simple_search_node():
       self.turn_last = False
       self.too_close = 1.0
       self.closest_point = 0.0
+      self.rand_turn = 0.0
       ## Wait for RVIZ to initialize. This sleep is ONLY to allow Rviz to come up.
       #print "============ Waiting for RVIZ..."
       #rospy.sleep(5)
@@ -153,11 +154,21 @@ class simple_search_node():
         #search
         print 'searching...'
         if self.closest_point >self.too_close:
+            
             forward_speed = self.hunting_for_speed
+            if self.turn_last:
+                #TODO add random code
+                self.rand_turn = 0.0
+            #TODO add a timer to perodically stop and do a 360 to check for ducks
             #maybe add a random turn speed that will induce random path and hopefull lead to searhcing
-            self.move_base(forward_speed,0.0)
+            self.move_base(forward_speed,self.rand_turn)
+            #reset that it turned
+            self.turn_last = False
         else:
             #turn for x seconds. maybe send command to plannar so turtle bot reaches a pose
+            if not self.turn_last:
+                #this can be used to toggle turning behavours
+                self.turn_last = True
             self.turn_timeout0 = rospy.get_time()
             self.move_base(0.0,self.hunting_turn_speed)
       elif not timein and self.active:
