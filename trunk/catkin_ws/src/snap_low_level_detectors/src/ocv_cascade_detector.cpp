@@ -21,6 +21,14 @@ const static map<string, string> s_cascadeFilename{
     {"duck_16x16_haar", "/opt/opencv3/share/OpenCV/custom_cascades/snap/duck_16x16_haar.xml"},
     {"tape_16x16_haar", "/opt/opencv3/share/OpenCV/custom_cascades/snap/tape_16x16_haar.xml"},
     {"bottle_12x16_haar", "/opt/opencv3/share/OpenCV/custom_cascades/snap/bottle_12x16_haar.xml"},
+    {"bot_16x16_HAAR",    "/opt/opencv3/share/OpenCV/custom_cascades/snap/classifier_tight_bot_16x16_HAAR.xml"},
+    {"bot_16x16_LBP",     "/opt/opencv3/share/OpenCV/custom_cascades/snap/classifier_tight_bot_16x16_LBP.xml"},
+    {"bottle_16x16_HAAR", "/opt/opencv3/share/OpenCV/custom_cascades/snap/classifier_tight_bottle_16x16_HAAR.xml"},
+    {"bottle_16x16_LBP",  "/opt/opencv3/share/OpenCV/custom_cascades/snap/classifier_tight_bottle_16x16_LBP.xml"},
+    {"duck_16x16_HAAR",   "/opt/opencv3/share/OpenCV/custom_cascades/snap/classifier_tight_duck_16x16_HAAR.xml"},
+    {"duck_16x16_LBP",    "/opt/opencv3/share/OpenCV/custom_cascades/snap/classifier_tight_duck_16x16_LBP.xml"},
+    {"tape_16x16_HAAR",   "/opt/opencv3/share/OpenCV/custom_cascades/snap/classifier_tight_tape_16x16_HAAR.xml"},
+    {"tape_16x16_LBP",    "/opt/opencv3/share/OpenCV/custom_cascades/snap/classifier_tight_tape_16x16_LBP.xml"},
 };
 
 void OCVCascadeDetector::init()
