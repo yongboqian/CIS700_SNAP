@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-if [ "$#" -ne 1 ]; then
-    echo "Usage: $0 <label>"
+if [ "$#" -ne 3 ]; then
+    echo "Usage: $0 <LABEL> <NUM_STAGES> <FEATURE_TYPE>"
     exit 1
 fi
 
@@ -9,7 +9,7 @@ SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 CREATE_SAMPLES="${SCRIPT_DIR}/createsamples.pl"
 MERGE_VEC="${SCRIPT_DIR}/mergevec.py"
 OCV_BIN="/opt/opencv3/bin"
-OCV_BIN="/data/v52/nstiurca/codes/opencv-3.0.0-beta-Release/bin"
+#OCV_BIN="/data/v52/nstiurca/codes/opencv-3.0.0-beta-Release/bin"
 OCV_CREATE_SAMPLES="${OCV_BIN}/opencv_createsamples"
 OCV_TRAIN_CASCADE="${OCV_BIN}/opencv_traincascade"
 
@@ -29,10 +29,10 @@ MAX_Z_ANGLE=0.5
 SCALE=16.0
 MAX_I_DEV=40
 BUF_SIZE=1024
-FEATURE_TYPE=HAAR #HAAR LBP or HOG
+FEATURE_TYPE=$3 #HAAR LBP or HOG
 NUM_POS=2000
 NUM_NEG=1000
-NUM_STAGES=40
+NUM_STAGES=$2
 BT=GAB # DAR RAB LB or GAB
 MIN_HIT_RATE=0.995
 MAX_FALSE_ALARM_RATE=0.5
@@ -105,11 +105,13 @@ echo Training $CLASSIFIER_DIR
 echo $OCV_TRAIN_CASCADE -vec "$MERGED_VEC" -bg "$BG" -precalcValBufSize $BUF_SIZE -precalcIdxBufSize $BUF_SIZE \
     -numPos $NUM_POS -numNeg $NUM_NEG -numStages $NUM_STAGES -minHitRate $MIN_HIT_RATE -bt $BT \
     -maxFalseAlarmRate $MAX_FALSE_ALARM_RATE -w $WIDTH -h $HEIGHT -mode $MODE -maxWeakCount $MAX_WEAK_COUNT \
-    -featureType $FEATURE_TYPE -maxDepth $MAX_DEPTH -weightTrimRate $WEIGHT_TRIM_RATE -data "$CLASSIFIER_DIR"
+    -featureType $FEATURE_TYPE -maxDepth $MAX_DEPTH -weightTrimRate $WEIGHT_TRIM_RATE -data "$CLASSIFIER_DIR" \
+    "&&" cp "${CLASSIFIER_DIR}/cascade.xml" "${CLASSIFIER_DIR}.xml"
 $OCV_TRAIN_CASCADE -vec "$MERGED_VEC" -bg "$BG" -precalcValBufSize $BUF_SIZE -precalcIdxBufSize $BUF_SIZE \
     -numPos $NUM_POS -numNeg $NUM_NEG -numStages $NUM_STAGES -minHitRate $MIN_HIT_RATE -bt $BT \
     -maxFalseAlarmRate $MAX_FALSE_ALARM_RATE -w $WIDTH -h $HEIGHT -mode $MODE -maxWeakCount $MAX_WEAK_COUNT \
-    -featureType $FEATURE_TYPE -maxDepth $MAX_DEPTH -weightTrimRate $WEIGHT_TRIM_RATE -data "$CLASSIFIER_DIR"
+    -featureType $FEATURE_TYPE -maxDepth $MAX_DEPTH -weightTrimRate $WEIGHT_TRIM_RATE -data "$CLASSIFIER_DIR" \
+    && cp "${CLASSIFIER_DIR}/cascade.xml" "${CLASSIFIER_DIR}.xml"
 
 echo
 echo Bon apepit
