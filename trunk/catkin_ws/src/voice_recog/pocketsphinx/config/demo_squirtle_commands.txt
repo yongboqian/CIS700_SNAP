@@ -1,4 +1,13 @@
 hello
+snap
+happy hunting
+duck
+bottle
+tape
+okay
+sure
+no problem
+success
 yes
 no
 turtlebot
@@ -32,3 +41,4 @@ greetings turtlebot
 whats up
 stop your task
 stop current task
+show me

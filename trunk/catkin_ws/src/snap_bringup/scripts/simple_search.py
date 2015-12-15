@@ -108,7 +108,7 @@ class simple_search_node():
       self.active = False
       self.active_time0 = 0.0
       self.timeout_time = 0.0
-      self.active_timeout = 300000 #30seconds to timeout
+      self.active_timeout = 30 #30seconds to timeout
       self.turn_timeout = 5
       self.turn_timeout0 = 0.0
       self.turn_last = False
@@ -153,6 +153,7 @@ class simple_search_node():
       if self.active and timein:
         #search
         print 'searching...'
+        self.status_info_pub.publish ('search ongoing')
         if self.closest_point >self.too_close:
             
             forward_speed = self.hunting_for_speed
@@ -249,7 +250,7 @@ class simple_search_node():
 
       
   def shutdown(self):
-      rospy.loginfo("Shutting down moveit Node...")
+      rospy.loginfo("Shutting down search Node...")
 
 
       ## When finished shut down 
