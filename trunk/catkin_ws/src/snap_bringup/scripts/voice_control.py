@@ -32,7 +32,8 @@ while received_voice is None or received_voice.data != obj: #model name
       if rospy.is_shutdown():
           os._exit(0)
       try:
-         received_voice = rospy.client.wait_for_message("/recognizer/output",String,timeout=100)
+         #import pdb; pdb.set_trace()
+         received_voice = rospy.wait_for_message("/recognizer/output",String,timeout=10)
       except Exception, e:
          cmd = "rosservice call /detector_manager_node/load_models 'model_names: ['"+ str(obj)+"_32x32_haar']'"
         # cmd = "rosservice call /detector_manager_node/load_models 'model_names: ['duck_32x32_haar']'"
