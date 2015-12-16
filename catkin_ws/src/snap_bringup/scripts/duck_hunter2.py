@@ -79,7 +79,7 @@ class duck_hunter_node():
       self.base_pub = rospy.Publisher('~/cmd_vel_mux/input/teleop', Twist, queue_size=5)                                    
       self.arm_pub = rospy.Publisher("~/simple_move", String, queue_size=1)
       self.grip_pub = rospy.Publisher('~/gripper_joint/command', Float64, queue_size=2) 
-      self.status_info_pub = rospy.Publisher('~/status/updates', String, queue_size=2) 
+      self.status_info_pub = rospy.Publisher('~/status/updates', String, queue_size=10) 
       rospy.Subscriber("~/detector_manager_node/detections", DetectionsStamped, self.DetectionCb)
       rospy.Subscriber("~/duckhunter/activeCmd", Bool, self.ActiveCb)
       
@@ -105,7 +105,7 @@ class duck_hunter_node():
       self.active = False
       self.active_time0 = 0.0
       self.timeout_time = 0.0
-      self.active_timeout = 30 #30seconds to timeout
+      self.active_timeout = 60 #30seconds to timeout
       ## Wait for RVIZ to initialize. This sleep is ONLY to allow Rviz to come up.
       #print "============ Waiting for RVIZ..."
       #rospy.sleep(5)
@@ -132,7 +132,8 @@ class duck_hunter_node():
       self.active = data.data # can deactivate
       self.active_time0 = rospy.get_time()
       self.timeout_time = self.active_time0+self.active_timeout
-      print self.active
+      if self.active:
+        print 'active'
       #set timeout Time maybe?
       
   def DetectionCb(self, data):
@@ -143,6 +144,7 @@ class duck_hunter_node():
       #TODO
       timein= self.timeout_time>rospy.get_time()
       #self print.active
+      print 'timein'
       print timein
       if data.detections and self.active and timein:#is array is empty this will return false else true
         good_data = True #assume data will always be good
@@ -151,6 +153,7 @@ class duck_hunter_node():
         self.active = False
         good_data = False
         self.status_info_pub.publish ('DuckHunter has timed out')
+        rospy.sleep(2)
         self.shutdown()
       else:
         good_data = False
@@ -161,12 +164,13 @@ class duck_hunter_node():
           i = []
           best_conf = 0
           for j in range(0,len(data.detections)):
-            if data.detections[j].confidence > best_conf and data.detections[j].label =="duck_32x32_haar":
+            if data.detections[j].confidence > best_conf and data.detections[j].label =="duck_16x16_HAAR":
                 best_conf = data.detections[j].confidence
                 i = j
           #we should have the index of the most duckly object
+          print 'best_config'
           print best_conf
-          if best_conf != 0:#if we have a duck 
+          if best_conf is not None:#if we have a duck 
               print "Quack"   
               #Find the center of the bbox and calculate the offset
               bbox_center_x = data.detections[i].bbox.x+data.detections[i].bbox.width/2# to be calculated from msg
@@ -217,6 +221,7 @@ class duck_hunter_node():
                     rospy.sleep(5)
                 self.active = False # deactiveate loop. mission complete
                 self.status_info_pub.publish ('Hunt Success')
+                rospy.sleep(2)
                 #send to reset
                 #go
             
