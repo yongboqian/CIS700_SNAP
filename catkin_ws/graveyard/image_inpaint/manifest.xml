@@ -1,0 +1,16 @@
+<package>
+  <description brief="image_inpaint">
+
+     image_inpaint
+
+  </description>
+  <author>Nicu Știurcă</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/image_inpaint</url>
+  <depend package="rospy"/>
+  <depend package="sensor_msgs"/>
+
+</package>
+
+

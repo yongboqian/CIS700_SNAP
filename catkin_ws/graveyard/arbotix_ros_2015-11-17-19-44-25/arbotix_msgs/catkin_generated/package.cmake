@@ -1,0 +1,7 @@
+set(_CATKIN_CURRENT_PACKAGE "arbotix_msgs")
+set(arbotix_msgs_MAINTAINER "Michael Ferguson <mike@vanadiumlabs.com>")
+set(arbotix_msgs_DEPRECATED "")
+set(arbotix_msgs_VERSION "0.10.0")
+set(arbotix_msgs_BUILD_DEPENDS "std_msgs" "message_generation")
+set(arbotix_msgs_RUN_DEPENDS "std_msgs" "message_runtime")
+set(arbotix_msgs_BUILDTOOL_DEPENDS "catkin")
