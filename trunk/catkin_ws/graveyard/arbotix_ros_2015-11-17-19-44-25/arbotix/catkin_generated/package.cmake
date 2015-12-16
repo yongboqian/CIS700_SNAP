@@ -1,0 +1,7 @@
+set(_CATKIN_CURRENT_PACKAGE "arbotix")
+set(arbotix_MAINTAINER "Michael Ferguson <mike@vanadiumlabs.com>")
+set(arbotix_DEPRECATED "")
+set(arbotix_VERSION "0.10.0")
+set(arbotix_BUILD_DEPENDS )
+set(arbotix_RUN_DEPENDS "arbotix_msgs" "arbotix_python" "arbotix_sensors" "arbotix_controllers" "arbotix_firmware")
+set(arbotix_BUILDTOOL_DEPENDS "catkin")
