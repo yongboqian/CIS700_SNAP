@@ -51,6 +51,7 @@ void OCVCascadeDetector::finalize()
 
 static const std::vector<std::string>& resolveModelNames(const std::vector<std::string> &model_names)
 {
+    ROS_INFO("Resolving model names...");
     static std::vector<std::string> all_model_names;
     if(all_model_names.empty()) {
         for(auto &kv : s_cascadeFilename) {
@@ -60,14 +61,17 @@ static const std::vector<std::string>& resolveModelNames(const std::vector<std::
     }
 
     if(model_names.size() == 1 && model_names[0] == snap_vision_msgs::Models::Request::ALL) {
+        ROS_INFO("Resolving model names... DONE1");
         return all_model_names;
     } else {
+        ROS_INFO("Resolving model names... DONE2");
         return model_names;
     }
 }
 
 SnapError OCVCascadeDetector::loadModels(const std::vector<std::string> &model_names)
 {
+    ROS_INFO("Loading models...");
     size_t num_loaded = 0;
     size_t num_failed = 0;
     SnapError ret;
@@ -97,11 +101,13 @@ SnapError OCVCascadeDetector::loadModels(const std::vector<std::string> &model_n
     snprintf(buf, sizeof(buf), "%zu out of %zu models loaded (%zu failed).",
             num_loaded, model_names.size(), num_failed);
     ret.err_str = buf;
+    ROS_INFO("Loading models... DONE");
     return ret;
 }
 
 SnapError OCVCascadeDetector::unloadModels(const std::vector<std::string> &model_names)
 {
+    ROS_INFO("Loading models...");
     size_t num_unloaded = 0;
     for(const string &model_name : resolveModelNames(model_names)) {
         num_unloaded += classifiers_.erase(model_name);
@@ -112,11 +118,13 @@ SnapError OCVCascadeDetector::unloadModels(const std::vector<std::string> &model
     SnapError ret;
     ret.err_code = SnapError::E_OK;
     ret.err_str = buf;
+    ROS_INFO("Unloading models... DONE");
     return ret;
 }
 
 void OCVCascadeDetector::detect(const InputArray &image, vector<Detection> &detections)
 {
+    ROS_INFO("Detecting...");
     CV_Assert(image.type() == CV_8UC3);
     cvtColor(image, imageGray_, CV_BGR2GRAY);
 
@@ -144,4 +152,5 @@ void OCVCascadeDetector::detect(const InputArray &image, vector<Detection> &dete
             detections.push_back(det);
         }
     }
+    ROS_INFO("Detecting... DONE");
 }
