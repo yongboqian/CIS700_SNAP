@@ -87,7 +87,7 @@ class duck_hunter_node():
       self.hunting_tolerance = 10 # tolerance on how zeroed in the arm needs to be
       self.hunting_tolerance_bb = 10
       self.hunting_turn_speed = 0.6 # not sure what this is measured in
-      self.hunting_for_speed = 0.02 is okay
+      self.hunting_for_speed = 0.02 #is okay
       self.hunting_box_width_goal = 170 #ideal size of BB
       #self.hunting_box_height_goal = 100 #ideal size of BB
       self.hunting_img_width = 1280 #width of webcam image
@@ -293,7 +293,7 @@ class duck_hunter_node():
       twist.angular.x = 0; twist.angular.y = 0; twist.angular.z = self.control_turn
       self.base_pub.publish(twist)
       
-      return (target_aqrd)# and target_aqrd_for)
+      return (target_aqrd and target_aqrd_for)
 
       
   def shutdown(self):
