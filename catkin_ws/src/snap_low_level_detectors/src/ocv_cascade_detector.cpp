@@ -27,6 +27,8 @@ const static map<string, string> s_cascadeFilename{
     {"bottle_16x16_LBP",  "/opt/opencv3/share/OpenCV/custom_cascades/snap/classifier_tight_bottle_16x16_LBP.xml"},
     {"duck_16x16_HAAR",   "/opt/opencv3/share/OpenCV/custom_cascades/snap/classifier_tight_duck_16x16_HAAR.xml"},
     {"duck_16x16_LBP",    "/opt/opencv3/share/OpenCV/custom_cascades/snap/classifier_tight_duck_16x16_LBP.xml"},
+    {"duck_24x24_HAAR",   "/opt/opencv3/share/OpenCV/custom_cascades/snap/classifier_tight_duck_24x24_HAAR.xml"},
+    {"duck_24x24_LBP",    "/opt/opencv3/share/OpenCV/custom_cascades/snap/classifier_tight_duck_24x24_LBP.xml"},
     {"tape_16x16_HAAR",   "/opt/opencv3/share/OpenCV/custom_cascades/snap/classifier_tight_tape_16x16_HAAR.xml"},
     {"tape_16x16_LBP",    "/opt/opencv3/share/OpenCV/custom_cascades/snap/classifier_tight_tape_16x16_LBP.xml"},
 };
