@@ -78,10 +78,10 @@ class simple_search_node():
       self.rate = rospy.get_param("~node_rate", 10)
       r = rospy.Rate(self.rate)
       #move base veolicty and arm traj topic 
-      self.base_pub = rospy.Publisher('~/cmd_vel_mux/input/teleop', Twist, queue_size=5)                                    
+      self.base_pub = rospy.Publisher('~/cmd_vel_mux/input/teleop', Twist, queue_size=10)                                    
       self.arm_pub = rospy.Publisher("~/simple_move", String, queue_size=1)
       self.grip_pub = rospy.Publisher('~/gripper_joint/command', Float64, queue_size=2) 
-      self.status_info_pub = rospy.Publisher('~/status/updates', String, queue_size=2) 
+      self.status_info_pub = rospy.Publisher('~/status/updates', String, queue_size=10) 
       rospy.Subscriber("~/detector_manager_node/detections", DetectionsStamped, self.DetectionCb)
       rospy.Subscriber("~/simple_search/activeCmd", Bool, self.ActiveCb)
       rospy.Subscriber("~/scan", LaserScan, self.LaserScanCb)
@@ -108,7 +108,7 @@ class simple_search_node():
       self.active = False
       self.active_time0 = 0.0
       self.timeout_time = 0.0
-      self.active_timeout = 55 #30seconds to timeout
+      self.active_timeout = 120 #30seconds to timeout
       self.turn_timeout = 5
       self.turn_timeout0 = 0.0
       self.turn_last = False
@@ -206,7 +206,8 @@ class simple_search_node():
       ## Processing data
       #check if there is good data
       #TODO
-      
+      print 'duck detected'
+      self.move_base(0.0,0.0)
       timein= self.timeout_time>rospy.get_time()
       #self print.active
       print timein
@@ -216,7 +217,7 @@ class simple_search_node():
         #deactivate and prepare shutdown
         self.active = False
         good_data = False
-        self.status_info_pub.publish ('DuckHunter has timed out')
+        self.status_info_pub.publish ('Simple search has timed out')
         self.shutdown()
       else:
         good_data = False
