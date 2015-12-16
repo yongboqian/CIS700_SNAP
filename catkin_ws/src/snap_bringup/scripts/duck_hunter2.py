@@ -164,7 +164,7 @@ class duck_hunter_node():
           i = []
           best_conf = 0
           for j in range(0,len(data.detections)):
-            if data.detections[j].confidence > best_conf and data.detections[j].label =="duck_16x16_HAAR":
+            if data.detections[j].confidence > best_conf and data.detections[j].label =="duck_16x16_LBP":
                 best_conf = data.detections[j].confidence
                 i = j
           #we should have the index of the most duckly object
