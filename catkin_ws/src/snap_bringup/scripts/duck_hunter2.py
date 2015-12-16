@@ -216,7 +216,7 @@ class duck_hunter_node():
                     self.grip_pub.publish(self.grip_open)
                     rospy.sleep(5)
                 self.active = False # deactiveate loop. mission complete
-                self.status_info_pub.publish ('DuckHunter has finished arm motion')
+                self.status_info_pub.publish ('Hunt Success')
                 #send to reset
                 #go
             
