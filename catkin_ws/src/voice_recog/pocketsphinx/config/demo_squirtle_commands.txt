@@ -7,6 +7,9 @@ tape
 okay
 sure
 no problem
+have a rest
+wave to professor
+try again
 success
 yes
 no
