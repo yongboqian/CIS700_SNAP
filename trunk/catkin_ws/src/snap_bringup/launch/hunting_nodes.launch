@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<launch>
+  <node name="arm_traj" pkg="snap_bringup" type="move_group_python_interface_tutorial.py" output="screen"/>
+  <node name="simple_search" pkg="snap_bringup" type="simple_search.py" output="screen"/>
+
+  <node name="duck_hunter2" pkg="snap_bringup" type="duck_hunter2.py" output="screen"/>
+    
+</launch>
