@@ -85,15 +85,17 @@ class duck_hunter_node():
       
 
       self.hunting_tolerance = 10 # tolerance on how zeroed in the arm needs to be
-      self.hunting_tolerance_bb = 10
-      self.hunting_turn_speed = 0.6 # not sure what this is measured in
-      self.hunting_for_speed = 0.02 #is okay
-      self.hunting_box_width_goal = 170 #ideal size of BB
+      self.hunting_tolerance_bb = 20#50
+      self.hunting_turn_speed = 0.55 # not sure what this is measured in
+      self.hunting_for_speed = 0.06 #is okay
+      self.hunting_box_width_goal = 280 #ideal size of BB
+      self.hunting_box_posy_goal = 305
       #self.hunting_box_height_goal = 100 #ideal size of BB
       self.hunting_img_width = 1280 #width of webcam image
       self.hunting_img_height = 720 #height of webcam image
       self.hunting_img_center_x = self.hunting_img_width/2
       self.hunting_img_center_y = self.hunting_img_height/2
+      self.bb_success = 0
       self.control_turn = 0.0
       self.control_froward = 0.0
       self.turn_error = 0.0
@@ -195,7 +197,7 @@ class duck_hunter_node():
               
               target_aqrd = False
               # logic to control how to move base. and then cmd base movement
-              target_aqrd = self.move_base(center_offset_x, bb_offset) # i think it gets x. might need y instead
+              target_aqrd = self.move_base(center_offset_x, -bb_offset) # i think it gets x. might need y instead
               # check how far away I am
               #TODO
               #target_aqrd = False
@@ -218,6 +220,7 @@ class duck_hunter_node():
                     rospy.sleep(10)
                     self.grip_pub.publish(self.grip_open)
                     rospy.sleep(5)
+                self.bb_success = 0.0 # reset hunting distanec
                 self.active = False # deactiveate loop. mission complete
                 self.status_info_pub.publish ('Hunt Success')
                 rospy.sleep(2)
@@ -264,12 +267,14 @@ class duck_hunter_node():
       #figure out how to go forward
       forward_speed = self.hunting_for_speed
       
-      if dist_off > self.hunting_tolerance_bb:
+      if dist_off > self.hunting_tolerance_bb and not self.bb_success:
         forward_speed = forward_speed
-      elif dist_off < -self.hunting_tolerance_bb:
+      elif dist_off < -self.hunting_tolerance_bb and not self.bb_success:
         forward_speed = -forward_speed
       else:
-        forward_speed = 0
+        forward_speed = 0.0
+        self.bb_success = 1
+        print "Target Aquired Distance"
         target_aqrd_for = True
         
       #if self.turn_error > self.hunting_tolerance:
