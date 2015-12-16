@@ -105,7 +105,7 @@ class voice_STM_node():
             #os.system("rosrun sound_play say.py 'Unknown Command.'")
             #self.state = 'speech_timeout'
             print 'unknown cmd heared'
-        elif received_voice.data is None or received_voice.data == 'stop':
+        elif received_voice.data is None or received_voice.data == 'no thanks':
             os.system("rosrun sound_play say.py 'I cannot hear you'")
             self.state = 'free'
 
@@ -115,27 +115,30 @@ class voice_STM_node():
          #import pdb; pdb.set_trace()
          #print (search_status.data)
         except Exception, e:
-         os.system("rostopic pub -1 /simple_search/activeCmd std_msgs/Bool False")
-         #os.system("rosrun sound_play say.py 'I cannot see duck, can you lead me to it'")
-         print 'exception in searching state'
-         search_status = String()
-         search_status.data = None
-         rospy.sleep(3)
+          os.system("rostopic pub -1 /simple_search/activeCmd std_msgs/Bool False")
+          #os.system("rosrun sound_play say.py 'I cannot see duck, can you lead me to it'")
+          print 'exception in searching state'
+          search_status = String()
+          search_status.data = None
+          rospy.sleep(3)
         print search_status.data
         if search_status.data == 'Duck Found':
             os.system("rostopic pub -1 /simple_search/activeCmd  std_msgs/Bool False")
             os.system("rostopic pub -1 /duckhunter/activeCmd  std_msgs/Bool True")
             os.system("rosrun sound_play say.py 'Target Aquired. Hunting Continue.'")
             self.state = 'hunting'
-        elif search_status.data == 'Simple search has timed out' or None:
+        elif search_status.data == 'Simple search has timed out' or search_status.data == None:
             #both lead to follow person
             self.state = 'follow_person'
+            os.system("rostopic pub -1 /simple_search/activeCmd  std_msgs/Bool False")
             os.system("rosrun sound_play say.py 'I cannot see duck, can you lead me to it'")
             #os.system("roslaunch turtlebot_follower follower.launch")
+            os.system("roslaunch turtlebot_teleop keyboard_teleop.launch")
+            ##### if cannot get working, maybe using joystick control instead?
          #elif search_status == 'search ongoing':
             #self.state = 'searching'
         else:
-            print 'error in searching'         
+            print 'search ongoing'         
          
      elif self.state == 'hunting':
         try:
@@ -148,12 +151,13 @@ class voice_STM_node():
          hunt_status.data = None
          rospy.sleep(3)
          
-        if hunt_status.data == 'Hunt Success':
+        if hunt_status.data == 'Hunt Success':    ##Need fix: confidence score = 0?
             #listen to person if I have the duck?
             os.system("rosrun sound_play say.py 'Was I successful? If, so say SUCCESS'")
             rospy.sleep(5)
             received_voice = self.listen("/recognizer/output")
             if received_voice.data == 'success':
+                os.system("rosrun sound_play say.py 'I knew it'")
                 self.state ='w2d'
             elif received_voice.data:
                 self.state = 'a4help'
@@ -171,12 +175,15 @@ class voice_STM_node():
          duck_data = rospy.client.wait_for_message("/detector_manager_node/detections", DetectionsStamped,timeout=180) #
         except Exception, e:
          os.system("rosrun sound_play say.py 'I am too tired. Going to give up.'")
+         os.system("rosnode kill /turtlebot_teleop_keyboard")
          print 'exception in person following'
          duck_data = None
          rospy.sleep(3)
          
-        if duck_data.detections:
+        if duck_data.detections:    ####need to be fixed. now can use ctrl c to kill
             os.system("rosrun sound_play say.py 'Thank you. Going to hunt.'")
+            os.system("rostopic pub -1 /duckhunter/activeCmd  std_msgs/Bool True")
+            #os.system("rosnode kill /turtlebot_teleop_keyboard")
             self.state = 'hunting'
         else:
             self.state = 'free'
@@ -199,6 +206,7 @@ class voice_STM_node():
         rospy.sleep(5)
         received_voice = self.listen("/recognizer/output")
         if received_voice.data == 'yes':
+            os.system("rosrun sound_play say.py 'Thank you'")
             self.state ='w2d'
         elif received_voice.data == 'try again':
             os.system("rosrun sound_play say.py ' Hunting Continue.'")
