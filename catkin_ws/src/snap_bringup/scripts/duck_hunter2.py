@@ -105,7 +105,7 @@ class duck_hunter_node():
       self.active = False
       self.active_time0 = 0.0
       self.timeout_time = 0.0
-      self.active_timeout = 60 #30seconds to timeout
+      self.active_timeout = 120 #30seconds to timeout
       ## Wait for RVIZ to initialize. This sleep is ONLY to allow Rviz to come up.
       #print "============ Waiting for RVIZ..."
       #rospy.sleep(5)
@@ -168,8 +168,7 @@ class duck_hunter_node():
                 best_conf = data.detections[j].confidence
                 i = j
           #we should have the index of the most duckly object
-          print 'best_config'
-          print best_conf
+          print('best_config',best_conf)
           if best_conf is not None:#if we have a duck 
               print "Quack"   
               #Find the center of the bbox and calculate the offset

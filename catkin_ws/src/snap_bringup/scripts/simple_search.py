@@ -210,7 +210,7 @@ class simple_search_node():
       self.move_base(0.0,0.0)
       timein= self.timeout_time>rospy.get_time()
       #self print.active
-      print timein
+      print ('timein' timein)
       if data.detections and self.active and timein:#is array is empty this will return false else true
         good_data = True #assume data will always be good
       elif not timein and self.active:
