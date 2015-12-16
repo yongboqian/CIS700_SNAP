@@ -106,6 +106,12 @@ class voice_STM_node():
         received_voice = self.listen("/recognizer/output")
         if received_voice.data == 'happy hunting':
             self.state = 'w2h'
+        elif received_voice.data == 'turtlebot':
+            os.system("rosrun sound_play say.py 'Okay. Wave ing'")
+            self.state = 'wave'
+        elif received_voice.data == 'squirtle':    
+            os.system("rosrun sound_play say.py 'Okay. resting arm'")
+            self.state = 'rest'
         elif received_voice.data == 'nothing':
             self.state = 'free'
             os.system("rosrun sound_play say.py 'Okay. Good Bye'")
@@ -209,6 +215,18 @@ class voice_STM_node():
         else:
             self.state = 'free'
         
+     elif self.state =='wave':
+        os.system("rostopic pub -1 /elevator_slider_link/command std_msgs/Float64 0.30")
+        rospy.sleep(5)#dumb sleep cmd. should listen to topic until position is reached
+        os.system("rostopic pub -1 /simple_move std_msgs/String 'wave'")
+        rospy.sleep(5)
+        self.state = 'free'
+     elif self.state =='rest':
+        os.system("rostopic pub -1 /elevator_slider_link/command std_msgs/Float64 0.15")
+        rospy.sleep(5)#dumb sleep cmd. should listen to topic until position is reached
+        os.system("rostopic pub -1 /simple_move std_msgs/String 'rest'")
+        rospy.sleep(5)
+        self.state = 'free'    
      
      elif self.state == 'a4help':
         os.system("rosrun sound_play say.py 'Attempt Failed. Can you help me? Say Yes, Or Say Try Again.'")
